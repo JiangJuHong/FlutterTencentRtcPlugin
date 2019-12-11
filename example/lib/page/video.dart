@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tencent_rtc_plugin/tencent_rtc_video_view.dart';
 import 'package:tencent_rtc_plugin/tencent_rtc_plugin.dart';
 import 'package:tencent_rtc_plugin/enums/listener_type_enum.dart';
@@ -36,7 +37,7 @@ class VideoPageState extends State<VideoPage> {
           olUser.remove(userId);
         }
 
-        this.setState((){});
+        this.setState(() {});
       }
     });
   }
@@ -55,19 +56,35 @@ class VideoPageState extends State<VideoPage> {
       appBar: AppBar(
         title: Text("视频界面"),
       ),
-      body: ListView(
-        children: olUser.keys
-            .map(
-              (id) => Container(
-                color: Colors.red,
-//                height: MediaQuery.of(context).size.height / 2,
-                height: 200,
-                child: TencentRtcVideoView(
-                  onViewCreated: (controller) => onViewCreated(id, controller),
-                ),
-              ),
-            )
-            .toList(),
+      body: Stack(
+        children: <Widget>[
+          // 本地预览组件
+          TencentRtcVideoView(
+            onViewCreated: (controller) {
+              PermissionHandler()
+                  .requestPermissions([PermissionGroup.camera]).then((res) {
+                if (res[PermissionGroup.camera] != PermissionStatus.disabled) {
+                  controller.startLocalPreview(frontCamera: false);
+                }
+              });
+            },
+          ),
+          // 远程预览组件
+          ListView(
+            children: olUser.keys
+                .map(
+                  (id) => Container(
+                    color: Colors.red,
+                    height: 200,
+                    child: TencentRtcVideoView(
+                      onViewCreated: (controller) =>
+                          onViewCreated(id, controller),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
       ),
     );
   }

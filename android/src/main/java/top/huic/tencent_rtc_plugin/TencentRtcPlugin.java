@@ -3,6 +3,7 @@ package top.huic.tencent_rtc_plugin;
 import android.content.Context;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
 
@@ -84,6 +85,12 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "enterRoom":
                 this.enterRoom(call, result);
                 break;
+            case "exitRoom":
+                this.exitRoom(call, result);
+                break;
+            case "setDefaultStreamRecvMode":
+                this.setDefaultStreamRecvMode(call, result);
+                break;
             case "muteRemoteAudio":
                 this.muteRemoteAudio(call, result);
                 break;
@@ -92,6 +99,57 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setRemoteViewFillMode":
                 this.setRemoteViewFillMode(call, result);
+                break;
+            case "setLocalViewFillMode":
+                this.setLocalViewFillMode(call, result);
+                break;
+            case "startLocalAudio":
+                this.startLocalAudio(call, result);
+                break;
+            case "stopLocalAudio":
+                this.stopLocalAudio(call, result);
+                break;
+            case "stopAllRemoteView":
+                this.stopAllRemoteView(call, result);
+                break;
+            case "muteRemoteVideoStream":
+                this.muteRemoteVideoStream(call, result);
+                break;
+            case "muteAllRemoteVideoStreams":
+                this.muteAllRemoteVideoStreams(call, result);
+                break;
+            case "setVideoEncoderParam":
+                this.setVideoEncoderParam(call, result);
+                break;
+            case "setNetworkQosParam":
+                this.setNetworkQosParam(call, result);
+                break;
+            case "setLocalViewRotation":
+                this.setLocalViewRotation(call, result);
+                break;
+            case "setRemoteViewRotation":
+                this.setRemoteViewRotation(call, result);
+                break;
+            case "setVideoEncoderRotation":
+                this.setVideoEncoderRotation(call, result);
+                break;
+            case "setLocalViewMirror":
+                this.setLocalViewMirror(call, result);
+                break;
+            case "setVideoEncoderMirror":
+                this.setVideoEncoderMirror(call, result);
+                break;
+            case "setGSensorMode":
+                this.setGSensorMode(call, result);
+                break;
+            case "enableEncSmallVideoStream":
+                this.enableEncSmallVideoStream(call, result);
+                break;
+            case "setRemoteVideoStreamType":
+                this.setRemoteVideoStreamType(call, result);
+                break;
+            case "setPriorRemoteVideoStreamType":
+                this.setPriorRemoteVideoStreamType(call, result);
                 break;
             default:
                 result.notImplemented();
@@ -114,6 +172,25 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         trtcParams.roomId = TencentRtcPluginUtil.getParam(call, result, "roomId");
         int scene = TencentRtcPluginUtil.getParam(call, result, "scene");
         trtcCloud.enterRoom(trtcParams, scene);
+        result.success(null);
+    }
+
+    /**
+     * 退出房间
+     */
+    private void exitRoom(@NonNull MethodCall call, @NonNull Result result) {
+        trtcCloud.exitRoom();
+        result.success(null);
+    }
+
+    /**
+     * 设置音视频数据接收模式（需要在进房前设置才能生效）。
+     */
+    private void setDefaultStreamRecvMode(@NonNull MethodCall call, @NonNull Result result) {
+        boolean autoRecvAudio = TencentRtcPluginUtil.getParam(call, result, "autoRecvAudio");
+        boolean autoRecvVideo = TencentRtcPluginUtil.getParam(call, result, "autoRecvVideo");
+        trtcCloud.setDefaultStreamRecvMode(autoRecvAudio, autoRecvVideo);
+        result.success(null);
     }
 
     /**
@@ -123,6 +200,7 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
         boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
         trtcCloud.muteRemoteAudio(userId, mute);
+        result.success(null);
     }
 
     /**
@@ -131,6 +209,7 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void muteAllRemoteAudio(@NonNull MethodCall call, @NonNull Result result) {
         boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
         trtcCloud.muteAllRemoteAudio(mute);
+        result.success(null);
     }
 
     /**
@@ -140,5 +219,162 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
         int mode = TencentRtcPluginUtil.getParam(call, result, "mode");
         trtcCloud.setRemoteViewFillMode(userId, mode);
+        result.success(null);
+    }
+
+    /**
+     * 设置本地显示填充模式
+     */
+    private void setLocalViewFillMode(@NonNull MethodCall call, @NonNull Result result) {
+        int mode = TencentRtcPluginUtil.getParam(call, result, "mode");
+        trtcCloud.setLocalViewFillMode(mode);
+        result.success(null);
+    }
+
+    /**
+     * 开启本地音频采集
+     */
+    private void startLocalAudio(@NonNull MethodCall call, @NonNull Result result) {
+        trtcCloud.startLocalAudio();
+        result.success(null);
+    }
+
+    /**
+     * 关闭本地音频采集
+     */
+    private void stopLocalAudio(@NonNull MethodCall call, @NonNull Result result) {
+        trtcCloud.stopLocalAudio();
+        result.success(null);
+    }
+
+    /**
+     * 停止显示所有远端视频画面。
+     */
+    private void stopAllRemoteView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.stopAllRemoteView();
+        result.success(null);
+    }
+
+    /**
+     * 暂停接收指定的远端视频流。
+     */
+    private void muteRemoteVideoStream(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
+        trtcCloud.muteRemoteVideoStream(userId, mute);
+        result.success(null);
+    }
+
+    /**
+     * 停止接收所有远端视频流。
+     */
+    private void muteAllRemoteVideoStreams(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
+        trtcCloud.muteAllRemoteVideoStreams(mute);
+        result.success(null);
+    }
+
+    /**
+     * 设置视频编码相关。
+     */
+    private void setVideoEncoderParam(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String param = TencentRtcPluginUtil.getParam(call, result, "param");
+        trtcCloud.setVideoEncoderParam(JSON.parseObject(param, TRTCCloudDef.TRTCVideoEncParam.class));
+        result.success(null);
+    }
+
+    /**
+     * 设置网络流控相关参数。
+     */
+    private void setNetworkQosParam(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        TRTCCloudDef.TRTCNetworkQosParam params = new TRTCCloudDef.TRTCNetworkQosParam();
+        params.preference = TencentRtcPluginUtil.getParam(call, result, "preference");
+        params.controlMode = TencentRtcPluginUtil.getParam(call, result, "controlMode");
+        trtcCloud.setNetworkQosParam(params);
+        result.success(null);
+    }
+
+    /**
+     * 设置本地图像的顺时针旋转角度。
+     */
+    private void setLocalViewRotation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int rotation = TencentRtcPluginUtil.getParam(call, result, "rotation");
+        trtcCloud.setLocalViewRotation(rotation);
+        result.success(null);
+    }
+
+    /**
+     * 设置远端图像的顺时针旋转角度。
+     */
+    private void setRemoteViewRotation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        int rotation = TencentRtcPluginUtil.getParam(call, result, "rotation");
+        trtcCloud.setRemoteViewRotation(userId, rotation);
+        result.success(null);
+    }
+
+    /**
+     * 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向。
+     */
+    private void setVideoEncoderRotation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int rotation = TencentRtcPluginUtil.getParam(call, result, "rotation");
+        trtcCloud.setVideoEncoderRotation(rotation);
+        result.success(null);
+    }
+
+    /**
+     * 设置本地摄像头预览画面的镜像模式。
+     */
+    private void setLocalViewMirror(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int mirrorType = TencentRtcPluginUtil.getParam(call, result, "mirrorType");
+        trtcCloud.setLocalViewMirror(mirrorType);
+        result.success(null);
+    }
+
+    /**
+     * 设置编码器输出的画面镜像模式。
+     */
+    private void setVideoEncoderMirror(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean mirror = TencentRtcPluginUtil.getParam(call, result, "mirror");
+        trtcCloud.setVideoEncoderMirror(mirror);
+        result.success(null);
+    }
+
+    /**
+     * 设置重力感应的适应模式。
+     */
+    private void setGSensorMode(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int mode = TencentRtcPluginUtil.getParam(call, result, "mode");
+        trtcCloud.setGSensorMode(mode);
+        result.success(null);
+    }
+
+    /**
+     * 开启大小画面双路编码模式。
+     */
+    private void enableEncSmallVideoStream(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean enable = TencentRtcPluginUtil.getParam(call, result, "enable");
+        String smallVideoEncParam = TencentRtcPluginUtil.getParam(call, result, "smallVideoEncParam");
+        trtcCloud.enableEncSmallVideoStream(enable, JSON.parseObject(smallVideoEncParam, TRTCCloudDef.TRTCVideoEncParam.class));
+        result.success(null);
+    }
+
+    /**
+     * 选定观看指定 uid 的大画面或小画面。
+     */
+    private void setRemoteVideoStreamType(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        int streamType = TencentRtcPluginUtil.getParam(call, result, "streamType");
+        trtcCloud.setRemoteVideoStreamType(userId, streamType);
+        result.success(null);
+    }
+
+    /**
+     * 设定观看方优先选择的视频质量。
+     */
+    private void setPriorRemoteVideoStreamType(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int streamType = TencentRtcPluginUtil.getParam(call, result, "streamType");
+        trtcCloud.setPriorRemoteVideoStreamType(streamType);
+        result.success(null);
     }
 }
