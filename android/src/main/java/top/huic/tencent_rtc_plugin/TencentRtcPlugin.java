@@ -172,6 +172,30 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "enableAudioEarMonitoring":
                 this.enableAudioEarMonitoring(call, result);
                 break;
+            case "switchCamera":
+                this.switchCamera(call, result);
+                break;
+            case "isCameraZoomSupported":
+                this.isCameraZoomSupported(call, result);
+                break;
+            case "setZoom":
+                this.setZoom(call, result);
+                break;
+            case "isCameraTorchSupported":
+                this.isCameraTorchSupported(call, result);
+                break;
+            case "enableTorch":
+                this.enableTorch(call, result);
+                break;
+            case "isCameraFocusPositionInPreviewSupported":
+                this.isCameraFocusPositionInPreviewSupported(call, result);
+                break;
+            case "setFocusPosition":
+                this.setFocusPosition(call, result);
+                break;
+            case "isCameraAutoFocusFaceModeSupported":
+                this.isCameraAutoFocusFaceModeSupported(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -460,5 +484,69 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         boolean enable = TencentRtcPluginUtil.getParam(call, result, "enable");
         trtcCloud.enableAudioEarMonitoring(enable);
         result.success(null);
+    }
+
+    /**
+     * 切换摄像头。
+     */
+    private void switchCamera(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.switchCamera();
+        result.success(null);
+    }
+
+    /**
+     * 查询当前摄像头是否支持缩放。
+     */
+    private void isCameraZoomSupported(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        result.success(trtcCloud.isCameraZoomSupported());
+    }
+
+    /**
+     * 设置摄像头缩放因子（焦距）。
+     */
+    private void setZoom(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int distance = TencentRtcPluginUtil.getParam(call, result, "distance");
+        trtcCloud.setZoom(distance);
+        result.success(null);
+    }
+
+    /**
+     * 查询是否支持开关闪光灯（手电筒模式）。
+     */
+    private void isCameraTorchSupported(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        result.success(trtcCloud.isCameraTorchSupported());
+    }
+
+    /**
+     * 开启闪光灯
+     */
+    private void enableTorch(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean enable = TencentRtcPluginUtil.getParam(call, result, "enable");
+        trtcCloud.enableTorch(enable);
+        result.success(null);
+    }
+
+    /**
+     * 查询是否支持设置焦点。
+     */
+    private void isCameraFocusPositionInPreviewSupported(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        result.success(trtcCloud.isCameraFocusPositionInPreviewSupported());
+    }
+
+    /**
+     * 设置摄像头焦点。
+     */
+    private void setFocusPosition(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int x = TencentRtcPluginUtil.getParam(call, result, "x");
+        int y = TencentRtcPluginUtil.getParam(call, result, "y");
+        trtcCloud.setFocusPosition(x, y);
+        result.success(null);
+    }
+
+    /**
+     * 查询是否支持自动识别人脸位置。
+     */
+    private void isCameraAutoFocusFaceModeSupported(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        result.success(trtcCloud.isCameraAutoFocusFaceModeSupported());
     }
 }

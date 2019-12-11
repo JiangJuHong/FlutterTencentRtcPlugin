@@ -301,7 +301,8 @@ class TencentRtcPlugin {
 
   /// 设置通话时使用的系统音量类型。
   Future<void> setSystemVolumeType({
-    @required int type, // 系统音量类型，请参考 TRTCSystemVolumeType，默认值：TRTCSystemVolumeTypeAuto。
+    @required
+        int type, // 系统音量类型，请参考 TRTCSystemVolumeType，默认值：TRTCSystemVolumeTypeAuto。
   }) async {
     return _channel.invokeMethod('setSystemVolumeType', {
       "type": type,
@@ -315,6 +316,60 @@ class TencentRtcPlugin {
     return _channel.invokeMethod('enableAudioEarMonitoring', {
       "enable": enable,
     });
+  }
+
+  /// 切换摄像头。
+  Future<void> switchCamera() async {
+    return _channel.invokeMethod('switchCamera');
+  }
+
+  /// 查询当前摄像头是否支持缩放
+  Future<bool> isCameraZoomSupported() async {
+    return _channel.invokeMethod('isCameraZoomSupported');
+  }
+
+  /// 设置摄像头缩放因子（焦距）。
+  Future<void> setZoom({
+    @required int distance, // 取值范围为1 - 5，数值越大，焦距越远。
+  }) async {
+    return _channel.invokeMethod('setZoom', {
+      "distance": distance,
+    });
+  }
+
+  /// 查询是否支持开关闪光灯（手电筒模式）。
+  Future<bool> isCameraTorchSupported() async {
+    return _channel.invokeMethod('isCameraTorchSupported');
+  }
+
+  /// 开关闪光灯。
+  Future<void> enableTorch({
+    @required bool enable, // true：开启；false：关闭，默认值：false。
+  }) async {
+    return _channel.invokeMethod('enableTorch', {
+      "enable": enable,
+    });
+  }
+
+  /// 查询是否支持设置焦点。
+  Future<bool> isCameraFocusPositionInPreviewSupported() async {
+    return _channel.invokeMethod('isCameraFocusPositionInPreviewSupported');
+  }
+
+  /// 设置摄像头焦点。
+  Future<void> setFocusPosition({
+    @required int x,
+    @required int y,
+  }) async {
+    return _channel.invokeMethod('setFocusPosition', {
+      "x": x,
+      "y": y,
+    });
+  }
+
+  /// 查询是否支持自动识别人脸位置。
+  Future<bool> isCameraAutoFocusFaceModeSupported() async {
+    return _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
   }
 }
 
