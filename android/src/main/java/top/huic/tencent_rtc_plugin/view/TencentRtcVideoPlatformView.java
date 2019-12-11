@@ -14,7 +14,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
-import top.huic.tencent_rtc_plugin.TencentRtcPlugin;
 import top.huic.tencent_rtc_plugin.util.TencentRtcPluginUtil;
 
 /**
@@ -48,6 +47,9 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory implements 
     private TXCloudVideoView remoteView;
 
 
+    /**
+     * 初始化工厂信息，此处的域是 PlatformViewFactory
+     */
     public TencentRtcVideoPlatformView(Context context, BinaryMessenger messenger) {
         super(StandardMessageCodec.INSTANCE);
         this.messenger = messenger;
@@ -67,8 +69,10 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory implements 
 
     @Override
     public PlatformView create(Context context, int viewId, Object args) {
-        new MethodChannel(messenger, SIGN + "_" + viewId).setMethodCallHandler(this);
-        return this;
+        // 每次实例化对象，保证界面上每一个组件的独立性(此处域是 PlatformView和MethodChannel.MethodCallHandler)
+        TencentRtcVideoPlatformView view = new TencentRtcVideoPlatformView(context, messenger);
+        new MethodChannel(messenger, SIGN + "_" + viewId).setMethodCallHandler(view);
+        return view;
     }
 
     @Override
