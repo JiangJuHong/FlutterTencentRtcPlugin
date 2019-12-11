@@ -151,6 +151,27 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "setPriorRemoteVideoStreamType":
                 this.setPriorRemoteVideoStreamType(call, result);
                 break;
+            case "muteLocalAudio":
+                this.muteLocalAudio(call, result);
+                break;
+            case "setAudioRoute":
+                this.setAudioRoute(call, result);
+                break;
+            case "enableAudioVolumeEvaluation":
+                this.enableAudioVolumeEvaluation(call, result);
+                break;
+            case "startAudioRecording":
+                this.startAudioRecording(call, result);
+                break;
+            case "stopAudioRecording":
+                this.stopAudioRecording(call, result);
+                break;
+            case "setSystemVolumeType":
+                this.setSystemVolumeType(call, result);
+                break;
+            case "enableAudioEarMonitoring":
+                this.enableAudioEarMonitoring(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -375,6 +396,69 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void setPriorRemoteVideoStreamType(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         int streamType = TencentRtcPluginUtil.getParam(call, result, "streamType");
         trtcCloud.setPriorRemoteVideoStreamType(streamType);
+        result.success(null);
+    }
+
+    /**
+     * 静音本地的音频。
+     */
+    private void muteLocalAudio(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
+        trtcCloud.muteLocalAudio(mute);
+        result.success(null);
+    }
+
+    /**
+     * 设置音频路由。
+     */
+    private void setAudioRoute(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int route = TencentRtcPluginUtil.getParam(call, result, "route");
+        trtcCloud.setAudioRoute(route);
+        result.success(null);
+    }
+
+    /**
+     * 启用音量大小提示。
+     */
+    private void enableAudioVolumeEvaluation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int intervalMs = TencentRtcPluginUtil.getParam(call, result, "intervalMs");
+        trtcCloud.enableAudioVolumeEvaluation(intervalMs);
+        result.success(null);
+    }
+
+    /**
+     * 开始录音。
+     */
+    private void startAudioRecording(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        TRTCCloudDef.TRTCAudioRecordingParams params = new TRTCCloudDef.TRTCAudioRecordingParams();
+        params.filePath = TencentRtcPluginUtil.getParam(call, result, "filePath");
+        trtcCloud.startAudioRecording(params);
+        result.success(null);
+    }
+
+    /**
+     * 停止录音。
+     */
+    private void stopAudioRecording(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.stopAudioRecording();
+        result.success(null);
+    }
+
+    /**
+     * 设置通话时使用的系统音量类型。
+     */
+    private void setSystemVolumeType(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int type = TencentRtcPluginUtil.getParam(call, result, "type");
+        trtcCloud.setSystemVolumeType(type);
+        result.success(null);
+    }
+
+    /**
+     * 开启耳返。
+     */
+    private void enableAudioEarMonitoring(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean enable = TencentRtcPluginUtil.getParam(call, result, "enable");
+        trtcCloud.enableAudioEarMonitoring(enable);
         result.success(null);
     }
 }

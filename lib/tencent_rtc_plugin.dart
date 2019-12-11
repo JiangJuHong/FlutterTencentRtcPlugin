@@ -256,6 +256,66 @@ class TencentRtcPlugin {
       "streamType": streamType,
     });
   }
+
+  /// 静音本地的音频。
+  Future<void> muteLocalAudio({
+    @required bool mute, // true：屏蔽；false：开启，默认值：false。
+  }) async {
+    return _channel.invokeMethod('muteLocalAudio', {
+      "mute": mute,
+    });
+  }
+
+  /// 设置音频路由。
+  Future<void> setAudioRoute({
+    @required int route, // 音频路由，即声音由哪里输出（扬声器、听筒），请参考
+  }) async {
+    return _channel.invokeMethod('setAudioRoute', {
+      "route": route,
+    });
+  }
+
+  /// 启用音量大小提示。
+  Future<void> enableAudioVolumeEvaluation({
+    @required
+        int intervalMs, // 决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。
+  }) async {
+    return _channel.invokeMethod('enableAudioVolumeEvaluation', {
+      "intervalMs": intervalMs,
+    });
+  }
+
+  /// 开始录音。
+  Future<void> startAudioRecording({
+    @required String filePath, // 文件路径（必填），录音的文件地址，由用户自行指定，请确保 App 里指定的目录存在且可写。
+  }) async {
+    return _channel.invokeMethod('startAudioRecording', {
+      "filePath": filePath,
+    });
+  }
+
+  /// 停止录音。
+  Future<void> stopAudioRecording() async {
+    return _channel.invokeMethod('stopAudioRecording');
+  }
+
+  /// 设置通话时使用的系统音量类型。
+  Future<void> setSystemVolumeType({
+    @required int type, // 系统音量类型，请参考 TRTCSystemVolumeType，默认值：TRTCSystemVolumeTypeAuto。
+  }) async {
+    return _channel.invokeMethod('setSystemVolumeType', {
+      "type": type,
+    });
+  }
+
+  /// 开启耳返。
+  Future<void> enableAudioEarMonitoring({
+    @required bool enable, // true：开启；false：关闭。
+  }) async {
+    return _channel.invokeMethod('enableAudioEarMonitoring', {
+      "enable": enable,
+    });
+  }
 }
 
 /// 监听器对象
