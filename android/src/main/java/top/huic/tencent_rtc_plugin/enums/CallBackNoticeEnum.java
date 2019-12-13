@@ -11,6 +11,10 @@ public enum CallBackNoticeEnum {
      */
     SdkError,
     /**
+     * 警告，例如出现卡顿或者可恢复的解码失败。
+     */
+    Warning,
+    /**
      * 加入房间
      */
     EnterRoom,
@@ -19,7 +23,119 @@ public enum CallBackNoticeEnum {
      */
     ExitRoom,
     /**
-     * 由用户上行视频数据
+     * 切换角色
+     */
+    SwitchRole,
+    /**
+     * 请求跨房通话（主播 PK）的结果回调。
+     */
+    ConnectOtherRoom,
+    /**
+     * 结束跨房通话（主播 PK）的结果回调。
+     */
+    DisConnectOtherRoom,
+    /**
+     * 有用户加入当前房间。
+     */
+    RemoteUserEnterRoom,
+    /**
+     * 有用户离开当前房间。
+     */
+    RemoteUserLeaveRoom,
+    /**
+     * 用户是否上行视频数据
      */
     UserVideoAvailable,
+    /**
+     * 用户是否上行屏幕数据
+     */
+    UserSubStreamAvailable,
+    /**
+     * 用户是否上行音频数据
+     */
+    UserAudioAvailable,
+    /**
+     * 开始渲染本地或远程用户的首帧画面。
+     */
+    FirstVideoFrame,
+    /**
+     * 开始播放远程用户的首帧音频（本地声音暂不通知）。
+     */
+    FirstAudioFrame,
+    /**
+     * 首帧本地音频数据已经被送出。
+     */
+    SendFirstLocalAudioFrame,
+    /**
+     * 首帧本地视频数据已经被送出。
+     */
+    SendFirstLocalVideoFrame,
+    /**
+     * 网络质量：该回调每2秒触发一次，统计当前网络的上行和下行质量。
+     */
+    NetworkQuality,
+    /**
+     * 技术指标统计回调:。
+     */
+    Statistics,
+    /**
+     * 跟服务器断开
+     */
+    ConnectionLost,
+    /**
+     * SDK 尝试重新连接到服务器。
+     */
+    TryToReconnect,
+    /**
+     * SDK 跟服务器的连接恢复。
+     */
+    ConnectionRecovery,
+    /**
+     * 服务器测速的回调，SDK 对多个服务器 IP 做测速，每个 IP 的测速结果通过这个回调通知。
+     */
+    SpeedTest,
+    /**
+     * 摄像头准备就绪。
+     */
+    CameraDidReady,
+    /**
+     * 麦克风准备就绪
+     */
+    MicDidReady,
+    /**
+     * 音频路由发生变化，音频路由即声音由哪里输出（扬声器、听筒）。
+     */
+    AudioRouteChanged,
+    /**
+     * 用于提示音量大小的回调，包括每个 userId 的音量和远端总音量。
+     */
+    UserVoiceVolume,
+    /**
+     * 收到自定义消息
+     */
+    RecvCustomCmdMsg,
+    /**
+     * 自定义消息丢失
+     */
+    MissCustomCmdMsg,
+    /**
+     * 收到SEI消息
+     */
+    RecvSEIMsg,
+    /**
+     * 启动旁路推流到 CDN 完成的回调。
+     */
+    StartPublishCDNStream,
+    /**
+     * 停止旁路推流到 CDN 完成的回调。
+     */
+    StopPublishCDNStream,
+    /**
+     * 设置云端的混流转码参数的回调，对应于 TRTCCloud 中的 setMixTranscodingConfig() 接口。
+     */
+    SetMixTranscodingConfig,
+    /**
+     * 播放音效结束回调。
+     */
+    AudioEffectFinished,
 }

@@ -17,6 +17,7 @@
 [ ]Log相关接口  
 [ ]播放背景音乐的回调接口  
 [ ]视图边距  
+[×]回调事件
 
 ## Getting Started
 
@@ -40,4 +41,5 @@
 暂不支持
 
 ## 使用
-大部分方法直接基于腾讯云原始API，根据 TencentRtcPlugin 对象即可使用；部分视频相关内容，TencentRtcVideoView 需要配合 TencentRtcVideoViewControlle调用方法;
+大部分方法直接基于腾讯云原始API，根据 TencentRtcPlugin 对象即可使用；部分视频相关内容，TencentRtcVideoView 需要配合 TencentRtcVideoViewControlle调用方法;  
+例如进入房间只需要调用``TencentRtcPlugin.enterRoom()``即可，腾讯API文档地址:[linke https://cloud.tencent.com/document/product/647/32264](https://cloud.tencent.com/document/product/647/32264)
