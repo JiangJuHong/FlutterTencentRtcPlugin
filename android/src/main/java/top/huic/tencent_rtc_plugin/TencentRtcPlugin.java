@@ -80,7 +80,6 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        Log.d(TAG, "调用方法: " + call.method);
         switch (call.method) {
             case "enterRoom":
                 this.enterRoom(call, result);

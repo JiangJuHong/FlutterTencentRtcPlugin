@@ -50,7 +50,6 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
      * @param params 参数
      */
     private void invokeListener(CallBackNoticeEnum type, Object params) {
-        Log.d(TAG, "invokeListener: 触发监听:" + type + "[" + params + "]");
         Map<String, Object> resultParams = new HashMap<>(2, 1);
         resultParams.put("type", type);
         resultParams.put("params", params == null ? null : JSON.toJSONString(params));
