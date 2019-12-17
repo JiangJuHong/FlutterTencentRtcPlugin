@@ -45,4 +45,6 @@
 
 ## 使用
 大部分方法直接基于腾讯云原始API，根据 TencentRtcPlugin 对象即可使用；部分视频相关内容，TencentRtcVideoView 需要配合 TencentRtcVideoViewControlle调用方法;  
-例如进入房间只需要调用``TencentRtcPlugin.enterRoom()``即可，腾讯API文档地址:[linke https://cloud.tencent.com/document/product/647/32264](https://cloud.tencent.com/document/product/647/32264)
+例如进入房间只需要调用``TencentRtcPlugin.enterRoom()``即可，腾讯API文档地址:[linke https://cloud.tencent.com/document/product/647/32264](https://cloud.tencent.com/document/product/647/32264)  
+<img src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/FlutterTencentRtcPlugin/1.png" height="300em" style="max-width:100%;display: inline-block;"/>
+<img src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/FlutterTencentRtcPlugin/2.png" height="300em" style="max-width:100%;display: inline-block;"/>
