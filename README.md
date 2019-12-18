@@ -24,7 +24,9 @@
 
 ## Getting Started
 
-该插件基于腾讯音视频通话进行集成
+该插件基于腾讯音视频通话进行集成。    
+引用腾讯官方文档原文：``在 defaultConfig 中，指定 App 使用的 CPU 架构(目前 TRTC SDK 支持 armeabi ， armeabi-v7a 和 arm64-v8a) 。``  
+如果出现闪退问题，请检查是否是系统架构导致
 
 ## 集成
 
