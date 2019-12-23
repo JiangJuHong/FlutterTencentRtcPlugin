@@ -37,6 +37,7 @@ class TencentRtcPlugin {
     @required String userSig, // 用户签名
     @required int roomId, // 房间号
     @required int scene, // 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景。
+    int role, // 角色
   }) async {
     return await _channel.invokeMethod('enterRoom', {
       "appid": appid,
@@ -44,12 +45,22 @@ class TencentRtcPlugin {
       "userSig": userSig,
       "roomId": roomId,
       "scene": scene,
+      "role":role,
     });
   }
 
   /// 离开房间
   static Future<void> exitRoom() async {
     return await _channel.invokeMethod('exitRoom');
+  }
+
+  /// 切换角色，仅适用于直播场景（TRTCAppSceneLIVE）。
+  static Future<void> switchRole({
+    @required int role, // 目标角色
+  }) async {
+    return await _channel.invokeMethod('switchRole', {
+      "role": role,
+    });
   }
 
   /// 设置音视频数据接收模式（需要在进房前设置才能生效）。

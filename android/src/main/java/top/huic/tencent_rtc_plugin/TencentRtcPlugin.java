@@ -87,6 +87,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "exitRoom":
                 this.exitRoom(call, result);
                 break;
+            case "switchRole":
+                this.switchRole(call, result);
+                break;
             case "setDefaultStreamRecvMode":
                 this.setDefaultStreamRecvMode(call, result);
                 break;
@@ -215,6 +218,10 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         trtcParams.userSig = TencentRtcPluginUtil.getParam(call, result, "userSig");
         trtcParams.roomId = TencentRtcPluginUtil.getParam(call, result, "roomId");
         int scene = TencentRtcPluginUtil.getParam(call, result, "scene");
+        Integer role = call.argument("role");
+        if (role != null) {
+            trtcParams.role = role;
+        }
         trtcCloud.enterRoom(trtcParams, scene);
         result.success(null);
     }
@@ -224,6 +231,15 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      */
     private void exitRoom(@NonNull MethodCall call, @NonNull Result result) {
         trtcCloud.exitRoom();
+        result.success(null);
+    }
+
+    /**
+     * 切换角色
+     */
+    private void switchRole(@NonNull MethodCall call, @NonNull Result result) {
+        int role = TencentRtcPluginUtil.getParam(call, result, "role");
+        trtcCloud.switchRole(role);
         result.success(null);
     }
 
