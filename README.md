@@ -55,19 +55,19 @@
 ## 功能清单
 |  接口   | 说明  | 参数  | Android | IOS |
 |  ----  | ----  | ----  | ----  | ----  |
-| enterRoom  | 进入房间 | - | √ | 
-| exitRoom  | 退出房间 | - | √ | 
-| switchRole  | 切换角色 | - | √ | 
-| setDefaultStreamRecvMode  | 设置音视频数据接收模式（需要在进房前设置才能生效）。 | - | √ | 
-| muteRemoteAudio  | 静音 / 取消静音 | - | √ | 
-| muteAllRemoteAudio  | 静音 / 取消静音 所有用户 | - | √ | 
-| setRemoteViewFillMode  | 设置远程显示填充模式 | - | √ | 
-| setLocalViewFillMode  | 设置本地显示填充模式 | - | √ | 
-| startLocalAudio  | 开启本地音频采集 | - | √ | 
-| stopLocalAudio  | 关闭本地音频采集 | - | √ | 
-| stopAllRemoteView  | 停止显示所有远端视频画面。 | - | √ | 
-| muteRemoteVideoStream  | 暂停接收指定的远端视频流。 | - | √ | 
-| muteAllRemoteVideoStreams  | 停止接收所有远端视频流。 | - | √ | 
+| enterRoom  | 进入房间 | {appid:'应用appid',userId:'用户ID',userSig:'用户签名',roomId:'房间号',scene:'应用场景',role:'角色'} | √ | √
+| exitRoom  | 退出房间 | - | √ | √
+| switchRole  | 切换角色 | {role:'角色'} | √ | √
+| setDefaultStreamRecvMode  | 设置音视频数据接收模式（需要在进房前设置才能生效）。 | {autoRecvAudio:'自动接收音频数据',autoRecvVideo:'自动接收视频数据'} | √ | √
+| muteRemoteAudio  | 静音 / 取消静音 | {userId:'用户ID',mute:'是否静音'} | √ | √
+| muteAllRemoteAudio  | 静音 / 取消静音 所有用户 | {mute:'是否静音'} | √ | √
+| setRemoteViewFillMode  | 设置远程显示填充模式 | {userId:'用户ID',mode:'模式'} | √ | √
+| setLocalViewFillMode  | 设置本地显示填充模式 | {mode:'模式'} | √ | √
+| startLocalAudio  | 开启本地音频采集 | - | √ | √
+| stopLocalAudio  | 关闭本地音频采集 | - | √ | √
+| stopAllRemoteView  | 停止显示所有远端视频画面。 | - | √ | √
+| muteRemoteVideoStream  | 暂停接收指定的远端视频流。 | {userId:'用户ID',mute:'是否禁止'} | √ | √
+| muteAllRemoteVideoStreams  | 停止接收所有远端视频流。 | {mute:'是否禁止'} | √ | √
 | setVideoEncoderParam  | 设置视频编码相关。 | - | √ | 
 | setNetworkQosParam  | 设置网络流控相关参数。 | - | √ | 
 | setLocalViewRotation  | 设置本地图像的顺时针旋转角度。 | - | √ | 
