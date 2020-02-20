@@ -1,8 +1,8 @@
 name: tencent_rtc_plugin
 description: 腾讯云实时音视频插件
 version: 0.0.1
-author:
-homepage:
+author: 690717394@qq.com
+homepage: https://github.com/JiangJuHong/FlutterTencentRtcPlugin
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

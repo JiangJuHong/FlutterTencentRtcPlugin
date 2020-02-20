@@ -9,9 +9,9 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 腾讯云实时音视频插件
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/JiangJuHong/FlutterTencentRtcPlugin'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'JiangJuHong' => '690717394@qq.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
@@ -20,4 +20,13 @@ Pod::Spec.new do |s|
   # Flutter.framework does not contain a i386 slice. Only x86_64 simulators are supported.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
   s.swift_version = '5.0'
+
+  # 启用静态库
+  s.static_framework = true
+
+  # 资源导入
+  s.vendored_frameworks = '**/*.framework'
+
+  # SDK 依赖
+  s.dependency 'TXLiteAVSDK_TRTC'
 end

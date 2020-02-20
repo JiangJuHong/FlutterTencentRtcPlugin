@@ -44,7 +44,13 @@
 无需额外配置，已内部打入混淆规则
 
 ### IOS
-暂不支持
+配置权限信息，在Info.plist中增加
+```
+<key>NSMicrophoneUsageDescription</key>
+<string>App需要您的同意,才能访问麦克风</string>
+<key>NSCameraUsageDescription</key>
+<string>App需要您的同意,才能访问摄像头</string>
+```
 
 ## 使用
 大部分方法直接基于腾讯云原始API，根据 TencentRtcPlugin 对象即可使用；部分视频相关内容，TencentRtcVideoView 需要配合 TencentRtcVideoViewControlle调用方法;  

@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import TXLiteAVSDK_TRTC
 
 public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
