@@ -5,6 +5,24 @@ import Foundation
 public class JsonUtil {
     
     /**
+     *  字典转模型
+     */
+    public static func toModel<T>(_ type: T.Type, value: Any?) -> T? where T: Decodable {
+        guard let value = value else { return nil }
+        return toModel(type, value: value)
+    }
+    
+    /**
+     *  字典转模型
+     */
+    public static func toModel<T>(_ type: T.Type, value: Any) -> T? where T : Decodable {
+        guard let data = try? JSONSerialization.data(withJSONObject: value) else { return nil }
+        let decoder = JSONDecoder()
+        decoder.nonConformingFloatDecodingStrategy = .convertFromString(positiveInfinity: "+Infinity", negativeInfinity: "-Infinity", nan: "NaN")
+        return try? decoder.decode(type, from: data)
+    }
+    
+    /**
      * 将json字符串转换为字典
      */
     public static func getDictionaryFromJSONString(jsonString:String) ->[String:Any]{

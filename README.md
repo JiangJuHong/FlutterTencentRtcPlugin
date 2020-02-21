@@ -20,14 +20,14 @@
 [ ]视图边距  
 [x]回调事件  
 [ ]枚举类型同步(大改动)  
-[ ]数据对象同步(大改动)  
-[ ]README.md 编写    
+[ ]数据对象同步(大改动) 
 
 ## Getting Started
 
 该插件基于腾讯音视频通话进行集成。    
 引用腾讯官方文档原文：``在 defaultConfig 中，指定 App 使用的 CPU 架构(目前 TRTC SDK 支持 armeabi ， armeabi-v7a 和 arm64-v8a) 。``  
-如果出现闪退问题，请检查是否是系统架构导致
+如果出现闪退问题，请检查是否是系统架构导致  
+**注意：部分接口未在Flutter层次实现枚举，请注意int类参数，参考腾讯云文档结合使用**
 
 ## 集成
 
@@ -53,6 +53,7 @@
 ```
 
 ## 功能清单
+### 通用接口(TencentRtcPlugin)
 |  接口   | 说明  | 参数  | Android | IOS |
 |  ----  | ----  | ----  | ----  | ----  |
 | enterRoom  | 进入房间 | {appid:'应用appid',userId:'用户ID',userSig:'用户签名',roomId:'房间号',scene:'应用场景',role:'角色'} | √ | √
@@ -68,35 +69,67 @@
 | stopAllRemoteView  | 停止显示所有远端视频画面。 | - | √ | √
 | muteRemoteVideoStream  | 暂停接收指定的远端视频流。 | {userId:'用户ID',mute:'是否禁止'} | √ | √
 | muteAllRemoteVideoStreams  | 停止接收所有远端视频流。 | {mute:'是否禁止'} | √ | √
-| setVideoEncoderParam  | 设置视频编码相关。 | - | √ | 
-| setNetworkQosParam  | 设置网络流控相关参数。 | - | √ | 
-| setLocalViewRotation  | 设置本地图像的顺时针旋转角度。 | - | √ | 
-| setRemoteViewRotation  | 设置远端图像的顺时针旋转角度。 | - | √ | 
-| setVideoEncoderRotation  | 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向。 | - | √ | 
-| setLocalViewMirror  | 设置本地摄像头预览画面的镜像模式。 | - | √ | 
-| setVideoEncoderMirror  | 设置编码器输出的画面镜像模式。 | - | √ | 
-| setGSensorMode  | 设置重力感应的适应模式。 | - | √ | 
-| enableEncSmallVideoStream  | 开启大小画面双路编码模式。 | - | √ | 
-| setRemoteVideoStreamType  | 选定观看指定 uid 的大画面或小画面。 | - | √ | 
-| setPriorRemoteVideoStreamType  | 设定观看方优先选择的视频质量。 | - | √ | 
-| muteLocalAudio  | 静音本地的音频。 | - | √ | 
-| setAudioRoute  | 设置音频路由。 | - | √ | 
-| enableAudioVolumeEvaluation  | 启用音量大小提示。 | - | √ | 
-| startAudioRecording  | 开始录音。 | - | √ | 
-| stopAudioRecording  | 停止录音。 | - | √ | 
-| setSystemVolumeType  | 设置通话时使用的系统音量类型。 | - | √ | 
-| enableAudioEarMonitoring  | 开启耳返。 | - | √ | 
-| switchCamera  | 切换摄像头。 | - | √ | 
-| isCameraZoomSupported  | 查询当前摄像头是否支持缩放。 | - | √ | 
-| setZoom  | 设置摄像头缩放因子（焦距）。 | - | √ | 
-| isCameraTorchSupported  | 查询是否支持开关闪光灯（手电筒模式）。 | - | √ | 
-| enableTorch  | 开启闪光灯 | - | √ | 
-| isCameraFocusPositionInPreviewSupported  | 查询是否支持设置焦点 | - | √ | 
-| setFocusPosition  | 设置摄像头焦点 | - | √ | 
-| isCameraAutoFocusFaceModeSupported  | 查询是否支持自动识别人脸位置 | - | √ | 
+| setVideoEncoderParam  | 设置视频编码相关。 | {param:'视频编码参数'} | √ | √
+| setNetworkQosParam  | 设置网络流控相关参数。 | {preference:'弱网下是“保清晰”还是“保流畅”。',controlMode:'视频分辨率（云端控制 - 客户端控制）'} | √ | √
+| setLocalViewRotation  | 设置本地图像的顺时针旋转角度。 | {rotation:'角度枚举值下标(参考腾讯云)'} | √ | √
+| setRemoteViewRotation  | 设置远端图像的顺时针旋转角度。 | {userId:'用户ID',rotation:'角度枚举值下标(参考腾讯云)'} | √ | √
+| setVideoEncoderRotation  | 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向。 | {rotation:'腾讯云枚举'} | √ | √
+| setLocalViewMirror  | 设置本地摄像头预览画面的镜像模式。 | {mirrorType:''腾讯云枚举} | √ | √
+| setVideoEncoderMirror  | 设置编码器输出的画面镜像模式。 | {mirror:'编码器输出的画面镜像模式'} | √ | √
+| setGSensorMode  | 设置重力感应的适应模式。 | {mode:'腾讯云枚举'} | √ | √
+| enableEncSmallVideoStream  | 开启大小画面双路编码模式。 | {enable:'是否启用',smallVideoEncParam:'模式参数'} | √ | 
+| setRemoteVideoStreamType  | 选定观看指定 uid 的大画面或小画面。 | {userId:'用户ID',streamType:'类型'} | √ | √
+| setPriorRemoteVideoStreamType  | 设定观看方优先选择的视频质量。 | {streamType:'类型'} | √ | √
+| muteLocalAudio  | 静音本地的音频。 | {mute:'是否静音'} | √ | √
+| setAudioRoute  | 设置音频路由。 | {route:'模式'} | √ | √
+| enableAudioVolumeEvaluation  | 启用音量大小提示。 | {intervalMs:'决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。'} | √ | √
+| startAudioRecording  | 开始录音。 | {filePath:'文件路径'} | √ | √
+| stopAudioRecording  | 停止录音。 | - | √ | √
+| setSystemVolumeType  | 设置通话时使用的系统音量类型。 | {type:'类型'} | √ | √
+| enableAudioEarMonitoring  | 开启耳返。 | {enable:'是否启用'} | √ | √
+| switchCamera  | 切换摄像头。 | - | √ | √
+| isCameraZoomSupported  | 查询当前摄像头是否支持缩放。 | - | √ | √
+| setZoom  | 设置摄像头缩放因子（焦距）。 | {distance:'焦距'} | √ | √
+| isCameraTorchSupported  | 查询是否支持开关闪光灯（手电筒模式）。 | - | √ | √
+| enableTorch  | 开启闪光灯 | {enable:'启用闪光灯'} | √ | √
+| isCameraFocusPositionInPreviewSupported  | 查询是否支持设置焦点 | - | √ | √
+| setFocusPosition  | 设置摄像头焦点 | {x:'',y:''} | √ | √
+| isCameraAutoFocusFaceModeSupported  | 查询是否支持自动识别人脸位置 | - | √ | √
+
+### 视图组件(TencentRtcVideoView)
+#### 使用例子:
+```
+本地预览:
+TencentRtcVideoView(
+    onViewCreated: (controller) {
+        PermissionHandler().requestPermissions([PermissionGroup.camera]).then((res) {
+        if (res[PermissionGroup.camera] != PermissionStatus.disabled) {
+          controller.startLocalPreview(frontCamera: false);
+        }
+      });
+    },
+),
+
+...................
+
+远程预览:
+TencentRtcVideoView(
+    onViewCreated: (controller){
+        controller.startRemoteView(userId: 用户ID);
+    },
+)
+```
+#### 相关接口:(TencentRtcVideoViewControlle调用方法)  
+|  接口   | 说明  | 参数  | Android | IOS |
+|  ----  | ----  | ----  | ----  | ----  |
+| startRemoteView  | 开启远程显示 | - | √ | 
+| stopRemoteView  | 停止远程显示 | - | √ | 
+| startLocalPreview  | 开启本地视频采集 | - | √ | 
+| stopLocalPreview  | 停止本地视频采集 | - | √ | 
+
 
 ## 使用
 大部分方法直接基于腾讯云原始API，根据 TencentRtcPlugin 对象即可使用；部分视频相关内容，TencentRtcVideoView 需要配合 TencentRtcVideoViewControlle调用方法;  
-例如进入房间只需要调用``TencentRtcPlugin.enterRoom()``即可，腾讯API文档地址:[linke https://cloud.tencent.com/document/product/647/32264](https://cloud.tencent.com/document/product/647/32264)  
+例如进入房间只需要调用``TencentRtcPlugin.enterRoom()``即可，腾讯API文档地址:[https://cloud.tencent.com/document/product/647/32264](https://cloud.tencent.com/document/product/647/32264)  
 <img src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/FlutterTencentRtcPlugin/1.png" height="300em" style="max-width:100%;display: inline-block;"/>
 <img src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/FlutterTencentRtcPlugin/2.png" height="300em" style="max-width:100%;display: inline-block;"/>

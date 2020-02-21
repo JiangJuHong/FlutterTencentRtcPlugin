@@ -277,181 +277,281 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin {
      * 设置视频编码相关。
      */
     public func setVideoEncoderParam(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let param = CommonUtils.getParam(call: call, result: result, param: "param") as? String{
+            let dict = JsonUtil.getDictionaryFromJSONString(jsonString: param);
+            let data = TRTCVideoEncParam();
+            if dict["videoBitrate"] != nil{
+                data.videoBitrate = dict["videoBitrate"] as! Int32;
+            }
+            if dict["videoResolution"] != nil{
+                data.videoResolution = TRTCVideoResolution(rawValue: dict["videoResolution"] as! Int)!;
+            }
+            if dict["videoResolutionMode"] != nil{
+                data.resMode = TRTCVideoResolutionMode(rawValue: dict["videoResolutionMode"] as! Int)!;
+            }
+            if dict["videoFps"] != nil{
+                data.videoFps = dict["videoFps"] as! Int32;
+            }
+            TRTCCloud.sharedInstance()?.setVideoEncoderParam(data);
+            result(nil);
+        }
     }
     
     /**
      * 设置网络流控相关参数。
      */
     public func setNetworkQosParam(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let preference = CommonUtils.getParam(call: call, result: result, param: "preference") as? Int,
+            let controlMode = CommonUtils.getParam(call: call, result: result, param: "controlMode") as? Int{
+            let param = TRTCNetworkQosParam();
+            param.preference = TRTCVideoQosPreference(rawValue: preference)!;
+            param.controlMode = TRTCQosControlMode(rawValue: controlMode)!;
+            TRTCCloud.sharedInstance()?.setNetworkQosParam(param);
+            result(nil);
+        }
     }
     
     /**
      * 设置本地图像的顺时针旋转角度。
      */
     public func setLocalViewRotation(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let rotation = CommonUtils.getParam(call: call, result: result, param: "rotation") as? Int{
+            TRTCCloud.sharedInstance()?.setLocalViewRotation(TRTCVideoRotation(rawValue: rotation)!);
+            result(nil);
+        }
     }
     
     /**
      * 设置远端图像的顺时针旋转角度。
      */
     public func setRemoteViewRotation(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
+            let rotation = CommonUtils.getParam(call: call, result: result, param: "rotation") as? Int{
+            TRTCCloud.sharedInstance()?.setRemoteViewRotation(userId, rotation: TRTCVideoRotation(rawValue: rotation)!)
+            result(nil);
+        }
     }
     
     /**
      * 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向。
      */
     public func setVideoEncoderRotation(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let rotation = CommonUtils.getParam(call: call, result: result, param: "rotation") as? Int{
+            TRTCCloud.sharedInstance()?.setVideoEncoderRotation(TRTCVideoRotation(rawValue: rotation)!);
+            result(nil);
+        }
     }
     
     /**
      * 设置本地摄像头预览画面的镜像模式。
      */
     public func setLocalViewMirror(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let mirrorType = CommonUtils.getParam(call: call, result: result, param: "mirrorType") as? UInt{
+            TRTCCloud.sharedInstance()?.setLocalViewMirror(TRTCLocalVideoMirrorType(rawValue: mirrorType)!)
+            result(nil);
+        }
     }
     
     /**
      * 设置编码器输出的画面镜像模式。
      */
     public func setVideoEncoderMirror(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let mirror = CommonUtils.getParam(call: call, result: result, param: "mirror") as? Bool{
+            TRTCCloud.sharedInstance()?.setVideoEncoderMirror(mirror);
+            result(nil);
+        }
     }
     
     /**
      * 设置重力感应的适应模式。
      */
     public func setGSensorMode(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let mode = CommonUtils.getParam(call: call, result: result, param: "mode") as? Int{
+            TRTCCloud.sharedInstance()?.setGSensorMode(TRTCGSensorMode(rawValue: mode)!);
+            result(nil);
+        }
     }
     
     /**
      * 开启大小画面双路编码模式。
      */
     public func enableEncSmallVideoStream(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let enable = CommonUtils.getParam(call: call, result: result, param: "enable") as? Bool,
+            let smallVideoEncParam = CommonUtils.getParam(call: call, result: result, param: "smallVideoEncParam") as? String{
+            let dict = JsonUtil.getDictionaryFromJSONString(jsonString: smallVideoEncParam);
+            let data = TRTCVideoEncParam();
+            if dict["videoBitrate"] != nil{
+                data.videoBitrate = dict["videoBitrate"] as! Int32;
+            }
+            if dict["videoResolution"] != nil{
+                data.videoResolution = TRTCVideoResolution(rawValue: dict["videoResolution"] as! Int)!;
+            }
+            if dict["videoResolutionMode"] != nil{
+                data.resMode = TRTCVideoResolutionMode(rawValue: dict["videoResolutionMode"] as! Int)!;
+            }
+            if dict["videoFps"] != nil{
+                data.videoFps = dict["videoFps"] as! Int32;
+            }
+            TRTCCloud.sharedInstance()?.enableEncSmallVideoStream(enable, withQuality: data);
+            result(nil);
+        }
     }
     
     /**
      * 选定观看指定 uid 的大画面或小画面。
      */
     public func setRemoteVideoStreamType(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
+            let streamType = CommonUtils.getParam(call: call, result: result, param: "streamType") as? Int{
+            TRTCCloud.sharedInstance()?.setRemoteVideoStreamType(userId, type: TRTCVideoStreamType(rawValue: streamType)!);
+            result(nil);
+        }
     }
     
     /**
      * 设定观看方优先选择的视频质量。
      */
     public func setPriorRemoteVideoStreamType(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let streamType = CommonUtils.getParam(call: call, result: result, param: "streamType") as? Int{
+            TRTCCloud.sharedInstance()?.setPriorRemoteVideoStreamType(TRTCVideoStreamType(rawValue: streamType)!);
+            result(nil);
+        }
     }
     
     /**
      * 静音本地的音频。
      */
     public func muteLocalAudio(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let mute = CommonUtils.getParam(call: call, result: result, param: "mute") as? Bool{
+            TRTCCloud.sharedInstance()?.muteLocalAudio(mute);
+            result(nil);
+        }
     }
     
     /**
      * 设置音频路由。
      */
     public func setAudioRoute(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let route = CommonUtils.getParam(call: call, result: result, param: "route") as? Int{
+            TRTCCloud.sharedInstance()?.setAudioRoute(TRTCAudioRoute(rawValue: route)!);
+            result(nil);
+        }
     }
     
     /**
      * 启用音量大小提示。
      */
     public func enableAudioVolumeEvaluation(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let intervalMs = CommonUtils.getParam(call: call, result: result, param: "intervalMs") as? UInt{
+            TRTCCloud.sharedInstance()?.enableAudioVolumeEvaluation(intervalMs);
+            result(nil);
+        }
     }
     
     /**
      * 开始录音。
      */
     public func startAudioRecording(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let filePath = CommonUtils.getParam(call: call, result: result, param: "filePath") as? String{
+            let data = TRTCAudioRecordingParams();
+            data.filePath = filePath;
+            TRTCCloud.sharedInstance()?.startAudioRecording(data);
+            result(nil);
+        }
     }
     
     /**
      * 停止录音。
      */
     public func stopAudioRecording(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        TRTCCloud.sharedInstance()?.stopAudioRecording();
+        result(nil);
     }
     
     /**
      * 设置通话时使用的系统音量类型。
      */
     public func setSystemVolumeType(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let type = CommonUtils.getParam(call: call, result: result, param: "type") as? Int{
+            TRTCCloud.sharedInstance()?.setSystemVolumeType(TRTCSystemVolumeType(rawValue: type)!);
+            result(nil);
+        }
     }
     
     /**
      * 开启耳返。
      */
     public func enableAudioEarMonitoring(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let enable = CommonUtils.getParam(call: call, result: result, param: "enable") as? Bool{
+            TRTCCloud.sharedInstance()?.enableAudioEarMonitoring(enable);
+            result(nil);
+        }
     }
     
     /**
      * 切换摄像头。
      */
     public func switchCamera(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        TRTCCloud.sharedInstance()?.switchCamera();
+        result(nil);
     }
     
     /**
      * 查询当前摄像头是否支持缩放。
      */
     public func isCameraZoomSupported(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        result(TRTCCloud.sharedInstance()?.isCameraZoomSupported());
     }
     
     /**
      * 设置摄像头缩放因子（焦距）。
      */
     public func setZoom(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let distance = CommonUtils.getParam(call: call, result: result, param: "distance") as? CGFloat{
+            TRTCCloud.sharedInstance()?.setZoom(distance)
+            result(nil);
+        }
     }
     
     /**
      * 查询是否支持开关闪光灯（手电筒模式）。
      */
     public func isCameraTorchSupported(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        result(TRTCCloud.sharedInstance()?.isCameraTorchSupported());
     }
     
     /**
      * 开启闪光灯
      */
     public func enableTorch(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let enable = CommonUtils.getParam(call: call, result: result, param: "enable") as? Bool{
+            TRTCCloud.sharedInstance()?.enbaleTorch(enable);
+            result(nil);
+        }
     }
     
     /**
      * 查询是否支持设置焦点。
      */
     public func isCameraFocusPositionInPreviewSupported(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        result(TRTCCloud.sharedInstance()?.isCameraFocusPositionInPreviewSupported());
     }
     
     /**
      * 设置摄像头焦点。
      */
     public func setFocusPosition(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+        if let x = CommonUtils.getParam(call: call, result: result, param: "x") as? CGFloat,
+            let y = CommonUtils.getParam(call: call, result: result, param: "y") as? CGFloat{
+            TRTCCloud.sharedInstance()?.setFocusPosition( CGPoint(x: x, y: y));
+            result(nil);
+        }
     }
     
     /**
      * 查询是否支持自动识别人脸位置。
      */
     public func isCameraAutoFocusFaceModeSupported(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
+         result(TRTCCloud.sharedInstance()?.isCameraAutoFocusFaceModeSupported());
     }
 }
