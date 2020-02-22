@@ -1,12 +1,26 @@
 import Flutter
-import UIKit
 import TXLiteAVSDK_TRTC
 
-public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin {
+public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
+    
+    private static var channel : FlutterMethodChannel?;
+    
+    /**
+     * 监听器回调的方法名
+     */
+    private static let LISTENER_FUNC_NAME = "onListener";
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "tencent_rtc_plugin", binaryMessenger: registrar.messenger())
+        SwiftTencentRtcPlugin.channel = channel;
         let instance = SwiftTencentRtcPlugin()
+        
+        // 绑定监听器
+        TRTCCloud.sharedInstance()?.delegate = instance;
+        
+        // 注册界面
         registrar.addMethodCallDelegate(instance, channel: channel)
+        registrar.register(TencentRtcVideoPlatformView(message: registrar.messenger()), withId: TencentRtcVideoPlatformView.SIGN);
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -552,6 +566,324 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin {
      * 查询是否支持自动识别人脸位置。
      */
     public func isCameraAutoFocusFaceModeSupported(call: FlutterMethodCall, result: @escaping FlutterResult) {
-         result(TRTCCloud.sharedInstance()?.isCameraAutoFocusFaceModeSupported());
+        result(TRTCCloud.sharedInstance()?.isCameraAutoFocusFaceModeSupported());
+    }
+    
+    /**
+     * 调用监听器
+     *
+     * @param type   类型
+     * @param params 参数
+     */
+    private func invokeListener(type : ListenerType, params : Any?) {
+        var resultParams : [String:Any] = [:];
+        resultParams["type"] = type;
+        resultParams["params"] = params == nil ? nil : JsonUtil.toJson(params!);
+        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: JsonUtil.toJson(resultParams));
+    }
+    
+    /**
+     * SDK加载错误回调
+     * 错误通知是要监听的，错误通知意味着 SDK 不能继续运行了
+     */
+    public func onError(_ errCode: TXLiteAVError, errMsg: String?, extInfo: [AnyHashable : Any]?) {
+        self.invokeListener(type: ListenerType.SdkError, params:["code":errCode.rawValue,"msg":errMsg!]);
+    }
+    
+    /**
+     * 警告回调，用于告知您一些非严重性问题，例如出现卡顿或者可恢复的解码失败。
+     */
+    public func onWarning(_ warningCode: TXLiteAVWarning, warningMsg: String?, extInfo: [AnyHashable : Any]?) {
+        self.invokeListener(type: ListenerType.Warning, params:["code":warningCode.rawValue,"msg":warningMsg!]);
+    }
+    
+    /**
+     *  进入房间回调
+     */
+    public func onEnterRoom(_ result: Int) {
+        self.invokeListener(type: ListenerType.EnterRoom, params:result);
+    }
+    
+    /**
+     * 退出房间监听器
+     */
+    public func onExitRoom(_ reason: Int) {
+        self.invokeListener(type: ListenerType.ExitRoom, params:reason);
+    }
+    
+    /**
+     * 切换角色
+     */
+    public func onSwitchRole(_ errCode: TXLiteAVError, errMsg: String?) {
+        self.invokeListener(type: ListenerType.SwitchRole, params:["code":errCode.rawValue,"msg":errMsg!]);
+    }
+    
+    /**
+     * 请求跨房通话（主播 PK）的结果回调。
+     */
+    public func onConnectOtherRoom(_ userId: String, errCode: TXLiteAVError, errMsg: String?) {
+        self.invokeListener(type: ListenerType.ConnectOtherRoom, params:["userId":userId,"code":errCode.rawValue,"msg":errMsg!]);
+    }
+    
+    /**
+     * 结束跨房通话（主播 PK）的结果回调。
+     */
+    public func onDisconnectOtherRoom(_ errCode: TXLiteAVError, errMsg: String?) {
+        self.invokeListener(type: ListenerType.DisConnectOtherRoom, params:["code":errCode.rawValue,"msg":errMsg!]);
+    }
+    
+    /**
+     * 有用户加入当前房间。
+     */
+    public func onRemoteUserEnterRoom(_ userId: String) {
+        self.invokeListener(type: ListenerType.RemoteUserEnterRoom, params:userId);
+    }
+    
+    /**
+     * 有用户离开当前房间。
+     */
+    public func onRemoteUserLeaveRoom(_ userId: String, reason: Int) {
+        self.invokeListener(type: ListenerType.RemoteUserLeaveRoom, params:["userId":userId,"reason":reason]);
+    }
+    
+    /**
+     * 有用户上传视频数据
+     */
+    public func onUserVideoAvailable(_ userId: String, available: Bool) {
+        self.invokeListener(type: ListenerType.UserVideoAvailable, params:["userId":userId,"available":available]);
+    }
+    
+    /**
+     * 有用户上传屏幕数据
+     */
+    public func onUserSubStreamAvailable(_ userId: String, available: Bool) {
+        self.invokeListener(type: ListenerType.UserSubStreamAvailable, params:["userId":userId,"available":available]);
+    }
+    
+    /**
+     * 有用户上传音频数据
+     */
+    public func onUserAudioAvailable(_ userId: String, available: Bool) {
+        self.invokeListener(type: ListenerType.UserAudioAvailable, params:["userId":userId,"available":available]);
+    }
+    
+    /**
+     * 开始渲染本地或远程用户的首帧画面。
+     */
+    public func onFirstVideoFrame(_ userId: String, streamType: TRTCVideoStreamType, width: Int32, height: Int32) {
+        self.invokeListener(type: ListenerType.FirstVideoFrame, params:["userId":userId,"streamType":streamType.rawValue,"width":width,"height":height]);
+    }
+    
+    /**
+     * 开始播放远程用户的首帧音频（本地声音暂不通知）。
+     */
+    public func onFirstAudioFrame(_ userId: String) {
+        self.invokeListener(type: ListenerType.FirstAudioFrame, params:userId);
+    }
+    
+    /**
+     * 首帧本地视频数据已经被送出。
+     */
+    public func onSendFirstLocalVideoFrame(_ streamType: TRTCVideoStreamType) {
+        self.invokeListener(type: ListenerType.SendFirstLocalVideoFrame, params:streamType.rawValue);
+    }
+    
+    /**
+     * 首帧本地音频数据已经被送出。
+     */
+    public func onSendFirstLocalAudioFrame() {
+        self.invokeListener(type: ListenerType.SendFirstLocalAudioFrame, params:nil);
+    }
+    
+    /**
+     * 网络质量：该回调每2秒触发一次，统计当前网络的上行和下行质量。
+     */
+    public func onNetworkQuality(_ localQuality: TRTCQualityInfo, remoteQuality: [TRTCQualityInfo]) {
+        
+        var remoteQualityArray : [Any] = [];
+        for item in remoteQuality{
+            remoteQualityArray.append(["userId":item.userId!,"quality":item.quality.rawValue]);
+        }
+        
+        self.invokeListener(type: ListenerType.NetworkQuality, params:["localQuality":["userId":localQuality.userId!,"quality":localQuality.quality.rawValue],"remoteQuality":remoteQualityArray]);
+    }
+    
+    /**
+     * 技术指标统计回调:。
+     */
+    public func onStatistics(_ statistics: TRTCStatistics) {
+        
+        var localArray : [Any] = [];
+        var remoteArray : [Any] = [];
+        
+        for item in statistics.localStatistics{
+            localArray.append([
+                "width":item.width,
+                "height":item.height,
+                "frameRate":item.frameRate,
+                "videoBitrate":item.videoBitrate,
+                "audioSampleRate":item.audioSampleRate,
+                "audioBitrate":item.audioBitrate,
+                "streamType":item.streamType.rawValue
+            ]);
+        }
+        
+        for item in statistics.remoteStatistics{
+            remoteArray.append([
+                "userId":item.userId!,
+                "finalLoss":item.finalLoss,
+                "width":item.width,
+                "height":item.height,
+                "frameRate":item.frameRate,
+                "videoBitrate":item.videoBitrate,
+                "audioSampleRate":item.audioSampleRate,
+                "audioBitrate":item.audioBitrate,
+                "streamType":item.streamType.rawValue
+            ]);
+        }
+        
+        self.invokeListener(type: ListenerType.Statistics, params:[
+            "appCpu":statistics.appCpu,
+            "systemCpu":statistics.systemCpu,
+            "rtt":statistics.rtt,
+            "upLoss":statistics.upLoss,
+            "downLoss":statistics.downLoss,
+            "sendBytes":statistics.sentBytes,
+            "receiveBytes":statistics.receivedBytes,
+            "localArray":localArray,
+            "remoteArray":remoteArray
+        ]);
+    }
+    
+    /**
+     * 跟服务器断开
+     */
+    public func onConnectionLost() {
+        self.invokeListener(type: ListenerType.ConnectionLost, params:nil);
+    }
+    
+    /**
+     * SDK 尝试重新连接到服务器。
+     */
+    public func onTryToReconnect() {
+        self.invokeListener(type: ListenerType.TryToReconnect, params:nil);
+    }
+    
+    /**
+     * SDK 跟服务器的连接恢复。
+     */
+    public func onConnectionRecovery() {
+        self.invokeListener(type: ListenerType.ConnectionRecovery, params:nil);
+    }
+    
+    /**
+     * 摄像头准备就绪。
+     */
+    public func onCameraDidReady() {
+        self.invokeListener(type: ListenerType.CameraDidReady, params:nil);
+    }
+    
+    /**
+     * 麦克风准备就绪。
+     */
+    public func onMicDidReady() {
+        self.invokeListener(type: ListenerType.MicDidReady, params:nil);
+    }
+    
+    /**
+     * 音频路由发生变化，音频路由即声音由哪里输出（扬声器、听筒）。
+     */
+    public func onAudioRouteChanged(_ route: TRTCAudioRoute, from fromRoute: TRTCAudioRoute) {
+        self.invokeListener(type: ListenerType.AudioRouteChanged, params:["newRoute":route.rawValue,"oldRoute":fromRoute.rawValue]);
+    }
+    
+    
+    /**
+     * 用于提示音量大小的回调，包括每个 userId 的音量和远端总音量。
+     */
+    public func onUserVoiceVolume(_ userVolumes: [TRTCVolumeInfo], totalVolume: Int) {
+        var userVolumeArray : [Any] = [];
+        for item in userVolumes{
+            userVolumeArray.append([
+                "userId":item.userId!,
+                "volume":item.volume
+            ]);
+        }
+        
+        self.invokeListener(type: ListenerType.UserVoiceVolume, params:["userVolumes":userVolumeArray,"totalVolume":totalVolume]);
+    }
+    
+    /**
+     * 收到自定义消息
+     */
+    public func onRecvCustomCmdMsgUserId(_ userId: String, cmdID: Int, seq: UInt32, message: Data) {
+        self.invokeListener(type: ListenerType.RecvCustomCmdMsg, params:[
+            "userId":userId,
+            "cmdID":cmdID,
+            "seq":seq,
+            "message":message
+        ]);
+    }
+    
+    /**
+     * 自定义消息丢失
+     */
+    public func onMissCustomCmdMsgUserId(_ userId: String, cmdID: Int, errCode: Int, missed: Int) {
+        self.invokeListener(type: ListenerType.MissCustomCmdMsg, params:[
+            "userId":userId,
+            "cmdID":cmdID,
+            "errCode":errCode,
+            "missed":missed
+        ]);
+    }
+    
+    /**
+     * 收到SEI消息
+     */
+    public func onRecvSEIMsg(_ userId: String, message: Data) {
+        self.invokeListener(type: ListenerType.RecvSEIMsg, params:[
+            "userId":userId,
+            "data":message
+        ]);
+    }
+    
+    /**
+     * 启动旁路推流到 CDN 完成的回调。
+     */
+    public func onStartPublishCDNStream(_ err: Int32, errMsg: String) {
+        self.invokeListener(type: ListenerType.StartPublishCDNStream, params:[
+            "err":err,
+            "errMsg":errMsg
+        ]);
+    }
+    
+    /**
+     * 停止旁路推流到 CDN 完成的回调。
+     */
+    public func onStopPublishCDNStream(_ err: Int32, errMsg: String) {
+        self.invokeListener(type: ListenerType.StopPublishCDNStream, params:[
+            "err":err,
+            "errMsg":errMsg
+        ]);
+    }
+    
+    /**
+     * 设置云端的混流转码参数的回调，对应于 TRTCCloud 中的 setMixTranscodingConfig() 接口。
+     */
+    public func onSetMixTranscodingConfig(_ err: Int32, errMsg: String) {
+        self.invokeListener(type: ListenerType.SetMixTranscodingConfig, params:[
+            "err":err,
+            "errMsg":errMsg
+        ]);
+    }
+    
+    /**
+     * 播放音效结束回调。
+     */
+    public func onAudioEffectFinished(_ effectId: Int32, code: Int32) {
+        self.invokeListener(type: ListenerType.AudioEffectFinished, params:[
+            "effectId":effectId,
+            "code":code
+        ]);
     }
 }

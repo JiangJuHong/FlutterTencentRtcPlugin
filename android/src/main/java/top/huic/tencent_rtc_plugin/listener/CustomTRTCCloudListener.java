@@ -222,7 +222,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onSendFirstLocalVideoFrame(int i) {
         super.onSendFirstLocalVideoFrame(i);
-        this.invokeListener(CallBackNoticeEnum.SendFirstLocalVideoFrame, null);
+        this.invokeListener(CallBackNoticeEnum.SendFirstLocalVideoFrame, i);
     }
 
     /**
@@ -283,7 +283,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     }
 
     /**
-     * 服务器测速的回调，SDK 对多个服务器 IP 做测速，每个 IP 的测速结果通过这个回调通知。
+     * 服务器测速的回调，SDK 对多个服务器 IP 做测速，每个 IP 的测速结果通过这个回调通知。【仅Android】
      */
     @Override
     public void onSpeedTest(TRTCCloudDef.TRTCSpeedTestResult trtcSpeedTestResult, int i, int i1) {

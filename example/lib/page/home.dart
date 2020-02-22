@@ -31,7 +31,7 @@ class HomePageState extends State<HomePage> {
       appid: 1400290273,
       userId: "123",
       userSig:
-          "eJwtzE0LgkAUheH-creG3PlSElqUxAQphWZCO2HGuKghOkQQ-fdEXZ7nwPuFW5L7bztABNxH2MybjH05qmlmxsXKo2mqvicDEZOIfIs8FMtjPz0NdnKlFEfERR11s4UBKhGIcK3Qc6oO*dnq1lQsvme1V15GLZlrskKf2jR1nVcei4NMrg*K9zv4-QFKzS9m",
+          "eJwtzMEKgkAUheF3ueuQO3ccTaFNYBCZELlxWc0YN1OG0SSL3j1Rl*c78H8hT89ebxzEQB7CatqsTdNxyRMLkgu3urpYyxpi4SNShBTK*TFvy86MrpQiRJy143qyNUkfRUBLhe9jdUevY5E8XWjaD-d5aDMdJTnzIYuCIXXN-jpU9eOE21uxgd8fXgowjA__",
       roomId: int.parse(controller.text),
       scene: 0,
     );
