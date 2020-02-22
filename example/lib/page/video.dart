@@ -63,27 +63,28 @@ class VideoPageState extends State<VideoPage> {
             onViewCreated: (controller) {
               PermissionHandler()
                   .requestPermissions([PermissionGroup.camera]).then((res) {
-                if (res[PermissionGroup.camera] != PermissionStatus.disabled) {
+                if (res[PermissionGroup.camera] !=
+                    PermissionStatus.disabled) {
                   controller.startLocalPreview(frontCamera: false);
                 }
               });
             },
           ),
           // 远程预览组件
-          ListView(
-            children: olUser.keys
-                .map(
-                  (id) => Container(
-                    color: Colors.red,
-                    height: 200,
-                    child: TencentRtcVideoView(
-                      onViewCreated: (controller) =>
-                          onViewCreated(id, controller),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
+//          ListView(
+//            children: olUser.keys
+//                .map(
+//                  (id) => Container(
+//                    color: Colors.red,
+//                    height: 200,
+//                    child: TencentRtcVideoView(
+//                      onViewCreated: (controller) =>
+//                          onViewCreated(id, controller),
+//                    ),
+//                  ),
+//                )
+//                .toList(),
+//          ),
         ],
       ),
     );
