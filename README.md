@@ -46,6 +46,8 @@
 ### IOS
 配置权限信息，在Info.plist中增加
 ```
+<key>io.flutter.embedded_views_preview</key>
+<true/>
 <key>NSMicrophoneUsageDescription</key>
 <string>App需要您的同意,才能访问麦克风</string>
 <key>NSCameraUsageDescription</key>
@@ -122,10 +124,10 @@ TencentRtcVideoView(
 #### 相关接口:(TencentRtcVideoViewControlle调用方法)  
 |  接口   | 说明  | 参数  | Android | IOS |
 |  ----  | ----  | ----  | ----  | ----  |
-| startRemoteView  | 开启远程显示 | - | √ | 
-| stopRemoteView  | 停止远程显示 | - | √ | 
-| startLocalPreview  | 开启本地视频采集 | - | √ | 
-| stopLocalPreview  | 停止本地视频采集 | - | √ | 
+| startRemoteView  | 开启远程显示 | {userId:'用户ID'} | √ | √
+| stopRemoteView  | 停止远程显示 | {userId:'用户ID'} | √ | √
+| startLocalPreview  | 开启本地视频采集 | {frontCamera:'是否前置摄像头'} | √ | √
+| stopLocalPreview  | 停止本地视频采集 | - | √ | √
 
 
 ## 使用

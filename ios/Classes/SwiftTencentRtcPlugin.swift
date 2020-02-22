@@ -14,15 +14,24 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         let channel = FlutterMethodChannel(name: "tencent_rtc_plugin", binaryMessenger: registrar.messenger())
         SwiftTencentRtcPlugin.channel = channel;
         let instance = SwiftTencentRtcPlugin()
+        registrar.addMethodCallDelegate(instance, channel: channel)
         
         // 绑定监听器
         TRTCCloud.sharedInstance()?.delegate = instance;
         
+        // 视图工厂
+        let viewFactory = TencentRtcVideoPlatformViewFactory(message: registrar.messenger());
+        
         // 注册界面
-        registrar.addMethodCallDelegate(instance, channel: channel)
-        registrar.register(TencentRtcVideoPlatformView(message: registrar.messenger()), withId: TencentRtcVideoPlatformView.SIGN);
+        registrar.register(
+            viewFactory,
+            withId: TencentRtcVideoPlatformViewFactory.SIGN
+        );
     }
     
+    /**
+     *  方法监听器
+     */
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
         case "enterRoom":
