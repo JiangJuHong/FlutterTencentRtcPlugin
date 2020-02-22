@@ -587,14 +587,14 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
      * 错误通知是要监听的，错误通知意味着 SDK 不能继续运行了
      */
     public func onError(_ errCode: TXLiteAVError, errMsg: String?, extInfo: [AnyHashable : Any]?) {
-        self.invokeListener(type: ListenerType.SdkError, params:["code":errCode.rawValue,"msg":errMsg!]);
+        self.invokeListener(type: ListenerType.SdkError, params:["code":errCode.rawValue,"msg":errMsg]);
     }
     
     /**
      * 警告回调，用于告知您一些非严重性问题，例如出现卡顿或者可恢复的解码失败。
      */
     public func onWarning(_ warningCode: TXLiteAVWarning, warningMsg: String?, extInfo: [AnyHashable : Any]?) {
-        self.invokeListener(type: ListenerType.Warning, params:["code":warningCode.rawValue,"msg":warningMsg!]);
+        self.invokeListener(type: ListenerType.Warning, params:["code":warningCode.rawValue,"msg":warningMsg]);
     }
     
     /**
@@ -615,21 +615,21 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
      * 切换角色
      */
     public func onSwitchRole(_ errCode: TXLiteAVError, errMsg: String?) {
-        self.invokeListener(type: ListenerType.SwitchRole, params:["code":errCode.rawValue,"msg":errMsg!]);
+        self.invokeListener(type: ListenerType.SwitchRole, params:["code":errCode.rawValue,"msg":errMsg]);
     }
     
     /**
      * 请求跨房通话（主播 PK）的结果回调。
      */
     public func onConnectOtherRoom(_ userId: String, errCode: TXLiteAVError, errMsg: String?) {
-        self.invokeListener(type: ListenerType.ConnectOtherRoom, params:["userId":userId,"code":errCode.rawValue,"msg":errMsg!]);
+        self.invokeListener(type: ListenerType.ConnectOtherRoom, params:["userId":userId,"code":errCode.rawValue,"msg":errMsg]);
     }
     
     /**
      * 结束跨房通话（主播 PK）的结果回调。
      */
     public func onDisconnectOtherRoom(_ errCode: TXLiteAVError, errMsg: String?) {
-        self.invokeListener(type: ListenerType.DisConnectOtherRoom, params:["code":errCode.rawValue,"msg":errMsg!]);
+        self.invokeListener(type: ListenerType.DisConnectOtherRoom, params:["code":errCode.rawValue,"msg":errMsg]);
     }
     
     /**
@@ -702,10 +702,16 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         
         var remoteQualityArray : [Any] = [];
         for item in remoteQuality{
-            remoteQualityArray.append(["userId":item.userId!,"quality":item.quality.rawValue]);
+            remoteQualityArray.append(["userId":item.userId,"quality":item.quality.rawValue]);
         }
         
-        self.invokeListener(type: ListenerType.NetworkQuality, params:["localQuality":["userId":localQuality.userId!,"quality":localQuality.quality.rawValue],"remoteQuality":remoteQualityArray]);
+        self.invokeListener(type: ListenerType.NetworkQuality, params:[
+            "localQuality":[
+                "userId":localQuality.userId,
+                "quality":localQuality.quality.rawValue
+            ],
+            "remoteQuality":remoteQualityArray
+        ]);
     }
     
     /**
@@ -730,7 +736,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         
         for item in statistics.remoteStatistics{
             remoteArray.append([
-                "userId":item.userId!,
+                "userId":item.userId,
                 "finalLoss":item.finalLoss,
                 "width":item.width,
                 "height":item.height,
@@ -805,7 +811,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         var userVolumeArray : [Any] = [];
         for item in userVolumes{
             userVolumeArray.append([
-                "userId":item.userId!,
+                "userId":item.userId,
                 "volume":item.volume
             ]);
         }
