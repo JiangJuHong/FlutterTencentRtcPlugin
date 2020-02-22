@@ -45,7 +45,7 @@ class TencentRtcPlugin {
       "userSig": userSig,
       "roomId": roomId,
       "scene": scene,
-      "role":role,
+      "role": role,
     });
   }
 

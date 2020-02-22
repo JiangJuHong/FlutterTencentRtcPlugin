@@ -33,10 +33,7 @@
 
 ### Flutter
 ```
-  tencent_rtc_plugin:
-    git:
-      url: https://github.com/JiangJuHong/FlutterTencentRtcPlugin.git
-      ref: master
+tencent_rtc_plugin: ^0.1.0
 ```
 暂不支持通过版本号引入
 
@@ -121,7 +118,7 @@ TencentRtcVideoView(
     },
 )
 ```
-#### 相关接口:(TencentRtcVideoViewControlle调用方法)  
+#### 相关接口:(TencentRtcVideoViewController调用方法)  
 |  接口   | 说明  | 参数  | Android | IOS |
 |  ----  | ----  | ----  | ----  | ----  |
 | startRemoteView  | 开启远程显示 | {userId:'用户ID'} | √ | √

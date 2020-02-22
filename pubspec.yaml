@@ -1,7 +1,7 @@
 name: tencent_rtc_plugin
-description: 腾讯云实时音视频插件
-version: 0.0.1
-author: 690717394@qq.com
+description: Tencent cloud real-time audio and video plug-in, integrated with Tencent RTC, supports Android and IOS dual terminals
+version: 0.1.0
+author: JiangJuHonf <690717394@qq.com>
 homepage: https://github.com/JiangJuHong/FlutterTencentRtcPlugin
 
 environment:

@@ -1,4 +1,3 @@
-
 import 'entity/video_enc_param_entity.dart';
 
 class EntityFactory {
