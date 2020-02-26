@@ -33,7 +33,7 @@
 
 ### Flutter
 ```
-tencent_rtc_plugin: ^0.1.1
+tencent_rtc_plugin: ^0.1.2
 ```
 暂不支持通过版本号引入
 

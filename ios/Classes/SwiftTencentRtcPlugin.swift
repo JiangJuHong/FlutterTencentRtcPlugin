@@ -588,7 +588,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         var resultParams : [String:Any] = [:];
         resultParams["type"] = type;
         if let p = params{
-            resultParams["params"] = (p is Dictionary<AnyHashable, Any> ? JsonUtil.toJson(p) : p);
+            resultParams["params"] = JsonUtil.toJson(p);
         }
         SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: JsonUtil.toJson(resultParams));
     }
