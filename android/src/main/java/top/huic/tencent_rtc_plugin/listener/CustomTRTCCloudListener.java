@@ -46,7 +46,14 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     private void invokeListener(CallBackNoticeEnum type, Object params) {
         Map<String, Object> resultParams = new HashMap<>(2, 1);
         resultParams.put("type", type);
-        resultParams.put("params", params == null ? null : JSON.toJSONString(params));
+        if(params != null){
+            // 字符串单独解析，否则会有双引号
+            if(params instanceof String){
+                resultParams.put("params", params);
+            }else{
+                resultParams.put("params", JSON.toJSONString(params));
+            }
+        }
         channel.invokeMethod(LISTENER_FUNC_NAME, JSON.toJSONString(resultParams));
     }
 

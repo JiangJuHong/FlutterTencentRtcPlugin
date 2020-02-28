@@ -10,3 +10,6 @@
 ## 0.1.3
 * 增加 setConsoleEnabled 和 showDebugView 接口
 * 修复Android退出View后监听器不再生效的问题
+
+## 0.1.4
+* 修复Android监听器解析字符串多了一个 ""
