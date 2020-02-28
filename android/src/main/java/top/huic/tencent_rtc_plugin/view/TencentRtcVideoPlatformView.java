@@ -64,12 +64,6 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory implements 
 
     @Override
     public void dispose() {
-        //销毁 trtc 实例
-        if (trtcCloud != null) {
-            trtcCloud.setListener(null);
-        }
-        trtcCloud = null;
-        TRTCCloud.destroySharedInstance();
     }
 
     @Override

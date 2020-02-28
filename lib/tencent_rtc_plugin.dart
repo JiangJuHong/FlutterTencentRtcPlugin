@@ -30,6 +30,24 @@ class TencentRtcPlugin {
     listener.removeListener(func);
   }
 
+  /// 设置Debug视图
+  static Future<void> showDebugView({
+    @required int mode, // 模式
+  }) async {
+    return await _channel.invokeMethod('showDebugView', {
+      "mode": mode,
+    });
+  }
+
+  /// 设置启用控制台打印
+  static Future<void> setConsoleEnabled({
+    @required bool enabled, // 是否启用
+  }) async {
+    return await _channel.invokeMethod('setConsoleEnabled', {
+      "enabled": enabled,
+    });
+  }
+
   /// 加入房间(默认开启音频接收)
   static Future<void> enterRoom({
     @required int appid, // appid

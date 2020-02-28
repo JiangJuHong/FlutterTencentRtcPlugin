@@ -29,17 +29,11 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     private final static String LISTENER_FUNC_NAME = "onListener";
 
     /**
-     * 全局上下文
-     */
-    private Context context;
-
-    /**
      * 与Flutter的通信管道
      */
     private MethodChannel channel;
 
-    public CustomTRTCCloudListener(Context context, MethodChannel channel) {
-        this.context = context;
+    public CustomTRTCCloudListener(MethodChannel channel) {
         this.channel = channel;
     }
 

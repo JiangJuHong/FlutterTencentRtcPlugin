@@ -6,6 +6,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.tencent.trtc.TRTCCloud;
 import com.tencent.trtc.TRTCCloudDef;
+import com.tencent.trtc.TRTCCloudListener;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -28,11 +29,6 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private final static String TAG = TencentRtcPlugin.class.getName();
 
     /**
-     * 全局上下文
-     */
-    private Context context;
-
-    /**
      * 腾讯云音视频通信实例
      */
     private TRTCCloud trtcCloud;
@@ -41,10 +37,12 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     private TencentRtcPlugin(BinaryMessenger messenger, Context context, MethodChannel channel, PlatformViewRegistry registry) {
-        this.context = context;
+        // 禁用日志打印
+        TRTCCloud.setConsoleEnabled(false);
+
         // 初始化实例
-        trtcCloud = TRTCCloud.sharedInstance(this.context);
-        trtcCloud.setListener(new CustomTRTCCloudListener(context, channel));
+        trtcCloud = TRTCCloud.sharedInstance(context);
+        trtcCloud.setListener(new CustomTRTCCloudListener(channel));
 
         // 注册View
         registry.registerViewFactory(TencentRtcVideoPlatformView.SIGN, new TencentRtcVideoPlatformView(context, messenger));
@@ -54,6 +52,10 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "tencent_rtc_plugin");
         channel.setMethodCallHandler(new TencentRtcPlugin(flutterPluginBinding.getBinaryMessenger(), flutterPluginBinding.getApplicationContext(), channel, flutterPluginBinding.getPlatformViewRegistry()));
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -70,17 +72,15 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(new TencentRtcPlugin(registrar.messenger(), registrar.context(), channel, registrar.platformViewRegistry()));
     }
 
-    public Context getContext() {
-        return context;
-    }
-
-    public TRTCCloud getTrtcCloud() {
-        return trtcCloud;
-    }
-
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
+            case "setConsoleEnabled":
+                this.setConsoleEnabled(call, result);
+                break;
+            case "showDebugView":
+                this.showDebugView(call, result);
+                break;
             case "enterRoom":
                 this.enterRoom(call, result);
                 break;
@@ -204,8 +204,22 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
 
     }
 
-    @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    /**
+     * 设置Debug视图
+     */
+    private void showDebugView(@NonNull MethodCall call, @NonNull Result result) {
+        int mode = TencentRtcPluginUtil.getParam(call, result, "mode");
+        trtcCloud.showDebugView(mode);
+        result.success(null);
+    }
+
+    /**
+     * 设置日志显示
+     */
+    private void setConsoleEnabled(@NonNull MethodCall call, @NonNull Result result) {
+        boolean enabled = TencentRtcPluginUtil.getParam(call, result, "enabled");
+        TRTCCloud.setConsoleEnabled(enabled);
+        result.success(null);
     }
 
     /**

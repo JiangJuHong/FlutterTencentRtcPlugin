@@ -18,28 +18,41 @@ class VideoPageState extends State<VideoPage> {
   /// 在线用户列表
   Map<String, TencentRtcVideoViewController> olUser = {};
 
+  /// 本地控制器
+  TencentRtcVideoViewController localController;
+
   @override
   initState() {
     super.initState();
-    TencentRtcPlugin.addListener((type, param) {
-      // 用户上传视频监听
-      if (type == ListenerTypeEnum.UserVideoAvailable) {
-        Map<String, dynamic> paramObj = jsonDecode(param);
-        String userId = paramObj["userId"];
-        // 根据状态对视频进行开启和关闭
-        if (paramObj["available"]) {
-          olUser[userId] = null;
-        } else {
-          TencentRtcVideoViewController controller = olUser[userId];
-          if (controller != null) {
-            controller.stopRemoteView(userId: userId);
-          }
-          olUser.remove(userId);
-        }
+    TencentRtcPlugin.showDebugView(mode: 2);
+    TencentRtcPlugin.addListener(onRtcListener);
+  }
 
-        this.setState(() {});
+  @override
+  dispose() {
+    TencentRtcPlugin.removeListener(onRtcListener);
+    super.dispose();
+  }
+
+  /// RTC监听器
+  onRtcListener(type, param) {
+    // 用户上传视频监听
+    if (type == ListenerTypeEnum.UserVideoAvailable) {
+      Map<String, dynamic> paramObj = jsonDecode(param);
+      String userId = paramObj["userId"];
+      // 根据状态对视频进行开启和关闭
+      if (paramObj["available"]) {
+        olUser[userId] = null;
+      } else {
+        TencentRtcVideoViewController controller = olUser[userId];
+        if (controller != null) {
+          controller.stopRemoteView(userId: userId);
+        }
+        olUser.remove(userId);
       }
-    });
+
+      this.setState(() {});
+    }
   }
 
   /// 创建事件
@@ -56,36 +69,44 @@ class VideoPageState extends State<VideoPage> {
       appBar: AppBar(
         title: Text("视频界面"),
       ),
-      body: Stack(
-        children: <Widget>[
-          // 本地预览组件
-          TencentRtcVideoView(
-            onViewCreated: (controller) {
-              PermissionHandler()
-                  .requestPermissions([PermissionGroup.camera]).then((res) {
-                if (res[PermissionGroup.camera] !=
-                    PermissionStatus.disabled) {
-                  controller.startLocalPreview(frontCamera: false);
-                }
-              });
-            },
-          ),
-          // 远程预览组件
-//          ListView(
-//            children: olUser.keys
-//                .map(
-//                  (id) => Container(
-//                    color: Colors.red,
-//                    height: 200,
-//                    child: TencentRtcVideoView(
-//                      onViewCreated: (controller) =>
-//                          onViewCreated(id, controller),
-//                    ),
-//                  ),
-//                )
-//                .toList(),
-//          ),
-        ],
+      body: WillPopScope(
+        onWillPop: () async {
+          await TencentRtcPlugin.exitRoom();
+          await localController.stopLocalPreview();
+          return true;
+        },
+        child: Stack(
+          children: <Widget>[
+            // 本地预览组件
+            TencentRtcVideoView(
+              onViewCreated: (controller) {
+                this.localController = controller;
+                PermissionHandler()
+                    .requestPermissions([PermissionGroup.camera]).then((res) {
+                  if (res[PermissionGroup.camera] !=
+                      PermissionStatus.disabled) {
+                    localController.startLocalPreview(frontCamera: false);
+                  }
+                });
+              },
+            ),
+            // 远程预览组件
+            ListView(
+              children: olUser.keys
+                  .map(
+                    (id) => Container(
+                      color: Colors.red,
+                      height: 200,
+                      child: TencentRtcVideoView(
+                        onViewCreated: (controller) =>
+                            onViewCreated(id, controller),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ),
       ),
     );
   }

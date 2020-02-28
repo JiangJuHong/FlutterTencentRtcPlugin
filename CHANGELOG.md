@@ -6,3 +6,7 @@
 
 ## 0.1.2
 * 修复JSON解析时的BUG
+
+## 0.1.3
+* 增加 setConsoleEnabled 和 showDebugView 接口
+* 修复Android退出View后监听器不再生效的问题

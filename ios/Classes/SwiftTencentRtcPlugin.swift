@@ -34,6 +34,12 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
      */
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
+        case "setConsoleEnabled":
+            self.setConsoleEnabled(call: call, result: result);
+            break;
+        case "showDebugView":
+            self.showDebugView(call: call, result: result);
+            break;
         case "enterRoom":
             self.enterRoom(call: call, result: result);
             break;
@@ -153,6 +159,28 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
             break;
         default:
             result(FlutterMethodNotImplemented);
+        }
+    }
+    
+    /**
+     * 设置Debug视图
+     */
+    public func showDebugView(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let mode = CommonUtils.getParam(call: call, result: result, param: "mode") as? Int
+        {
+            TRTCCloud.sharedInstance()?.showDebugView(mode);
+            result(nil);
+        }
+    }
+    
+    /**
+     * 设置控制台打印
+     */
+    public func setConsoleEnabled(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let enabled = CommonUtils.getParam(call: call, result: result, param: "enabled") as? Bool
+        {
+            TRTCCloud.setConsoleEnabled(enabled);
+            result(nil);
         }
     }
     
