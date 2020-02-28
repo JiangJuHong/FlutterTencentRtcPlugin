@@ -15,6 +15,7 @@ import java.util.Map;
 
 import io.flutter.plugin.common.MethodChannel;
 import top.huic.tencent_rtc_plugin.enums.CallBackNoticeEnum;
+import top.huic.tencent_rtc_plugin.util.JsonUtil;
 
 /**
  * 腾讯云音视频通信监听器
@@ -51,10 +52,10 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
             if(params instanceof String){
                 resultParams.put("params", params);
             }else{
-                resultParams.put("params", JSON.toJSONString(params));
+                resultParams.put("params", JsonUtil.toJSONString(params));
             }
         }
-        channel.invokeMethod(LISTENER_FUNC_NAME, JSON.toJSONString(resultParams));
+        channel.invokeMethod(LISTENER_FUNC_NAME, JsonUtil.toJSONString(resultParams));
     }
 
     /**
