@@ -29,6 +29,6 @@ public class JsonUtil {
      * @return 解析结果
      */
     public static String toJSONString(Object data) {
-        return JsonUtil.toJSONString(data, filter);
+        return JSON.toJSONString(data, filter);
     }
 }
