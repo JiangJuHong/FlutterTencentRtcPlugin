@@ -1,4 +1,5 @@
 # tencent_rtc_plugin
+[![pub package](https://img.shields.io/pub/v/tencent_rtc_plugin.svg)](https://pub.dartlang.org/packages/tencent_rtc_plugin)
 
 腾讯云实时音视频插件
 
@@ -30,12 +31,6 @@
 **注意：部分接口未在Flutter层次实现枚举，请注意int类参数，参考腾讯云文档结合使用**
 
 ## 集成
-
-### Flutter
-```
-tencent_rtc_plugin: ^0.1.6
-```
-暂不支持通过版本号引入
 
 ### Android
 无需额外配置，已内部打入混淆规则
