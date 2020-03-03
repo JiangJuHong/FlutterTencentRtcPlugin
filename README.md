@@ -98,8 +98,8 @@ tencent_rtc_plugin: ^[最新版本号]
 
 ### 视图组件(TencentRtcVideoView)
 #### 使用例子:
-```
-本地预览:
+```dart
+/// 本地预览:
 TencentRtcVideoView(
     onViewCreated: (controller) {
         PermissionHandler().requestPermissions([PermissionGroup.camera]).then((res) {
@@ -110,12 +110,12 @@ TencentRtcVideoView(
     },
 ),
 
-...................
+/// ...................
 
-远程预览:
+/// 远程预览:
 TencentRtcVideoView(
     onViewCreated: (controller){
-        controller.startRemoteView(userId: 用户ID);
+        controller.startRemoteView(userId: '用户ID');
     },
 )
 ```
