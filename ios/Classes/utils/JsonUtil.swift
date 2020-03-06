@@ -11,7 +11,7 @@ public class JsonUtil {
         guard let value = value else { return nil }
         return toModel(type, value: value)
     }
-    
+
     /**
      *  字典转模型
      */
@@ -21,30 +21,32 @@ public class JsonUtil {
         decoder.nonConformingFloatDecodingStrategy = .convertFromString(positiveInfinity: "+Infinity", negativeInfinity: "-Infinity", nan: "NaN")
         return try? decoder.decode(type, from: data)
     }
-    
+
     /**
      * 将json字符串转换为字典
      */
     public static func getDictionaryFromJSONString(jsonString:String) ->[String:Any]{
-        
+
         let jsonData:Data = jsonString.data(using: .utf8)!
-        
+
         let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
         if dict != nil {
             return (dict as! NSDictionary) as! [String : Any]
         }
         return NSDictionary() as! [String : Any]
     }
-    
+
     /**
      * 将对象转换为JSON字符串(数组/对象)
      */
     public static func toJson(_ object: Any) -> Any {
         // 解析数组
         if let array = object as? [Any] {
+            let isStringArray = object is [String];
             var result = "[";
             for item in array{
-                result += "\(toJsonByObj(item)),";
+                let data = isStringArray ? "\"\(toJsonByObj(item))\"" : toJsonByObj(item);
+                result += "\(data),";
             }
             // 删除末尾逗号
             if result.hasSuffix(","){
