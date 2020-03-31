@@ -54,7 +54,7 @@ tencent_rtc_plugin: ^[最新版本号]
 ### 通用接口(TencentRtcPlugin)
 |  接口   | 说明  | 参数  | Android | IOS |
 |  ----  | ----  | ----  | ----  | ----  |
-| showDebugView  | 启用日志打印【注意：目前版本IOS暂不支持】 | {mode:'模式,0,1,2'} | √ | -
+| showDebugView  | 启用Debug视图【注意：目前版本IOS暂不支持】 | {mode:'模式,0,1,2'} | √ | -
 | setConsoleEnabled  | 启用日志打印 | {enabled:'是否启用'} | √ | √
 | enterRoom  | 进入房间 | {appid:'应用appid',userId:'用户ID',userSig:'用户签名',roomId:'房间号',scene:'应用场景',role:'角色'} | √ | √
 | exitRoom  | 退出房间 | - | √ | √
