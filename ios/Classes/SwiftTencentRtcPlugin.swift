@@ -115,6 +115,9 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         case "muteLocalAudio":
             self.muteLocalAudio(call: call, result: result);
             break;
+        case "muteLocalVideo":
+            self.muteLocalVideo(call: call, result: result);
+            break;
         case "setAudioRoute":
             self.setAudioRoute(call: call, result: result);
             break;
@@ -478,6 +481,16 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
             result(nil);
         }
     }
+
+    /**
+     * 关闭本地的视频。
+     */
+    public func muteLocalVideo(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let mute = CommonUtils.getParam(call: call, result: result, param: "mute") as? Bool{
+            TRTCCloud.sharedInstance()?.muteLocalVideo(mute);
+            result(nil);
+        }
+    }
     
     /**
      * 设置音频路由。
@@ -616,9 +629,10 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin,TRTCCloudDelegate {
         var resultParams : [String:Any] = [:];
         resultParams["type"] = type;
         if let p = params{
-            resultParams["params"] = JsonUtil.toJson(p);
+            //此处无需单独解析
+            resultParams["params"] = p;
         }
-        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: JsonUtil.toJson(resultParams));
+        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: JsonUtil.toJson(resultParams)); //统一在此处进行json解析,避免结果出现多个双引号
     }
     
     /**

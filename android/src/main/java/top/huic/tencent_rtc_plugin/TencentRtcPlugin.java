@@ -156,6 +156,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "muteLocalAudio":
                 this.muteLocalAudio(call, result);
                 break;
+            case "muteLocalVideo":
+                this.muteLocalVideo(call, result);
+                break;
             case "setAudioRoute":
                 this.setAudioRoute(call, result);
                 break;
@@ -458,6 +461,15 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void muteLocalAudio(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
         trtcCloud.muteLocalAudio(mute);
+        result.success(null);
+    }
+
+    /**
+     * 关闭本地的视频。
+     */
+    private void muteLocalVideo(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
+        trtcCloud.muteLocalVideo(mute);
         result.success(null);
     }
 

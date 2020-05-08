@@ -295,6 +295,15 @@ class TencentRtcPlugin {
     });
   }
 
+  /// 关闭本地的视频。
+  static Future<void> muteLocalVideo({
+    @required bool mute, // true：屏蔽；false：开启，默认值：false。
+  }) async {
+    return _channel.invokeMethod('muteLocalVideo', {
+      "mute": mute,
+    });
+  }
+
   /// 设置音频路由。
   static Future<void> setAudioRoute({
     @required int route, // 音频路由，即声音由哪里输出（扬声器、听筒），请参考

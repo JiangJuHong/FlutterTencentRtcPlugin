@@ -48,14 +48,10 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> resultParams = new HashMap<>(2, 1);
         resultParams.put("type", type);
         if(params != null){
-            // 字符串单独解析，否则会有双引号
-            if(params instanceof String){
-                resultParams.put("params", params);
-            }else{
-                resultParams.put("params", JsonUtil.toJSONString(params));
-            }
+            //此处无需单独解析
+            resultParams.put("params", params);
         }
-        channel.invokeMethod(LISTENER_FUNC_NAME, JsonUtil.toJSONString(resultParams));
+        channel.invokeMethod(LISTENER_FUNC_NAME, JsonUtil.toJSONString(resultParams));//统一在此处进行json解析,避免结果出现多个双引号
     }
 
     /**
