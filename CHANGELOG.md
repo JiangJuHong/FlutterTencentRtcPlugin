@@ -25,3 +25,8 @@
 
 ## 0.1.8
 * 解决字符串数组序列化JSON时数据格式不正确的错误
+
+## 0.1.9
+* 增加 muteLocalVideo (关闭本地视频，感谢 @xb284524239 )
+* 更新 JsonUtil 工具
+* 字符异常的 MethodResult

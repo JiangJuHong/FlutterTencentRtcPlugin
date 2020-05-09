@@ -81,6 +81,7 @@ tencent_rtc_plugin: ^[最新版本号]
 | setRemoteVideoStreamType  | 选定观看指定 uid 的大画面或小画面。 | {userId:'用户ID',streamType:'类型'} | √ | √
 | setPriorRemoteVideoStreamType  | 设定观看方优先选择的视频质量。 | {streamType:'类型'} | √ | √
 | muteLocalAudio  | 静音本地的音频。 | {mute:'是否静音'} | √ | √
+| muteLocalVideo  | 关闭本地视频。 | {mute:'是否关闭'} | √ | √
 | setAudioRoute  | 设置音频路由。 | {route:'模式'} | √ | √
 | enableAudioVolumeEvaluation  | 启用音量大小提示。 | {intervalMs:'决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。'} | √ | √
 | startAudioRecording  | 开始录音。 | {filePath:'文件路径'} | √ | √

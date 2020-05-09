@@ -25,9 +25,6 @@ import top.huic.tencent_rtc_plugin.view.TencentRtcVideoPlatformView;
  * TencentRtcPlugin
  */
 public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
-
-    private final static String TAG = TencentRtcPlugin.class.getName();
-
     /**
      * 腾讯云音视频通信实例
      */
@@ -155,6 +152,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "muteLocalAudio":
                 this.muteLocalAudio(call, result);
+                break;
+            case "muteLocalVideo":
+                this.muteLocalVideo(call, result);
                 break;
             case "setAudioRoute":
                 this.setAudioRoute(call, result);
@@ -458,6 +458,15 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void muteLocalAudio(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
         trtcCloud.muteLocalAudio(mute);
+        result.success(null);
+    }
+
+    /**
+     * 关闭本地的视频。
+     */
+    private void muteLocalVideo(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
+        trtcCloud.muteLocalVideo(mute);
         result.success(null);
     }
 
