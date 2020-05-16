@@ -154,8 +154,8 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     public void onRemoteUserLeaveRoom(String s, int i) {
         super.onRemoteUserLeaveRoom(s, i);
         Map<String, Object> params = new HashMap<>(2, 1);
-        params.put("userId", i);
-        params.put("reason", s);
+        params.put("userId", s);
+        params.put("reason", i);
         this.invokeListener(CallBackNoticeEnum.RemoteUserLeaveRoom, params);
     }
 
