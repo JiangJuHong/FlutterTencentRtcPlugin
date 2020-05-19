@@ -65,6 +65,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class.
     public static void registerWith(Registrar registrar) {
+        if( registrar.activity() == null ){ // from background service , like firebase
+            return;
+        }            
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_rtc_plugin");
         channel.setMethodCallHandler(new TencentRtcPlugin(registrar.messenger(), registrar.context(), channel, registrar.platformViewRegistry()));
     }
