@@ -190,6 +190,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
      */
     public func enterRoom(call: FlutterMethodCall, result: @escaping FlutterResult) {
         let role = ((call.arguments as! [String: Any])["role"]) as? Int;
+        let privateMapKey = ((call.arguments as! [String: Any])["privateMapKey"]) as? String;
         if let appid = CommonUtils.getParam(call: call, result: result, param: "appid") as? UInt32,
            let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
            let userSig = CommonUtils.getParam(call: call, result: result, param: "userSig") as? String,
@@ -202,6 +203,9 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             params.roomId = roomId;
             if role != nil {
                 params.role = TRTCRoleType(rawValue: role!)!;
+            }
+            if privateMapKey != nil {
+                params.privateMapKey = privateMapKey!;
             }
             TRTCCloud.sharedInstance()?.enterRoom(params, appScene: TRTCAppScene(rawValue: scene)!);
             result(nil);

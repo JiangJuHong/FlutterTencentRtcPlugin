@@ -8,8 +8,7 @@ import 'entity/video_enc_param_entity.dart';
 import 'enums/listener_type_enum.dart';
 
 class TencentRtcPlugin {
-  static const MethodChannel _channel =
-      const MethodChannel('tencent_rtc_plugin');
+  static const MethodChannel _channel = const MethodChannel('tencent_rtc_plugin');
 
   /// 监听器对象
   static TencentRtcPluginListener listener;
@@ -56,6 +55,7 @@ class TencentRtcPlugin {
     @required int roomId, // 房间号
     @required int scene, // 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景。
     int role, // 角色
+    String privateMapKey, // 房间签名 [非必填]
   }) async {
     return await _channel.invokeMethod('enterRoom', {
       "appid": appid,
@@ -64,6 +64,7 @@ class TencentRtcPlugin {
       "roomId": roomId,
       "scene": scene,
       "role": role,
+      "privateMapKey": privateMapKey,
     });
   }
 
@@ -84,12 +85,8 @@ class TencentRtcPlugin {
   /// 设置音视频数据接收模式（需要在进房前设置才能生效）。
   /// 默认进房后自动接收音视频
   static Future<void> setDefaultStreamRecvMode({
-    @required
-        bool
-            autoRecvAudio, // true：自动接收音频数据；false：需要调用 muteRemoteAudio 进行请求或取消。默认值：true。
-    @required
-        bool
-            autoRecvVideo, // true：自动接收视频数据；false：需要调用 startRemoteView/stopRemoteView 进行请求或取消。默认值：true。
+    @required bool autoRecvAudio, // true：自动接收音频数据；false：需要调用 muteRemoteAudio 进行请求或取消。默认值：true。
+    @required bool autoRecvVideo, // true：自动接收视频数据；false：需要调用 startRemoteView/stopRemoteView 进行请求或取消。默认值：true。
   }) async {
     return await _channel.invokeMethod('setDefaultStreamRecvMode', {
       "autoRecvAudio": autoRecvAudio,
@@ -174,9 +171,7 @@ class TencentRtcPlugin {
 
   /// 设置视频编码相关
   static Future<void> setVideoEncoderParam({
-    @required
-        VideoEncParamEntity
-            param, // 视频编码参数，详情请参考 TRTCCloudDef.java 中的 TRTCVideoEncParam 定义。
+    @required VideoEncParamEntity param, // 视频编码参数，详情请参考 TRTCCloudDef.java 中的 TRTCVideoEncParam 定义。
   }) async {
     return _channel.invokeMethod('setVideoEncoderParam', {
       "param": param.toJson(),
@@ -196,8 +191,7 @@ class TencentRtcPlugin {
 
   /// 设置本地图像的顺时针旋转角度。
   static Future<void> setLocalViewRotation({
-    @required
-        int rotation, // rotation 支持 TRTC_VIDEO_ROTATION_90、TRTC_VIDEO_ROTATION_180、TRTC_VIDEO_ROTATION_270 旋转角度，默认值：TRTC_VIDEO_ROTATION_0。。
+    @required int rotation, // rotation 支持 TRTC_VIDEO_ROTATION_90、TRTC_VIDEO_ROTATION_180、TRTC_VIDEO_ROTATION_270 旋转角度，默认值：TRTC_VIDEO_ROTATION_0。。
   }) async {
     return _channel.invokeMethod('setLocalViewRotation', {
       "rotation": rotation,
@@ -207,8 +201,7 @@ class TencentRtcPlugin {
   /// 设置远端图像的顺时针旋转角度。
   static Future<void> setRemoteViewRotation({
     @required String userId, // 用户ID
-    @required
-        int rotation, // rotation 支持 TRTC_VIDEO_ROTATION_90、TRTC_VIDEO_ROTATION_180、TRTC_VIDEO_ROTATION_270 旋转角度，默认值：TRTC_VIDEO_ROTATION_0。。
+    @required int rotation, // rotation 支持 TRTC_VIDEO_ROTATION_90、TRTC_VIDEO_ROTATION_180、TRTC_VIDEO_ROTATION_270 旋转角度，默认值：TRTC_VIDEO_ROTATION_0。。
   }) async {
     return _channel.invokeMethod('setRemoteViewRotation', {
       "userId": userId,
@@ -218,8 +211,7 @@ class TencentRtcPlugin {
 
   /// 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向
   static Future<void> setVideoEncoderRotation({
-    @required
-        int rotation, // 目前支持 TRTC_VIDEO_ROTATION_0 和 TRTC_VIDEO_ROTATION_180 两个旋转角度，默认值：TRTC_VIDEO_ROTATION_0。
+    @required int rotation, // 目前支持 TRTC_VIDEO_ROTATION_0 和 TRTC_VIDEO_ROTATION_180 两个旋转角度，默认值：TRTC_VIDEO_ROTATION_0。
   }) async {
     return _channel.invokeMethod('setVideoEncoderRotation', {
       "rotation": rotation,
@@ -228,8 +220,7 @@ class TencentRtcPlugin {
 
   /// 设置本地摄像头预览画面的镜像模式。
   static Future<void> setLocalViewMirror({
-    @required
-        int mirrorType, // mirrorType TRTC_VIDEO_MIRROR_TYPE_AUTO：SDK 决定镜像方式：前置摄像头镜像，后置摄像头不镜像。 TRTC_VIDEO_MIRROR_TYPE_ENABLE：前置摄像头和后置摄像头都镜像。 TRTC_VIDEO_MIRROR_TYPE_DISABLE：前置摄像头和后置摄像头都不镜像。 默认值：TRTC_VIDEO_MIRROR_TYPE_AUTO。
+    @required int mirrorType, // mirrorType TRTC_VIDEO_MIRROR_TYPE_AUTO：SDK 决定镜像方式：前置摄像头镜像，后置摄像头不镜像。 TRTC_VIDEO_MIRROR_TYPE_ENABLE：前置摄像头和后置摄像头都镜像。 TRTC_VIDEO_MIRROR_TYPE_DISABLE：前置摄像头和后置摄像头都不镜像。 默认值：TRTC_VIDEO_MIRROR_TYPE_AUTO。
   }) async {
     return _channel.invokeMethod('setLocalViewMirror', {
       "mirrorType": mirrorType,
@@ -247,8 +238,7 @@ class TencentRtcPlugin {
 
   /// 设置重力感应的适应模式。
   static Future<void> setGSensorMode({
-    @required
-        int mode, // 重力感应模式，详情请参考 TRTC_GSENSOR_MODE 的定义，默认值：TRTC_GSENSOR_MODE_UIFIXLAYOUT。
+    @required int mode, // 重力感应模式，详情请参考 TRTC_GSENSOR_MODE 的定义，默认值：TRTC_GSENSOR_MODE_UIFIXLAYOUT。
   }) async {
     return _channel.invokeMethod('setGSensorMode', {
       "mode": mode,
@@ -315,8 +305,7 @@ class TencentRtcPlugin {
 
   /// 启用音量大小提示。
   static Future<void> enableAudioVolumeEvaluation({
-    @required
-        int intervalMs, // 决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。
+    @required int intervalMs, // 决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。
   }) async {
     return _channel.invokeMethod('enableAudioVolumeEvaluation', {
       "intervalMs": intervalMs,
@@ -339,8 +328,7 @@ class TencentRtcPlugin {
 
   /// 设置通话时使用的系统音量类型。
   static Future<void> setSystemVolumeType({
-    @required
-        int type, // 系统音量类型，请参考 TRTCSystemVolumeType，默认值：TRTCSystemVolumeTypeAuto。
+    @required int type, // 系统音量类型，请参考 TRTCSystemVolumeType，默认值：TRTCSystemVolumeTypeAuto。
   }) async {
     return _channel.invokeMethod('setSystemVolumeType', {
       "type": type,
@@ -433,8 +421,7 @@ class TencentRtcPluginListener {
 
           // 初始化类型
           for (var item in ListenerTypeEnum.values) {
-            if (item.toString().replaceFirst("ListenerTypeEnum.", "") ==
-                typeStr) {
+            if (item.toString().replaceFirst("ListenerTypeEnum.", "") == typeStr) {
               type = item;
               break;
             }

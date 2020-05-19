@@ -65,9 +65,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class.
     public static void registerWith(Registrar registrar) {
-        if( registrar.activity() == null ){ // from background service , like firebase
+        if (registrar.activity() == null) { // from background service , like firebase
             return;
-        }            
+        }
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_rtc_plugin");
         channel.setMethodCallHandler(new TencentRtcPlugin(registrar.messenger(), registrar.context(), channel, registrar.platformViewRegistry()));
     }
@@ -236,8 +236,12 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         trtcParams.roomId = TencentRtcPluginUtil.getParam(call, result, "roomId");
         int scene = TencentRtcPluginUtil.getParam(call, result, "scene");
         Integer role = call.argument("role");
+        String privateMapKey = call.argument("privateMapKey");
         if (role != null) {
             trtcParams.role = role;
+        }
+        if (privateMapKey != null) {
+            trtcParams.privateMapKey = privateMapKey;
         }
         trtcCloud.enterRoom(trtcParams, scene);
         result.success(null);
