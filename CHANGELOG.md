@@ -30,3 +30,6 @@
 * 增加 muteLocalVideo (关闭本地视频，感谢 @xb284524239 )
 * 更新 JsonUtil 工具
 * 字符异常的 MethodResult
+
+## 0.1.10
+* 合并代码，感谢 @maxi119 的贡献
