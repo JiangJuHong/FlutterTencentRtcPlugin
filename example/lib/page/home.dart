@@ -25,13 +25,19 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  /// 进入房间(加入或创建)
+  // 进入房间(加入或创建)
   onEnterRoom() {
+    //for testing perpose
+    //read from env variable
+    //defined by flutter run --dart-define=APP_ID=12345
+    const APP_ID = int.fromEnvironment("APP_ID");
+    const USER_ID = String.fromEnvironment("USER_ID");
+    const USER_SIG = String.fromEnvironment("USER_SIG");
+
     TencentRtcPlugin.enterRoom(
-      appid: 1400290273,
-      userId: "123",
-      userSig:
-          "eJwtzMEKgkAUheF3ueuQO3ccTaFNYBCZELlxWc0YN1OG0SSL3j1Rl*c78H8hT89ebxzEQB7CatqsTdNxyRMLkgu3urpYyxpi4SNShBTK*TFvy86MrpQiRJy143qyNUkfRUBLhe9jdUevY5E8XWjaD-d5aDMdJTnzIYuCIXXN-jpU9eOE21uxgd8fXgowjA__",
+      appid: APP_ID,
+      userId: USER_ID,
+      userSig: USER_SIG,
       roomId: int.parse(controller.text),
       scene: 0,
     );
