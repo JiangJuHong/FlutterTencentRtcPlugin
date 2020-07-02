@@ -79,15 +79,11 @@ class VideoPageState extends State<VideoPage> {
           children: <Widget>[
             // 本地预览组件
             TencentRtcVideoView(
-              onViewCreated: (controller) {
+              onViewCreated: (controller) async {
                 this.localController = controller;
-                PermissionHandler()
-                    .requestPermissions([PermissionGroup.camera]).then((res) {
-                  if (res[PermissionGroup.camera] !=
-                      PermissionStatus.disabled) {
-                    localController.startLocalPreview(frontCamera: false);
-                  }
-                });
+                if (await Permission.camera.request().isGranted) {
+                  localController.startLocalPreview(frontCamera: false);
+                }
               },
             ),
             // 远程预览组件

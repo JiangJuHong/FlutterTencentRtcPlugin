@@ -13,7 +13,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   # 权限请求(https://github.com/BaseflowIT/flutter-permission-handler)
-  permission_handler: ^4.0.0
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_test:
