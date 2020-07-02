@@ -135,6 +135,28 @@ TencentRtcVideoView(
 <img src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/FlutterTencentRtcPlugin/1.png" height="300em" style="max-width:100%;display: inline-block;"/>
 <img src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/FlutterTencentRtcPlugin/2.png" height="300em" style="max-width:100%;display: inline-block;"/>
 
+## 配置环境变量
+
+1. 使用`flutter run --dart-define=USER_ID=userid`
+2. 使用`vscode`debug配置，新建`.vscode/launch.json`:
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceFolder}/example/lib/main.dart",
+            "args": [
+                "--dart-define=APP_ID=1234",
+                "--dart-define=USER_ID=1234",
+                "--dart-define=USER_SIG=asdf",
+            ]
+        }
+    ]
+}
+```
 
 ## 其它插件
 ````
