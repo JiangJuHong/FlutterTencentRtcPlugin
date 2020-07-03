@@ -5,6 +5,15 @@ import 'package:tencent_rtc_plugin/enums/listener_type_enum.dart';
 import 'package:tencent_rtc_plugin_example/page/video.dart';
 
 class HomePage extends StatefulWidget {
+  //for testing perpose
+  //read from env variable
+  //defined by flutter run --dart-define=APP_ID=12345
+  static const int APP_ID = int.fromEnvironment("APP_ID");
+  static const String USER_ID = String.fromEnvironment("USER_ID");
+  static const String USER_SIG = String.fromEnvironment("USER_SIG");
+
+  HomePage({Key key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => HomePageState();
 }
@@ -27,17 +36,10 @@ class HomePageState extends State<HomePage> {
 
   // 进入房间(加入或创建)
   onEnterRoom() {
-    //for testing perpose
-    //read from env variable
-    //defined by flutter run --dart-define=APP_ID=12345
-    const APP_ID = int.fromEnvironment("APP_ID");
-    const USER_ID = String.fromEnvironment("USER_ID");
-    const USER_SIG = String.fromEnvironment("USER_SIG");
-
     TencentRtcPlugin.enterRoom(
-      appid: APP_ID,
-      userId: USER_ID,
-      userSig: USER_SIG,
+      appid: HomePage.APP_ID,
+      userId: HomePage.USER_ID,
+      userSig: HomePage.USER_SIG,
       roomId: int.parse(controller.text),
       scene: 0,
     );
