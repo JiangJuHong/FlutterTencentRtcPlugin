@@ -26,6 +26,7 @@ class HomePageState extends State<HomePage> {
     super.initState();
     TencentRtcPlugin.addListener((type, param) {
       if (type == ListenerTypeEnum.EnterRoom) {
+        print(param);
         Navigator.push(
           context,
           new MaterialPageRoute(builder: (context) => new VideoPage()),
@@ -40,7 +41,7 @@ class HomePageState extends State<HomePage> {
       appid: HomePage.APP_ID,
       userId: HomePage.USER_ID,
       userSig: HomePage.USER_SIG,
-      roomId: int.parse(controller.text),
+      roomId: 25893,
       scene: 0,
     );
   }
