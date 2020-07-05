@@ -50,3 +50,7 @@ android {
         doNotStrip "*/arm64-v8a/libYTCommon.so"
     }
 }
+dependencies {
+   // implementation 	files('/Users/marblewhale/Dev/flutter/bin/cache/artifacts/engine/android-x64/flutter.jar')
+   // implementation "androidx.annotation:annotation:1.0.0"
+}

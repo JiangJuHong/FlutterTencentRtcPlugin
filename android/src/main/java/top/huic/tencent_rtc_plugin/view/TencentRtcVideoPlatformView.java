@@ -19,7 +19,8 @@ import top.huic.tencent_rtc_plugin.util.TencentRtcPluginUtil;
 /**
  * 视频视图
  */
-public class TencentRtcVideoPlatformView extends PlatformViewFactory implements PlatformView, MethodChannel.MethodCallHandler {
+public class TencentRtcVideoPlatformView extends PlatformViewFactory
+        implements PlatformView, MethodChannel.MethodCallHandler {
 
     /**
      * 全局标识
@@ -45,7 +46,6 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory implements 
      * 腾讯云视频视图
      */
     private TXCloudVideoView remoteView;
-
 
     /**
      * 初始化工厂信息，此处的域是 PlatformViewFactory
@@ -89,6 +89,12 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory implements 
             case "stopLocalPreview":
                 this.stopLocalPreview(call, result);
                 break;
+            case "startRemoteSubStreamView":
+                this.startRemoteSubStreamView(call, result);
+                break;
+            case "stopRemoteSubStreamView":
+                this.stopRemoteSubStreamView(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -127,6 +133,24 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory implements 
      */
     private void stopLocalPreview(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         trtcCloud.stopLocalPreview();
+        result.success(null);
+    }
+
+    /**
+     * 开启远端辅流显示
+     */
+    private void startRemoteSubStreamView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        trtcCloud.startRemoteSubStreamView(userId, this.remoteView);
+        result.success(null);
+    }
+
+    /**
+     * 停止远端辅流显示
+     */
+    private void stopRemoteSubStreamView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        trtcCloud.stopRemoteSubStreamView(userId);
         result.success(null);
     }
 }
