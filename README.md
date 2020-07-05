@@ -125,8 +125,8 @@ TencentRtcVideoView(
 |  ----  | ----  | ----  | ----  | ----  |
 | startRemoteView  | 开启远程显示 | {userId:'用户ID'} | √ | √
 | stopRemoteView  | 停止远程显示 | {userId:'用户ID'} | √ | √
-| startRemoteSubStreamView  | 开启远程辅流显示 | {userId:'用户ID'} | √ | √
-| stopRemoteSubStreamView  | 停止远程辅流显示 | {userId:'用户ID'} | √ | √
+| startRemoteSubStreamView  | 开启远程辅流显示 | {userId:'用户ID'} | √ | 
+| stopRemoteSubStreamView  | 停止远程辅流显示 | {userId:'用户ID'} | √ | 
 | startLocalPreview  | 开启本地视频采集 | {frontCamera:'是否前置摄像头'} | √ | √
 | stopLocalPreview  | 停止本地视频采集 | - | √ | √
 
