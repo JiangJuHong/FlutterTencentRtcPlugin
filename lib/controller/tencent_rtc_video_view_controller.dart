@@ -27,6 +27,24 @@ class TencentRtcVideoViewController {
     });
   }
 
+  // 开启远端辅流显示
+  Future<void> startRemoteSubStreamView({
+    @required String userId,
+  }) async {
+    return _channel.invokeMethod("startRemoteSubStreamView", {
+      "userId": userId,
+    });
+  }
+
+  // 关闭远端辅流显示
+  Future<void> stopRemoteSubStreamView({
+    @required String userId,
+  }) async {
+    return _channel.invokeMethod("stopRemoteSubStreamView", {
+      "userId": userId,
+    });
+  }
+
   /// 开启本地视频采集
   Future<void> startLocalPreview({
     @required bool frontCamera, // true：前置摄像头；false：后置摄像头。

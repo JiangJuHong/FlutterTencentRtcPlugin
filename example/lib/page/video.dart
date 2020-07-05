@@ -18,6 +18,9 @@ class VideoPageState extends State<VideoPage> {
   /// 在线用户列表
   Map<String, TencentRtcVideoViewController> olUser = {};
 
+  //在线辅流用户
+  Map<String, TencentRtcVideoViewController> olSubStreamUser = {};
+
   /// 本地控制器
   TencentRtcVideoViewController localController;
 
@@ -53,13 +56,39 @@ class VideoPageState extends State<VideoPage> {
 
       this.setState(() {});
     }
+
+    //辅流监听
+    if (type == ListenerTypeEnum.UserSubStreamAvailable) {
+      Map<String, dynamic> paramObj = jsonDecode(param);
+      String userId = paramObj["userId"];
+      //视频可用
+      if (paramObj["available"]) {
+        olSubStreamUser[userId] = null;
+      } else {
+        //视频不可用
+        TencentRtcVideoViewController controller = olSubStreamUser[userId];
+        if (controller != null) {
+          controller.stopRemoteSubStreamView(userId: userId);
+        }
+        olSubStreamUser.remove(userId);
+      }
+    }
+    this.setState(() {});
   }
 
-  /// 创建事件
+  /// 创建远端预览
   onViewCreated(id, controller) {
     if (olUser[id] == null) {
       olUser[id] = controller;
       controller.startRemoteView(userId: id);
+    }
+  }
+
+  // 创建远端辅流预览
+  onSubStreamViewCreated(id, controller) {
+    if (olSubStreamUser[id] == null) {
+      olSubStreamUser[id] = controller;
+      controller.startRemoteSubStreamView(userId: id);
     }
   }
 
@@ -101,6 +130,19 @@ class VideoPageState extends State<VideoPage> {
                   )
                   .toList(),
             ),
+            //远端辅流预览
+            ListView(
+              children: olSubStreamUser.keys
+                  .map((id) => Container(
+                        color: Colors.red,
+                        height: 200,
+                        child: TencentRtcVideoView(
+                          onViewCreated: (controller) =>
+                              onSubStreamViewCreated(id, controller),
+                        ),
+                      ))
+                  .toList(),
+            )
           ],
         ),
       ),

@@ -47,11 +47,11 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     private void invokeListener(CallBackNoticeEnum type, Object params) {
         Map<String, Object> resultParams = new HashMap<>(2, 1);
         resultParams.put("type", type);
-        if(params != null){
+        if (params != null) {
             // 字符串单独解析，否则会有双引号
-            if(params instanceof String){
+            if (params instanceof String) {
                 resultParams.put("params", params);
-            }else{
+            } else {
                 resultParams.put("params", JsonUtil.toJSONString(params));
             }
         }
@@ -59,8 +59,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     }
 
     /**
-     * SDK加载错误回调
-     * 错误通知是要监听的，错误通知意味着 SDK 不能继续运行了
+     * SDK加载错误回调 错误通知是要监听的，错误通知意味着 SDK 不能继续运行了
      */
     @Override
     public void onError(int errCode, String errMsg, Bundle extraInfo) {
