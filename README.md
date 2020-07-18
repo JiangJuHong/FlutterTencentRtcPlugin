@@ -64,6 +64,7 @@ tencent_rtc_plugin: ^[最新版本号]
 | muteAllRemoteAudio  | 静音 / 取消静音 所有用户 | {mute:'是否静音'} | √ | √
 | setRemoteViewFillMode  | 设置远程显示填充模式 | {userId:'用户ID',mode:'模式'} | √ | √
 | setLocalViewFillMode  | 设置本地显示填充模式 | {mode:'模式'} | √ | √
+| setRemoteSubStreamViewFillMode  | 设置远程辅流显示填充模式 | {userId:'用户ID',mode:'模式'} | √ | 
 | startLocalAudio  | 开启本地音频采集 | - | √ | √
 | stopLocalAudio  | 关闭本地音频采集 | - | √ | √
 | stopAllRemoteView  | 停止显示所有远端视频画面。 | - | √ | √
@@ -73,6 +74,7 @@ tencent_rtc_plugin: ^[最新版本号]
 | setNetworkQosParam  | 设置网络流控相关参数。 | {preference:'弱网下是“保清晰”还是“保流畅”。',controlMode:'视频分辨率（云端控制 - 客户端控制）'} | √ | √
 | setLocalViewRotation  | 设置本地图像的顺时针旋转角度。 | {rotation:'角度枚举值下标(参考腾讯云)'} | √ | √
 | setRemoteViewRotation  | 设置远端图像的顺时针旋转角度。 | {userId:'用户ID',rotation:'角度枚举值下标(参考腾讯云)'} | √ | √
+| setRemoteSubStreamViewRotation  | 设置远端辅流图像的顺时针旋转角度。 | {userId:'用户ID',rotation:'角度枚举值下标(参考腾讯云)'} | √ | 
 | setVideoEncoderRotation  | 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向。 | {rotation:'腾讯云枚举'} | √ | √
 | setLocalViewMirror  | 设置本地摄像头预览画面的镜像模式。 | {mirrorType:''腾讯云枚举} | √ | √
 | setVideoEncoderMirror  | 设置编码器输出的画面镜像模式。 | {mirror:'编码器输出的画面镜像模式'} | √ | √
@@ -139,8 +141,8 @@ TencentRtcVideoView(
 
 ## 配置环境变量
 
-1. 使用`flutter run --dart-define=USER_ID=userid`
-2. 使用`vscode`debug配置，新建`.vscode/launch.json`:
+- 使用`flutter run --dart-define=USER_ID=userid`
+- 使用`vscode`debug配置，新建`.vscode/launch.json`:
 ```
 {
     "version": "0.2.0",

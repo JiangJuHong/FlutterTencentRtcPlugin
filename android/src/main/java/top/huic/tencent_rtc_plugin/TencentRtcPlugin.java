@@ -33,7 +33,8 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     public TencentRtcPlugin() {
     }
 
-    private TencentRtcPlugin(BinaryMessenger messenger, Context context, MethodChannel channel, PlatformViewRegistry registry) {
+    private TencentRtcPlugin(BinaryMessenger messenger, Context context, MethodChannel channel,
+            PlatformViewRegistry registry) {
         // 禁用日志打印
         TRTCCloud.setConsoleEnabled(false);
 
@@ -42,34 +43,43 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         trtcCloud.setListener(new CustomTRTCCloudListener(channel));
 
         // 注册View
-        registry.registerViewFactory(TencentRtcVideoPlatformView.SIGN, new TencentRtcVideoPlatformView(context, messenger));
+        registry.registerViewFactory(TencentRtcVideoPlatformView.SIGN,
+                new TencentRtcVideoPlatformView(context, messenger));
     }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "tencent_rtc_plugin");
-        channel.setMethodCallHandler(new TencentRtcPlugin(flutterPluginBinding.getBinaryMessenger(), flutterPluginBinding.getApplicationContext(), channel, flutterPluginBinding.getPlatformViewRegistry()));
+        final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(),
+                "tencent_rtc_plugin");
+        channel.setMethodCallHandler(new TencentRtcPlugin(flutterPluginBinding.getBinaryMessenger(),
+                flutterPluginBinding.getApplicationContext(), channel, flutterPluginBinding.getPlatformViewRegistry()));
     }
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     }
 
-    // This static function is optional and equivalent to onAttachedToEngine. It supports the old
+    // This static function is optional and equivalent to onAttachedToEngine. It
+    // supports the old
     // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
-    // plugin registration via this function while apps migrate to use the new Android APIs
+    // plugin registration via this function while apps migrate to use the new
+    // Android APIs
     // post-flutter-1.12 via https://flutter.dev/go/android-project-migration.
     //
-    // It is encouraged to share logic between onAttachedToEngine and registerWith to keep
-    // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
-    // depending on the user's project. onAttachedToEngine or registerWith must both be defined
+    // It is encouraged to share logic between onAttachedToEngine and registerWith
+    // to keep
+    // them functionally equivalent. Only one of onAttachedToEngine or registerWith
+    // will be called
+    // depending on the user's project. onAttachedToEngine or registerWith must both
+    // be defined
     // in the same class.
     public static void registerWith(Registrar registrar) {
         if (registrar.activity() == null) { // from background service , like firebase
             return;
         }
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "tencent_rtc_plugin");
-        channel.setMethodCallHandler(new TencentRtcPlugin(registrar.messenger(), registrar.context(), channel, registrar.platformViewRegistry()));
+        channel.setMethodCallHandler(new TencentRtcPlugin(registrar.messenger(), registrar.context(), channel,
+                registrar.platformViewRegistry()));
     }
 
     @Override
@@ -105,6 +115,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "setLocalViewFillMode":
                 this.setLocalViewFillMode(call, result);
                 break;
+            case "setRemoteSubStreamViewFillMode":
+                this.setRemoteSubStreamViewFillMode(call,result);
+                break;
             case "startLocalAudio":
                 this.startLocalAudio(call, result);
                 break;
@@ -131,6 +144,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setRemoteViewRotation":
                 this.setRemoteViewRotation(call, result);
+                break;
+            case "setRemoteSubStreamViewRotation":
+                this.setRemoteSubStreamViewRotation(call, result);
                 break;
             case "setVideoEncoderRotation":
                 this.setVideoEncoderRotation(call, result);
@@ -313,6 +329,16 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     /**
+     * 设置远程辅流填充模式
+     */
+    private void setRemoteSubStreamViewFillMode(@NonNull MethodCall call, @NonNull Result result){
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        int mode = TencentRtcPluginUtil.getParam(call,result,"mode");
+        trtcCloud.setRemoteSubStreamViewFillMode(userId,mode);
+        result.success(null);
+    }
+
+    /**
      * 开启本地音频采集
      */
     private void startLocalAudio(@NonNull MethodCall call, @NonNull Result result) {
@@ -395,6 +421,16 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     /**
+     * 设置远端辅流图像顺时针旋转角度
+     */
+    private void setRemoteSubStreamViewRotation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        int rotation = TencentRtcPluginUtil.getParam(call, result, "rotation");
+        trtcCloud.setRemoteSubStreamViewRotation(userId, rotation);
+        result.success(null);
+    }
+
+    /**
      * 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向。
      */
     private void setVideoEncoderRotation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
@@ -436,7 +472,8 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void enableEncSmallVideoStream(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         boolean enable = TencentRtcPluginUtil.getParam(call, result, "enable");
         String smallVideoEncParam = TencentRtcPluginUtil.getParam(call, result, "smallVideoEncParam");
-        trtcCloud.enableEncSmallVideoStream(enable, JSON.parseObject(smallVideoEncParam, TRTCCloudDef.TRTCVideoEncParam.class));
+        trtcCloud.enableEncSmallVideoStream(enable,
+                JSON.parseObject(smallVideoEncParam, TRTCCloudDef.TRTCVideoEncParam.class));
         result.success(null);
     }
 
@@ -574,7 +611,8 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     /**
      * 查询是否支持设置焦点。
      */
-    private void isCameraFocusPositionInPreviewSupported(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+    private void isCameraFocusPositionInPreviewSupported(@NonNull MethodCall call,
+            @NonNull MethodChannel.Result result) {
         result.success(trtcCloud.isCameraFocusPositionInPreviewSupported());
     }
 

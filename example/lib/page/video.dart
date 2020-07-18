@@ -116,31 +116,18 @@ class VideoPageState extends State<VideoPage> {
               },
             ),
             // 远程预览组件
-            // ListView(
-            //   children: olUser.keys
-            //       .map(
-            //         (id) => Container(
-            //           color: Colors.red,
-            //           height: 200,
-            //           child: TencentRtcVideoView(
-            //             onViewCreated: (controller) =>
-            //                 onViewCreated(id, controller),
-            //           ),
-            //         ),
-            //       )
-            //       .toList(),
-            // ),
-            //远端辅流预览
             ListView(
-              children: olSubStreamUser.keys
-                  .map((id) => Container(
-                        color: Colors.red,
-                        height: 200,
-                        child: TencentRtcVideoView(
-                          onViewCreated: (controller) =>
-                              onSubStreamViewCreated(id, controller),
-                        ),
-                      ))
+              children: olUser.keys
+                  .map(
+                    (id) => Container(
+                      color: Colors.red,
+                      height: 200,
+                      child: TencentRtcVideoView(
+                        onViewCreated: (controller) =>
+                            onViewCreated(id, controller),
+                      ),
+                    ),
+                  )
                   .toList(),
             ),
             //远端辅流预览
@@ -155,7 +142,7 @@ class VideoPageState extends State<VideoPage> {
                         ),
                       ))
                   .toList(),
-            )
+            ),
           ],
         ),
       ),

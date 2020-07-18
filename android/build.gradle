@@ -38,7 +38,7 @@ android {
     }
 
     dependencies {
-        api 'com.tencent.liteav:LiteAVSDK_TRTC:6.8.7969'
+        api 'com.tencent.liteav:LiteAVSDK_TRTC:7.4.9209'
         api 'com.alibaba:fastjson:1.2.55'
     }
 
@@ -51,6 +51,9 @@ android {
     }
 }
 dependencies {
-   // implementation 	files('/Users/marblewhale/Dev/flutter/bin/cache/artifacts/engine/android-x64/flutter.jar')
-   // implementation "androidx.annotation:annotation:1.0.0"
+    // for Android Studio to resolve flutter dependencies correctly
+    // only used in development, comments below two lines in production
+    // change flutter sdk path accordingly
+    // implementation 	files('/Users/marblewhale/Dev/flutter/bin/cache/artifacts/engine/android-x64/flutter.jar')
+    // implementation "androidx.annotation:annotation:1.0.0"
 }
