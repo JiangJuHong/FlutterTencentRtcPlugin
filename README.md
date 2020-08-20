@@ -1,8 +1,8 @@
 # tencent_rtc_plugin
 [![pub package](https://img.shields.io/pub/v/tencent_rtc_plugin.svg)](https://pub.dartlang.org/packages/tencent_rtc_plugin)
 
-腾讯云实时音视频插件
-
+腾讯云实时音视频插件  
+Flutter版本要求: `>= 1.12.0`
 ## 功能清单
 [x]房间相关接口函数  
 [x]视频相关接口函数  
