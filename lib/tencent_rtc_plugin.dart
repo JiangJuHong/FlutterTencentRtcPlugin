@@ -174,7 +174,7 @@ class TencentRtcPlugin {
     @required VideoEncParamEntity param, // 视频编码参数，详情请参考 TRTCCloudDef.java 中的 TRTCVideoEncParam 定义。
   }) async {
     return _channel.invokeMethod('setVideoEncoderParam', {
-      "param": jsonEncode(param.toJson()),
+      "param": jsonEncode(param),
     });
   }
 
@@ -252,7 +252,7 @@ class TencentRtcPlugin {
   }) async {
     return _channel.invokeMethod('enableEncSmallVideoStream', {
       "enable": enable,
-      "smallVideoEncParam": jsonEncode(smallVideoEncParam.toJson()),
+      "smallVideoEncParam": jsonEncode(smallVideoEncParam),
     });
   }
 
