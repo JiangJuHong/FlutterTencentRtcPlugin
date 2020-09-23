@@ -3,6 +3,13 @@
 
 腾讯云实时音视频插件  
 Flutter版本要求: `>= 1.12.0`
+
+## 讨论群
+<img
+src="https://raw.githubusercontent.com/JiangJuHong/access-images/master/other/qq-group.jpg"
+height="300em" style="max-width:100%;display: inline-block;"/>  
+[点击加入群聊](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)  
+
 ## 功能清单
 [x]房间相关接口函数  
 [x]视频相关接口函数  
