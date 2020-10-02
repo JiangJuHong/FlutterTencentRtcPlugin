@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:tencent_rtc_plugin/enums/role_enum.dart';
+import 'package:tencent_rtc_plugin/enums/scene_enum.dart';
 
 import 'entity/video_enc_param_entity.dart';
 import 'enums/listener_type_enum.dart';
@@ -48,22 +50,29 @@ class TencentRtcPlugin {
   }
 
   /// 加入房间(默认开启音频接收)
+  /// [appid] appid
+  /// [userId] 用户ID
+  /// [userSig] 用户签名
+  /// [roomId] 房间号
+  /// [scene] 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景。
+  /// [role] 角色
+  /// [privateMapKey] 房间签名
   static Future<void> enterRoom({
-    @required int appid, // appid
-    @required String userId, // 用户id
-    @required String userSig, // 用户签名
-    @required int roomId, // 房间号
-    @required int scene, // 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景。
-    int role, // 角色
-    String privateMapKey, // 房间签名 [非必填]
+    @required int appid,
+    @required String userId,
+    @required String userSig,
+    @required int roomId,
+    @required SceneEnum scene,
+    RoleEnum role,
+    String privateMapKey,
   }) async {
     return await _channel.invokeMethod('enterRoom', {
       "appid": appid,
       "userId": userId,
       "userSig": userSig,
       "roomId": roomId,
-      "scene": scene,
-      "role": role,
+      "scene": SceneTool.toInt(scene),
+      "role": RoleTool.toInt(role),
       "privateMapKey": privateMapKey,
     });
   }
