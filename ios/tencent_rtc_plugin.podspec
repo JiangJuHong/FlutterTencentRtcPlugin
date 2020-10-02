@@ -28,5 +28,5 @@ Pod::Spec.new do |s|
   s.vendored_frameworks = '**/*.framework'
 
   # SDK 依赖
-  s.dependency 'TXLiteAVSDK_TRTC', '6.9.8341'
+  s.dependency 'TXLiteAVSDK_TRTC', '7.8.9519'
 end
