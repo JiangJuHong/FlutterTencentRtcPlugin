@@ -1,10 +1,10 @@
-<center>
+<p align="center">
     <a href="https://pub.dartlang.org/packages/tencent_rtc_plugin"><img src="https://img.shields.io/pub/v/tencent_rtc_plugin.svg"/></a>
     &nbsp;
     <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/github/license/JiangJuHong/FlutterTencentRtcPlugin"/></a>
     &nbsp;
     <a href="https://jq.qq.com/?_wv=1027&k=QxCWMlUf"><img src="https://img.shields.io/badge/qq群-850923396-1"/></a>
-</center>
+</p>
 
 # What is FlutterTencentRTC ？
 FlutterTencentRTC是基于腾讯云TRTC服务进行的Flutter封装，为Flutter提供实时音视频服务.
