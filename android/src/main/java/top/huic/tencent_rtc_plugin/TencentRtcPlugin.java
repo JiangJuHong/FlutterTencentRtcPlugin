@@ -90,8 +90,26 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "switchRole":
                 this.switchRole(call, result);
                 break;
+            case "connectOtherRoom":
+                this.connectOtherRoom(call, result);
+                break;
+            case "disconnectOtherRoom":
+                this.disconnectOtherRoom(call, result);
+                break;
             case "setDefaultStreamRecvMode":
                 this.setDefaultStreamRecvMode(call, result);
+                break;
+            case "startPublishing":
+                this.startPublishing(call, result);
+                break;
+            case "stopPublishing":
+                this.stopPublishing(call, result);
+                break;
+            case "startPublishCDNStream":
+                this.startPublishCDNStream(call, result);
+                break;
+            case "stopPublishCDNStream":
+                this.stopPublishCDNStream(call, result);
                 break;
             case "muteRemoteAudio":
                 this.muteRemoteAudio(call, result);
@@ -265,12 +283,73 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     /**
+     * 请求跨房通话（主播 PK）
+     */
+    private void connectOtherRoom(@NonNull MethodCall call, @NonNull Result result) {
+        String param = TencentRtcPluginUtil.getParam(call, result, "param");
+        trtcCloud.ConnectOtherRoom(param);
+        result.success(null);
+    }
+
+    /**
+     * 退出跨房通话
+     */
+    private void disconnectOtherRoom(@NonNull MethodCall call, @NonNull Result result) {
+        trtcCloud.DisconnectOtherRoom();
+        result.success(null);
+    }
+
+    /**
      * 设置音视频数据接收模式（需要在进房前设置才能生效）。
      */
     private void setDefaultStreamRecvMode(@NonNull MethodCall call, @NonNull Result result) {
         boolean autoRecvAudio = TencentRtcPluginUtil.getParam(call, result, "autoRecvAudio");
         boolean autoRecvVideo = TencentRtcPluginUtil.getParam(call, result, "autoRecvVideo");
         trtcCloud.setDefaultStreamRecvMode(autoRecvAudio, autoRecvVideo);
+        result.success(null);
+    }
+
+    /**
+     * 开始向腾讯云的直播 CDN 推流
+     */
+    private void startPublishing(@NonNull MethodCall call, @NonNull Result result) {
+        String streamId = TencentRtcPluginUtil.getParam(call, result, "streamId");
+        int streamType = TencentRtcPluginUtil.getParam(call, result, "streamType");
+        trtcCloud.startPublishing(streamId, streamType);
+        result.success(null);
+    }
+
+
+    /**
+     * 停止向腾讯云的直播 CDN 推流
+     */
+    private void stopPublishing(@NonNull MethodCall call, @NonNull Result result) {
+        trtcCloud.stopPublishing();
+        result.success(null);
+    }
+
+    /**
+     * 开始向友商云的直播 CDN 转推
+     */
+    private void startPublishCDNStream(@NonNull MethodCall call, @NonNull Result result) {
+        int appid = TencentRtcPluginUtil.getParam(call, result, "appid");
+        int bizId = TencentRtcPluginUtil.getParam(call, result, "bizId");
+        String url = TencentRtcPluginUtil.getParam(call, result, "url");
+
+        TRTCCloudDef.TRTCPublishCDNParam param = new TRTCCloudDef.TRTCPublishCDNParam();
+        param.appId = appid;
+        param.bizId = bizId;
+        param.url = url;
+        trtcCloud.startPublishCDNStream(param);
+        result.success(null);
+    }
+
+
+    /**
+     * 停止向非腾讯云地址转推
+     */
+    private void stopPublishCDNStream(@NonNull MethodCall call, @NonNull Result result) {
+        trtcCloud.stopPublishCDNStream();
         result.success(null);
     }
 

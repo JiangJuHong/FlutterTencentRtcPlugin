@@ -49,8 +49,26 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "switchRole":
             self.switchRole(call: call, result: result);
             break;
+        case "connectOtherRoom":
+            self.connectOtherRoom(call: call, result: result);
+            break;
+        case "disconnectOtherRoom":
+            self.disconnectOtherRoom(call: call, result: result);
+            break;
         case "setDefaultStreamRecvMode":
             self.setDefaultStreamRecvMode(call: call, result: result);
+            break;
+        case "startPublishing":
+            self.startPublishing(call: call, result: result);
+            break;
+        case "stopPublishing":
+            self.stopPublishing(call: call, result: result);
+            break;
+        case "startPublishCDNStream":
+            self.startPublishCDNStream(call: call, result: result);
+            break;
+        case "stopPublishCDNStream":
+            self.stopPublishCDNStream(call: call, result: result);
             break;
         case "muteRemoteAudio":
             self.muteRemoteAudio(call: call, result: result);
@@ -231,6 +249,24 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
     }
 
     /**
+     * 请求跨房通话（主播 PK）
+     */
+    public func connectOtherRoom(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let param = CommonUtils.getParam(call: call, result: result, param: "param") as? String {
+            TRTCCloud.sharedInstance().connectOtherRoom(param);
+            result(nil);
+        }
+    }
+
+    /**
+     * 退出跨房通话
+     */
+    public func disconnectOtherRoom(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        TRTCCloud.sharedInstance().disconnectOtherRoom();
+        result(nil);
+    }
+
+    /**
      * 设置音视频数据接收模式（需要在进房前设置才能生效）。
      */
     public func setDefaultStreamRecvMode(call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -240,6 +276,50 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             result(nil);
         }
     }
+
+    /**
+     * 开始向腾讯云的直播 CDN 推流
+     */
+    public func startPublishing(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let streamId = CommonUtils.getParam(call: call, result: result, param: "streamId") as? String,
+           let streamType = CommonUtils.getParam(call: call, result: result, param: "streamType") as? Int {
+            TRTCCloud.sharedInstance().startPublishing(streamId, type: TRTCVideoStreamType.init(rawValue: streamType)!);
+            result(nil);
+        }
+    }
+
+    /**
+     * 停止向腾讯云的直播 CDN 推流。
+     */
+    public func stopPublishing(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        TRTCCloud.sharedInstance().stopPublishing();
+        result(nil);
+    }
+
+    /**
+    * 开始向友商云的直播 CDN 转推
+    */
+    public func startPublishCDNStream(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let appid = CommonUtils.getParam(call: call, result: result, param: "appid") as? Int32,
+           let bizId = CommonUtils.getParam(call: call, result: result, param: "bizId") as? Int32,
+           let url = CommonUtils.getParam(call: call, result: result, param: "url") as? String {
+            let param = TRTCPublishCDNParam();
+            param.appId = appid;
+            param.bizId = bizId;
+            param.url = url;
+            TRTCCloud.sharedInstance().startPublishCDNStream(param);
+            result(nil);
+        }
+    }
+
+    /**
+     * 停止向非腾讯云地址转推
+     */
+    public func stopPublishCDNStream(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        TRTCCloud.sharedInstance().stopPublishCDNStream();
+        result(nil);
+    }
+
 
     /**
      * 静音 / 取消静音

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:tencent_rtc_plugin/enums/role_enum.dart';
 import 'package:tencent_rtc_plugin/enums/scene_enum.dart';
+import 'package:tencent_rtc_plugin/enums/stream_type_enum.dart';
 
 import 'entity/video_enc_param_entity.dart';
 import 'enums/listener_type_enum.dart';
@@ -57,7 +58,7 @@ class TencentRtcPlugin {
   /// [scene] 应用场景，目前支持视频通话（VideoCall）和在线直播（Live）两种场景。
   /// [role] 角色
   /// [privateMapKey] 房间签名
-  static Future<void> enterRoom({
+  static enterRoom({
     @required int appid,
     @required String userId,
     @required String userSig,
@@ -65,8 +66,8 @@ class TencentRtcPlugin {
     @required SceneEnum scene,
     RoleEnum role,
     String privateMapKey,
-  }) async {
-    return await _channel.invokeMethod('enterRoom', {
+  }) {
+    _channel.invokeMethod('enterRoom', {
       "appid": appid,
       "userId": userId,
       "userSig": userSig,
@@ -78,30 +79,66 @@ class TencentRtcPlugin {
   }
 
   /// 离开房间
-  static Future<void> exitRoom() async {
-    return await _channel.invokeMethod('exitRoom');
-  }
+  static exitRoom() => _channel.invokeMethod('exitRoom');
 
-  /// 切换角色，仅适用于直播场景（TRTCAppSceneLIVE）。
-  static Future<void> switchRole({
-    @required int role, // 目标角色
-  }) async {
-    return await _channel.invokeMethod('switchRole', {
-      "role": role,
-    });
-  }
+  /// 切换角色，仅适用于直播场景（TRTC_APP_SCENE_LIVE 和 TRTC_APP_SCENE_VOICE_CHATROOM）。
+  /// [role] 目标角色
+  static switchRole({@required RoleEnum role}) => _channel.invokeMethod('switchRole', {"role": RoleTool.toInt(role)});
 
-  /// 设置音视频数据接收模式（需要在进房前设置才能生效）。
-  /// 默认进房后自动接收音视频
-  static Future<void> setDefaultStreamRecvMode({
-    @required bool autoRecvAudio, // true：自动接收音频数据；false：需要调用 muteRemoteAudio 进行请求或取消。默认值：true。
-    @required bool autoRecvVideo, // true：自动接收视频数据；false：需要调用 startRemoteView/stopRemoteView 进行请求或取消。默认值：true。
-  }) async {
-    return await _channel.invokeMethod('setDefaultStreamRecvMode', {
+  /// 请求跨房通话（主播 PK）
+  /// [param] JSON 字符串连麦参数，roomId 代表目标房间号，userId 代表目标用户 ID。
+  static connectOtherRoom({@required String param}) => _channel.invokeMethod('connectOtherRoom', {'param': param});
+
+  /// 退出跨房通话
+  static disconnectOtherRoom() => _channel.invokeMethod('disconnectOtherRoom');
+
+  /// 设置音视频数据接收模式，需要在进房前设置才能生效。
+  /// [autoRecvAudio] true：自动接收音频数据；false：需要调用 muteRemoteAudio 进行请求或取消。默认值：true。
+  /// [autoRecvVideo] true：自动接收视频数据；false：需要调用 startRemoteView/stopRemoteView 进行请求或取消。默认值：true。
+  static setDefaultStreamRecvMode({
+    @required bool autoRecvAudio,
+    @required bool autoRecvVideo,
+  }) {
+    _channel.invokeMethod('setDefaultStreamRecvMode', {
       "autoRecvAudio": autoRecvAudio,
       "autoRecvVideo": autoRecvVideo,
     });
   }
+
+  /// 开始向腾讯云的直播 CDN 推流
+  /// [streamId] 自定义流 Id。
+  /// [streamType] 流类型,仅支持 Big 和 Sub
+  static startPublishing({
+    @required String streamId,
+    @required StreamTypeEnum streamType,
+  }) {
+    _channel.invokeMethod('startPublishing', {
+      "streamId": streamId,
+      "streamType": StreamTypeTool.toInt(streamType),
+    });
+  }
+
+  /// 停止向腾讯云的直播 CDN 推流
+  static stopPublishing() => _channel.invokeMethod('stopPublishing');
+
+  /// 开始向友商云的直播 CDN 转推
+  /// [appid] appid
+  /// [bizId] 腾讯云直播 bizid，请在 实时音视频控制台 选择已经创建的应用，单击【帐号信息】，在“直播信息”中获取
+  /// [url] 旁路转推的 URL
+  static startPublishCDNStream({
+    @required String appid,
+    @required String bizId,
+    @required String url,
+  }) {
+    _channel.invokeMethod('startPublishCDNStream', {
+      "appid": appid,
+      "bizId": bizId,
+      "url": url,
+    });
+  }
+
+  /// 停止向非腾讯云地址转推
+  static stopPublishCDNStream() => _channel.invokeMethod('stopPublishCDNStream');
 
   /// 静音/取消静音
   static Future<void> muteRemoteAudio({
