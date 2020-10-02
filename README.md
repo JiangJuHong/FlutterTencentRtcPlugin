@@ -11,6 +11,7 @@ FlutterTencentRTC是基于[腾讯云TRTC](https://cloud.tencent.com/product/trtc
 
 # Links
 * [Document](https://www.yuque.com/jiangjuhong/krioix/vdzkus)
+* [Chat](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)
 * [Sponsor](https://www.yuque.com/jiangjuhong/krioix/kw8zq2)
 
 # Other Plugins
