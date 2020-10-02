@@ -59,14 +59,8 @@ public class TencentRtcVideoPlatformView : NSObject,FlutterPlatformView{
         case "startRemoteView":
             self.startRemoteView(call: call, result: result);
             break;
-        case "stopRemoteView":
-            self.stopRemoteView(call: call, result: result);
-            break;
         case "startLocalPreview":
             self.startLocalPreview(call: call, result: result);
-            break;
-        case "stopLocalPreview":
-            self.stopLocalPreview(call: call, result: result);
             break;
         default:
             result(FlutterMethodNotImplemented);
@@ -91,16 +85,6 @@ public class TencentRtcVideoPlatformView : NSObject,FlutterPlatformView{
     }
     
     /**
-     * 停止远程显示
-     */
-    public func stopRemoteView(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String{
-            TRTCCloud.sharedInstance()?.stopRemoteView(userId);
-            result(nil);
-        }
-    }
-    
-    /**
      * 开启本地视频采集
      */
     public func startLocalPreview(call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -108,13 +92,5 @@ public class TencentRtcVideoPlatformView : NSObject,FlutterPlatformView{
             TRTCCloud.sharedInstance()?.startLocalPreview(frontCamera, view: self.remoteView);
             result(nil);
         }
-    }
-    
-    /**
-     * 停止本地视频采集
-     */
-    public func stopLocalPreview(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        TRTCCloud.sharedInstance()?.stopLocalPreview();
-        result(nil);
     }
 }

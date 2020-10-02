@@ -67,6 +67,21 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "startPublishCDNStream":
             self.startPublishCDNStream(call: call, result: result);
             break;
+        case "stopLocalPreview":
+            self.stopLocalPreview(call: call, result: result);
+            break;
+        case "stopRemoteView":
+            self.stopRemoteView(call: call, result: result);
+            break;
+        case "muteLocalVideo":
+            self.muteLocalVideo(call: call, result: result);
+            break;
+        case "setVideoMuteImage":
+            self.setVideoMuteImage(call: call, result: result);
+            break;
+        case "stopAllRemoteView":
+            self.stopAllRemoteView(call: call, result: result);
+            break;
         case "stopPublishCDNStream":
             self.stopPublishCDNStream(call: call, result: result);
             break;
@@ -87,9 +102,6 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             break;
         case "stopLocalAudio":
             self.stopLocalAudio(call: call, result: result);
-            break;
-        case "stopAllRemoteView":
-            self.stopAllRemoteView(call: call, result: result);
             break;
         case "muteRemoteVideoStream":
             self.muteRemoteVideoStream(call: call, result: result);
@@ -132,9 +144,6 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             break;
         case "muteLocalAudio":
             self.muteLocalAudio(call: call, result: result);
-            break;
-        case "muteLocalVideo":
-            self.muteLocalVideo(call: call, result: result);
             break;
         case "setAudioRoute":
             self.setAudioRoute(call: call, result: result);
@@ -313,6 +322,17 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
     }
 
     /**
+     * 设置暂停推送本地视频时要推送的图片。
+     */
+    public func setVideoMuteImage(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        let image = ((call.arguments as! [String: Any])["image"]) as? String;
+        if let fps = CommonUtils.getParam(call: call, result: result, param: "fps") as? Int {
+            TRTCCloud.sharedInstance().setVideoMuteImage(image == nil ? nil : UIImage.init(contentsOfFile: image!), fps: fps)
+            result(nil);
+        }
+    }
+
+    /**
      * 停止向非腾讯云地址转推
      */
     public func stopPublishCDNStream(call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -320,6 +340,20 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         result(nil);
     }
 
+
+    /// 停止本地视频采集
+    public func stopLocalPreview(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        TRTCCloud.sharedInstance()?.stopLocalPreview();
+        result(nil);
+    }
+
+    /// 停止远程显示
+    public func stopRemoteView(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String {
+            TRTCCloud.sharedInstance()?.stopRemoteView(userId);
+            result(nil);
+        }
+    }
 
     /**
      * 静音 / 取消静音
@@ -426,6 +460,12 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             }
             if dict["videoFps"] != nil {
                 data.videoFps = dict["videoFps"] as! Int32;
+            }
+            if dict["minVideoBitrate"] != nil {
+                data.minVideoBitrate = dict["minVideoBitrate"] as! Int32;
+            }
+            if dict["enableAdjustRes"] != nil {
+                data.enableAdjustRes = dict["enableAdjustRes"] as! Int32;
             }
             TRTCCloud.sharedInstance()?.setVideoEncoderParam(data);
             result(nil);

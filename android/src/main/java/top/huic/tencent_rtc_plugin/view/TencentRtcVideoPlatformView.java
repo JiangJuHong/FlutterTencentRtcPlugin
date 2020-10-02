@@ -80,14 +80,8 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory
             case "startRemoteView":
                 this.startRemoteView(call, result);
                 break;
-            case "stopRemoteView":
-                this.stopRemoteView(call, result);
-                break;
             case "startLocalPreview":
                 this.startLocalPreview(call, result);
-                break;
-            case "stopLocalPreview":
-                this.stopLocalPreview(call, result);
                 break;
             case "startRemoteSubStreamView":
                 this.startRemoteSubStreamView(call, result);
@@ -111,28 +105,11 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory
     }
 
     /**
-     * 停止远程显示
-     */
-    private void stopRemoteView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
-        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
-        trtcCloud.stopRemoteView(userId);
-        result.success(null);
-    }
-
-    /**
      * 开启本地视频采集
      */
     private void startLocalPreview(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         boolean frontCamera = TencentRtcPluginUtil.getParam(call, result, "frontCamera");
         trtcCloud.startLocalPreview(frontCamera, this.remoteView);
-        result.success(null);
-    }
-
-    /**
-     * 停止本地视频采集
-     */
-    private void stopLocalPreview(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
-        trtcCloud.stopLocalPreview();
         result.success(null);
     }
 

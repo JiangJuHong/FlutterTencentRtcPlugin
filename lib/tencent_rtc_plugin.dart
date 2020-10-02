@@ -3,9 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:tencent_rtc_plugin/enums/qos_control_enum.dart';
+import 'package:tencent_rtc_plugin/enums/qos_preference_enum.dart';
 import 'package:tencent_rtc_plugin/enums/role_enum.dart';
 import 'package:tencent_rtc_plugin/enums/scene_enum.dart';
 import 'package:tencent_rtc_plugin/enums/stream_type_enum.dart';
+import 'package:tencent_rtc_plugin/utils/assets_util.dart';
 
 import 'entity/video_enc_param_entity.dart';
 import 'enums/listener_type_enum.dart';
@@ -140,6 +143,77 @@ class TencentRtcPlugin {
   /// 停止向非腾讯云地址转推
   static stopPublishCDNStream() => _channel.invokeMethod('stopPublishCDNStream');
 
+  /// 停止本地视频采集
+  static stopLocalPreview() => _channel.invokeMethod('stopLocalPreview');
+
+  /// 关闭远程显示
+  /// [userId] 用户ID
+  static stopRemoteView({@required String userId}) => _channel.invokeMethod('stopRemoteView', {"userId": userId});
+
+  /// 关闭本地的视频。
+  /// [mute] 是否关闭
+  static muteLocalVideo({@required bool mute}) {
+    return _channel.invokeMethod('muteLocalVideo', {
+      "mute": mute,
+    });
+  }
+
+  /// 设置暂停推送本地视频时要推送的图片。
+  /// [asset] assets 中的资源，不是本地原生资源!!!
+  /// [fps] 推送图片帧率，Android: 最小值为5，最大值为20，默认10。IOS: 最小值为5，最大值为10。
+  static setVideoMuteImage({
+    String asset,
+    int fps: 10,
+  }) {
+    return _channel.invokeMethod('setVideoMuteImage', {
+      "image": asset == null ? null : AssetsUtil.copyAssetToLocal(asset),
+      "fps": fps,
+    });
+  }
+
+  /// 停止显示所有远端视频画面。
+  static stopAllRemoteView() => _channel.invokeMethod('stopAllRemoteView');
+
+  /// 暂停接收指定的远端视频流。。
+  /// [userId] 用户ID
+  /// [mute] 是否停止接收
+  static muteRemoteVideoStream({
+    @required String userId,
+    @required bool mute,
+  }) {
+    return _channel.invokeMethod('muteRemoteVideoStream', {
+      "userId": userId,
+      "mute": mute,
+    });
+  }
+
+  /// 停止接收所有远端视频流
+  /// [mute] 是否停止接收
+  static muteAllRemoteVideoStreams({@required bool mute}) => _channel.invokeMethod('muteAllRemoteVideoStreams', {"mute": mute});
+
+  /// 设置视频编码相关
+  /// [param] 视频编码参数
+  static setVideoEncoderParam({
+    @required VideoEncParamEntity param,
+  }) {
+    return _channel.invokeMethod('setVideoEncoderParam', {
+      "param": jsonEncode(param),
+    });
+  }
+
+  /// 设置网络流控相关参数。参考: http://doc.qcloudtrtc.com/group__TRTCCloudDef__android.html#classcom_1_1tencent_1_1trtc_1_1TRTCCloudDef_1_1TRTCNetworkQosParam
+  /// [preference] 弱网下是“保清晰”还是“保流畅”。
+  /// [controlMode] 视频分辨率（云端控制 - 客户端控制）。
+  static Future<void> setNetworkQosParam({
+    @required QosPreferenceEnum preference,
+    @required QosControlEnum controlMode,
+  }) async {
+    return _channel.invokeMethod('setNetworkQosParam', {
+      "preference": QosPreferenceTool.toInt(preference),
+      "controlMode": QosControlTool.toInt(controlMode),
+    });
+  }
+
   /// 静音/取消静音
   static Future<void> muteRemoteAudio({
     @required String userId, // 用户id
@@ -188,51 +262,6 @@ class TencentRtcPlugin {
   /// 关闭本地音频采集
   static Future<void> stopLocalAudio() async {
     return await _channel.invokeMethod('stopLocalAudio');
-  }
-
-  /// 停止显示所有远端视频画面。
-  static Future<void> stopAllRemoteView() async {
-    return _channel.invokeMethod('stopAllRemoteView');
-  }
-
-  /// 暂停接收指定的远端视频流。。
-  static Future<void> muteRemoteVideoStream({
-    @required String userId, // 用户ID
-    @required bool mute, // 是否停止接收
-  }) async {
-    return _channel.invokeMethod('muteRemoteVideoStream', {
-      "userId": userId,
-      "mute": mute,
-    });
-  }
-
-  /// 停止接收所有远端视频流
-  static Future<void> muteAllRemoteVideoStreams({
-    @required bool mute, // 是否停止接收
-  }) async {
-    return _channel.invokeMethod('muteAllRemoteVideoStreams', {
-      "mute": mute,
-    });
-  }
-
-  /// 设置视频编码相关
-  static Future<void> setVideoEncoderParam({
-    @required VideoEncParamEntity param, // 视频编码参数，详情请参考 TRTCCloudDef.java 中的 TRTCVideoEncParam 定义。
-  }) async {
-    return _channel.invokeMethod('setVideoEncoderParam', {
-      "param": jsonEncode(param),
-    });
-  }
-
-  /// 设置网络流控相关参数。
-  static Future<void> setNetworkQosParam({
-    @required int preference, // 弱网下是“保清晰”还是“保流畅”。
-    @required int controlMode, // 视频分辨率（云端控制 - 客户端控制）。
-  }) async {
-    return _channel.invokeMethod('setNetworkQosParam', {
-      "preference": preference,
-      "controlMode": controlMode,
-    });
   }
 
   /// 设置本地图像的顺时针旋转角度。
@@ -327,15 +356,6 @@ class TencentRtcPlugin {
     @required bool mute, // true：屏蔽；false：开启，默认值：false。
   }) async {
     return _channel.invokeMethod('muteLocalAudio', {
-      "mute": mute,
-    });
-  }
-
-  /// 关闭本地的视频。
-  static Future<void> muteLocalVideo({
-    @required bool mute, // true：屏蔽；false：开启，默认值：false。
-  }) async {
-    return _channel.invokeMethod('muteLocalVideo', {
       "mute": mute,
     });
   }

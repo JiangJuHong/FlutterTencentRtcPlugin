@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # 路径管理(https://pub.dev/packages/path_provider)
+  path_provider: 1.6.18
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,6 +1,7 @@
 package top.huic.tencent_rtc_plugin;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
@@ -111,6 +112,21 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "stopPublishCDNStream":
                 this.stopPublishCDNStream(call, result);
                 break;
+            case "stopLocalPreview":
+                this.stopLocalPreview(call, result);
+                break;
+            case "stopRemoteView":
+                this.stopRemoteView(call, result);
+                break;
+            case "muteLocalVideo":
+                this.muteLocalVideo(call, result);
+                break;
+            case "setVideoMuteImage":
+                this.setVideoMuteImage(call, result);
+                break;
+            case "stopAllRemoteView":
+                this.stopAllRemoteView(call, result);
+                break;
             case "muteRemoteAudio":
                 this.muteRemoteAudio(call, result);
                 break;
@@ -128,9 +144,6 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "stopLocalAudio":
                 this.stopLocalAudio(call, result);
-                break;
-            case "stopAllRemoteView":
-                this.stopAllRemoteView(call, result);
                 break;
             case "muteRemoteVideoStream":
                 this.muteRemoteVideoStream(call, result);
@@ -173,9 +186,6 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "muteLocalAudio":
                 this.muteLocalAudio(call, result);
-                break;
-            case "muteLocalVideo":
-                this.muteLocalVideo(call, result);
                 break;
             case "setAudioRoute":
                 this.setAudioRoute(call, result);
@@ -350,6 +360,23 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      */
     private void stopPublishCDNStream(@NonNull MethodCall call, @NonNull Result result) {
         trtcCloud.stopPublishCDNStream();
+        result.success(null);
+    }
+
+    /**
+     * 停止本地视频采集
+     */
+    private void stopLocalPreview(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.stopLocalPreview();
+        result.success(null);
+    }
+
+    /**
+     * 停止远程显示
+     */
+    private void stopRemoteView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        trtcCloud.stopRemoteView(userId);
         result.success(null);
     }
 
@@ -553,6 +580,16 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void muteLocalVideo(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         boolean mute = TencentRtcPluginUtil.getParam(call, result, "mute");
         trtcCloud.muteLocalVideo(mute);
+        result.success(null);
+    }
+
+    /**
+     * 设置暂停推送本地视频时要推送的图片。
+     */
+    private void setVideoMuteImage(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String image = call.argument("image");
+        int fps = TencentRtcPluginUtil.getParam(call, result, "fps");
+        trtcCloud.setVideoMuteImage(image == null ? null : BitmapFactory.decodeFile(image), fps);
         result.success(null);
     }
 
