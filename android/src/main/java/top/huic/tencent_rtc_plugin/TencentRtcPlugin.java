@@ -265,6 +265,12 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "setRemoteSubStreamViewRotation":
                 this.setRemoteSubStreamViewRotation(call, result);
                 break;
+            case "sendCustomCmdMsg":
+                this.sendCustomCmdMsg(call, result);
+                break;
+            case "sendSEIMsg":
+                this.sendSEIMsg(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -850,6 +856,28 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
         int rotation = TencentRtcPluginUtil.getParam(call, result, "rotation");
         trtcCloud.setRemoteSubStreamViewRotation(userId, rotation);
+        result.success(null);
+    }
+
+    /**
+     * 发送自定义消息给房间内所有用户。
+     */
+    private void sendCustomCmdMsg(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int cmdId = TencentRtcPluginUtil.getParam(call, result, "cmdId");
+        String data = TencentRtcPluginUtil.getParam(call, result, "data");
+        boolean reliable = TencentRtcPluginUtil.getParam(call, result, "reliable");
+        boolean ordered = TencentRtcPluginUtil.getParam(call, result, "ordered");
+        trtcCloud.sendCustomCmdMsg(cmdId, data.getBytes(), reliable, ordered);
+        result.success(null);
+    }
+
+    /**
+     * 将小数据量的自定义数据嵌入视频帧中。
+     */
+    private void sendSEIMsg(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String data = TencentRtcPluginUtil.getParam(call, result, "data");
+        int repeatCount = TencentRtcPluginUtil.getParam(call, result, "repeatCount");
+        trtcCloud.sendSEIMsg(data.getBytes(), repeatCount);
         result.success(null);
     }
 }

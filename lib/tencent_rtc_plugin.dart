@@ -521,6 +521,38 @@ class TencentRtcPlugin {
       "rotation": RotationTool.toInt(rotation),
     });
   }
+
+  /// 发送自定义消息给房间内所有用户。
+  /// [cmdID] 消息 ID，取值范围为1 - 10
+  /// [data] 	待发送的消息，最大支持1KB（1000字节）的数据大小
+  /// [reliable] 	是否可靠发送，可靠发送的代价是会引入一定的延时，因为接收端要暂存一段时间的数据来等待重传
+  /// [ordered] 	是否要求有序，即是否要求接收端接收的数据顺序和发送端发送的顺序一致，这会带来一定的接收延时，因为在接收端需要暂存并排序这些消息。
+  static sendCustomCmdMsg({
+    @required int cmdID,
+    @required String data,
+    @required bool reliable,
+    @required bool ordered,
+  }) {
+    return _channel.invokeMethod("sendCustomCmdMsg", {
+      "cmdID": cmdID,
+      "data": data,
+      "reliable": reliable,
+      "ordered": ordered,
+    });
+  }
+
+  /// 将小数据量的自定义数据嵌入视频帧中
+  /// [data] 		待发送的数据，最大支持1kb（1000字节）的数据大小
+  /// [repeatCount] 	发送数据次数
+  static sendSEIMsg({
+    @required String data,
+    @required int repeatCount,
+  }) {
+    return _channel.invokeMethod("sendSEIMsg", {
+      "data": data,
+      "repeatCount": repeatCount,
+    });
+  }
 }
 
 /// 监听器对象

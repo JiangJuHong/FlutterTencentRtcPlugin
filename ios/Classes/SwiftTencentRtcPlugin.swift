@@ -223,6 +223,12 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "setRemoteSubStreamViewRotation":
             self.setRemoteSubStreamViewRotation(call: call, result: result);
             break;
+        case "sendCustomCmdMsg":
+            self.sendCustomCmdMsg(call: call, result: result);
+            break;
+        case "sendSEIMsg":
+            self.sendSEIMsg(call: call, result: result);
+            break;
         default:
             result(FlutterMethodNotImplemented);
         }
@@ -535,7 +541,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
                 data.minVideoBitrate = dict["minVideoBitrate"] as! Int32;
             }
             if dict["enableAdjustRes"] != nil {
-                data.enableAdjustRes = dict["enableAdjustRes"] as! Int32;
+                data.enableAdjustRes = dict["enableAdjustRes"] as! Bool;
             }
             TRTCCloud.sharedInstance()?.setVideoEncoderParam(data);
             result(nil);
@@ -891,7 +897,31 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
     public func setRemoteSubStreamViewRotation(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
            let rotation = CommonUtils.getParam(call: call, result: result, param: "rotation") as? Int {
-            TRTCCloud.sharedInstance()?.setRemoteSubStreamViewRotation(userId, mode: TRTCVideoRotation.init(rawValue: rotation)!);
+            TRTCCloud.sharedInstance()?.setRemoteSubStreamViewRotation(userId, rotation: TRTCVideoRotation.init(rawValue: rotation)!);
+            result(nil);
+        }
+    }
+
+    /**
+     * 发送自定义消息给房间内所有用户
+     */
+    public func sendCustomCmdMsg(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let cmdId = CommonUtils.getParam(call: call, result: result, param: "cmdId") as? Int,
+           let data = CommonUtils.getParam(call: call, result: result, param: "data") as? String,
+           let reliable = CommonUtils.getParam(call: call, result: result, param: "reliable") as? Bool,
+           let ordered = CommonUtils.getParam(call: call, result: result, param: "ordered") as? Bool {
+            TRTCCloud.sharedInstance()?.sendCustomCmdMsg(cmdId, data: data.data(using: .utf8)!, reliable: reliable, ordered: ordered);
+            result(nil);
+        }
+    }
+
+    /**
+     * 将小数据量的自定义数据嵌入视频帧中
+     */
+    public func sendSEIMsg(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let data = CommonUtils.getParam(call: call, result: result, param: "data") as? String,
+           let repeatCount = CommonUtils.getParam(call: call, result: result, param: "repeatCount") as? Int32 {
+            TRTCCloud.sharedInstance()?.sendSEIMsg(data.data(using: .utf8)!, repeatCount: repeatCount);
             result(nil);
         }
     }
