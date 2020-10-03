@@ -133,6 +133,18 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "muteAllRemoteAudio":
                 this.muteAllRemoteAudio(call, result);
                 break;
+            case "setAudioCaptureVolume":
+                this.setAudioCaptureVolume(call, result);
+                break;
+            case "getAudioCaptureVolume":
+                this.getAudioCaptureVolume(call, result);
+                break;
+            case "setAudioPlayoutVolume":
+                this.setAudioPlayoutVolume(call, result);
+                break;
+            case "getAudioPlayoutVolume":
+                this.getAudioPlayoutVolume(call, result);
+                break;
             case "setRemoteViewFillMode":
                 this.setRemoteViewFillMode(call, result);
                 break;
@@ -183,6 +195,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setPriorRemoteVideoStreamType":
                 this.setPriorRemoteVideoStreamType(call, result);
+                break;
+            case "setAudioQuality":
+                this.setAudioQuality(call, result);
                 break;
             case "muteLocalAudio":
                 this.muteLocalAudio(call, result);
@@ -400,6 +415,38 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     /**
+     * 设置 SDK 采集音量。
+     */
+    private void setAudioCaptureVolume(@NonNull MethodCall call, @NonNull Result result) {
+        int volume = TencentRtcPluginUtil.getParam(call, result, "volume");
+        trtcCloud.setAudioCaptureVolume(volume);
+        result.success(null);
+    }
+
+    /**
+     * 获得 SDK 采集音量。
+     */
+    private void getAudioCaptureVolume(@NonNull MethodCall call, @NonNull Result result) {
+        result.success(trtcCloud.getAudioCaptureVolume());
+    }
+
+    /**
+     * 设置 SDK 播放音量。
+     */
+    private void setAudioPlayoutVolume(@NonNull MethodCall call, @NonNull Result result) {
+        int volume = TencentRtcPluginUtil.getParam(call, result, "volume");
+        trtcCloud.setAudioPlayoutVolume(volume);
+        result.success(null);
+    }
+
+    /**
+     * 获得 SDK 播放音量。
+     */
+    private void getAudioPlayoutVolume(@NonNull MethodCall call, @NonNull Result result) {
+        result.success(trtcCloud.getAudioPlayoutVolume());
+    }
+
+    /**
      * 设置远程显示填充模式
      */
     private void setRemoteViewFillMode(@NonNull MethodCall call, @NonNull Result result) {
@@ -542,8 +589,7 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void enableEncSmallVideoStream(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         boolean enable = TencentRtcPluginUtil.getParam(call, result, "enable");
         String smallVideoEncParam = TencentRtcPluginUtil.getParam(call, result, "smallVideoEncParam");
-        trtcCloud.enableEncSmallVideoStream(enable, JSON.parseObject(smallVideoEncParam, TRTCCloudDef.TRTCVideoEncParam.class));
-        result.success(null);
+        result.success(trtcCloud.enableEncSmallVideoStream(enable, JSON.parseObject(smallVideoEncParam, TRTCCloudDef.TRTCVideoEncParam.class)));
     }
 
     /**
@@ -562,6 +608,15 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     private void setPriorRemoteVideoStreamType(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         int streamType = TencentRtcPluginUtil.getParam(call, result, "streamType");
         trtcCloud.setPriorRemoteVideoStreamType(streamType);
+        result.success(null);
+    }
+
+    /**
+     * 设置音频质量。
+     */
+    private void setAudioQuality(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int quality = TencentRtcPluginUtil.getParam(call, result, "quality");
+        trtcCloud.setAudioQuality(quality);
         result.success(null);
     }
 

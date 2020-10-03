@@ -3,11 +3,18 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:tencent_rtc_plugin/enums/gsensor_mode_enum.dart';
+import 'package:tencent_rtc_plugin/enums/mirror_type_enum.dart';
 import 'package:tencent_rtc_plugin/enums/qos_control_enum.dart';
 import 'package:tencent_rtc_plugin/enums/qos_preference_enum.dart';
+import 'package:tencent_rtc_plugin/enums/quality_enum.dart';
+import 'package:tencent_rtc_plugin/enums/render_mode_enum.dart';
 import 'package:tencent_rtc_plugin/enums/role_enum.dart';
+import 'package:tencent_rtc_plugin/enums/rotation_enum.dart';
+import 'package:tencent_rtc_plugin/enums/route_enum.dart';
 import 'package:tencent_rtc_plugin/enums/scene_enum.dart';
 import 'package:tencent_rtc_plugin/enums/stream_type_enum.dart';
+import 'package:tencent_rtc_plugin/enums/system_volume_type_enum.dart';
 import 'package:tencent_rtc_plugin/utils/assets_util.dart';
 
 import 'entity/video_enc_param_entity.dart';
@@ -204,7 +211,7 @@ class TencentRtcPlugin {
   /// 设置网络流控相关参数。参考: http://doc.qcloudtrtc.com/group__TRTCCloudDef__android.html#classcom_1_1tencent_1_1trtc_1_1TRTCCloudDef_1_1TRTCNetworkQosParam
   /// [preference] 弱网下是“保清晰”还是“保流畅”。
   /// [controlMode] 视频分辨率（云端控制 - 客户端控制）。
-  static Future<void> setNetworkQosParam({
+  static setNetworkQosParam({
     @required QosPreferenceEnum preference,
     @required QosControlEnum controlMode,
   }) async {
@@ -214,117 +221,92 @@ class TencentRtcPlugin {
     });
   }
 
-  /// 静音/取消静音
-  static Future<void> muteRemoteAudio({
-    @required String userId, // 用户id
-    @required bool mute, // true静音，false静音
-  }) async {
-    return await _channel.invokeMethod('muteRemoteAudio', {
-      "userId": userId,
-      "mute": mute,
-    });
-  }
-
-  /// 静音/取消静音 所有用户
-  static Future<void> muteAllRemoteAudio({
-    @required bool mute, // true静音，false静音
-  }) async {
-    return await _channel.invokeMethod('muteAllRemoteAudio', {
-      "mute": mute,
-    });
-  }
+  /// 设置本地图像的渲染模式
+  static setLocalViewFillMode({@required RenderModeEnum mode}) => _channel.invokeMethod('setLocalViewFillMode', {"mode": RenderModeTool.toInt(mode)});
 
   /// 设置远程视频填充模式
-  static Future<void> setRemoteViewFillMode({
-    @required String userId, // 用户ID
-    @required int mode, // 模式
-  }) async {
-    return await _channel.invokeMethod('setRemoteViewFillMode', {
+  /// [userId] 用户ID
+  /// [mode] 模式
+  static setRemoteViewFillMode({
+    @required String userId,
+    @required RenderModeEnum mode,
+  }) {
+    return _channel.invokeMethod('setRemoteViewFillMode', {
       "userId": userId,
-      "mode": mode,
+      "mode": RenderModeTool.toInt(mode),
     });
-  }
-
-  /// 设置本地视频填充模式
-  static Future<void> setLocalViewFillMode({
-    @required int mode, // 模式
-  }) async {
-    return await _channel.invokeMethod('setLocalViewFillMode', {
-      "mode": mode,
-    });
-  }
-
-  /// 开启本地音频采集
-  static Future<void> startLocalAudio() async {
-    return await _channel.invokeMethod('startLocalAudio');
-  }
-
-  /// 关闭本地音频采集
-  static Future<void> stopLocalAudio() async {
-    return await _channel.invokeMethod('stopLocalAudio');
   }
 
   /// 设置本地图像的顺时针旋转角度。
-  static Future<void> setLocalViewRotation({
-    @required int rotation, // rotation 支持 TRTC_VIDEO_ROTATION_90、TRTC_VIDEO_ROTATION_180、TRTC_VIDEO_ROTATION_270 旋转角度，默认值：TRTC_VIDEO_ROTATION_0。。
-  }) async {
+  /// [rotation] 角度
+  static setLocalViewRotation({
+    @required RotationEnum rotation,
+  }) {
     return _channel.invokeMethod('setLocalViewRotation', {
-      "rotation": rotation,
+      "rotation": RotationTool.toInt(rotation),
     });
   }
 
   /// 设置远端图像的顺时针旋转角度。
-  static Future<void> setRemoteViewRotation({
-    @required String userId, // 用户ID
-    @required int rotation, // rotation 支持 TRTC_VIDEO_ROTATION_90、TRTC_VIDEO_ROTATION_180、TRTC_VIDEO_ROTATION_270 旋转角度，默认值：TRTC_VIDEO_ROTATION_0。。
-  }) async {
+  /// [userId] 用户ID
+  /// [rotation] 角度
+  static setRemoteViewRotation({
+    @required String userId,
+    @required RotationEnum rotation,
+  }) {
     return _channel.invokeMethod('setRemoteViewRotation', {
       "userId": userId,
-      "rotation": rotation,
+      "rotation": RotationTool.toInt(rotation),
     });
   }
 
   /// 设置视频编码输出的（也就是远端用户观看到的，以及服务器录制下来的）画面方向
-  static Future<void> setVideoEncoderRotation({
-    @required int rotation, // 目前支持 TRTC_VIDEO_ROTATION_0 和 TRTC_VIDEO_ROTATION_180 两个旋转角度，默认值：TRTC_VIDEO_ROTATION_0。
-  }) async {
+  /// [rotation] 旋转角度，目前仅支持 Rotation_0 和 Rotation_180
+  static setVideoEncoderRotation({
+    @required RotationEnum rotation,
+  }) {
     return _channel.invokeMethod('setVideoEncoderRotation', {
-      "rotation": rotation,
+      "rotation": RotationTool.toInt(rotation),
     });
   }
 
   /// 设置本地摄像头预览画面的镜像模式。
-  static Future<void> setLocalViewMirror({
-    @required int mirrorType, // mirrorType TRTC_VIDEO_MIRROR_TYPE_AUTO：SDK 决定镜像方式：前置摄像头镜像，后置摄像头不镜像。 TRTC_VIDEO_MIRROR_TYPE_ENABLE：前置摄像头和后置摄像头都镜像。 TRTC_VIDEO_MIRROR_TYPE_DISABLE：前置摄像头和后置摄像头都不镜像。 默认值：TRTC_VIDEO_MIRROR_TYPE_AUTO。
-  }) async {
+  /// [mirrorType] 镜像模式
+  static setLocalViewMirror({
+    @required MirrorTypeEnum mirrorType,
+  }) {
     return _channel.invokeMethod('setLocalViewMirror', {
-      "mirrorType": mirrorType,
+      "mirrorType": MirrorTypeTool.toInt(mirrorType),
     });
   }
 
   /// 设置编码器输出的画面镜像模式。
-  static Future<void> setVideoEncoderMirror({
-    @required bool mirror, // true：镜像；false：不镜像；默认值：false。
-  }) async {
+  /// [mirror] true：镜像；false：不镜像；默认值：false。
+  static setVideoEncoderMirror({
+    @required bool mirror,
+  }) {
     return _channel.invokeMethod('setVideoEncoderMirror', {
       "mirror": mirror,
     });
   }
 
   /// 设置重力感应的适应模式。
-  static Future<void> setGSensorMode({
-    @required int mode, // 重力感应模式，详情请参考 TRTC_GSENSOR_MODE 的定义，默认值：TRTC_GSENSOR_MODE_UIFIXLAYOUT。
-  }) async {
+  /// [mode] 重力感应模式
+  static setGSensorMode({
+    @required GsensorModeEnum mode,
+  }) {
     return _channel.invokeMethod('setGSensorMode', {
-      "mode": mode,
+      "mode": GsensorModeTool.toInt(mode),
     });
   }
 
   /// 开启大小画面双路编码模式。
-  static Future<void> enableEncSmallVideoStream({
-    @required bool enable, // 是否开启小画面编码，默认值：false。
-    @required VideoEncParamEntity smallVideoEncParam, // 小流的视频参数。
-  }) async {
+  /// [enable] 是否开启小画面编码
+  /// [smallVideoEncParam] 小流的视频参数。
+  static Future<int> enableEncSmallVideoStream({
+    @required bool enable,
+    @required VideoEncParamEntity smallVideoEncParam,
+  }) {
     return _channel.invokeMethod('enableEncSmallVideoStream', {
       "enable": enable,
       "smallVideoEncParam": jsonEncode(smallVideoEncParam),
@@ -332,83 +314,115 @@ class TencentRtcPlugin {
   }
 
   /// 选定观看指定 uid 的大画面或小画面。
-  static Future<void> setRemoteVideoStreamType({
-    @required String userId, // 用户ID
-    @required int streamType, // 视频流类型，即选择看大画面或小画面，默认为大画面。
-  }) async {
+  /// [userId] 用户ID
+  /// [streamType] 流类型
+  static setRemoteVideoStreamType({
+    @required String userId,
+    @required StreamTypeEnum streamType,
+  }) {
     return _channel.invokeMethod('setRemoteVideoStreamType', {
       "userId": userId,
-      "streamType": streamType,
+      "streamType": StreamTypeTool.toInt(streamType),
     });
   }
 
   /// 设定观看方优先选择的视频质量。
-  static Future<void> setPriorRemoteVideoStreamType({
-    @required int streamType, // 默认观看大画面或小画面，默认为大画面。
-  }) async {
+  /// [streamType] 流类型
+  static setPriorRemoteVideoStreamType({
+    @required StreamTypeEnum streamType,
+  }) {
     return _channel.invokeMethod('setPriorRemoteVideoStreamType', {
-      "streamType": streamType,
+      "streamType": StreamTypeTool.toInt(streamType),
     });
   }
 
+  /// 设置音频质量 主播端的音质越高，观众端的听感越好，但传输所依赖的带宽也就越高，在带宽有限的场景下也更容易出现卡顿。
+  /// [quality] 质量
+  static setAudioQuality({
+    @required QualityEnum quality,
+  }) {
+    return _channel.invokeMethod('setAudioQuality', {
+      "quality": QualityTool.toInt(quality),
+    });
+  }
+
+  /// 开启本地音频采集
+  static startLocalAudio() {
+    return _channel.invokeMethod('startLocalAudio');
+  }
+
+  /// 关闭本地音频采集
+  static stopLocalAudio() {
+    return _channel.invokeMethod('stopLocalAudio');
+  }
+
   /// 静音本地的音频。
-  static Future<void> muteLocalAudio({
-    @required bool mute, // true：屏蔽；false：开启，默认值：false。
-  }) async {
+  /// [mute] true：屏蔽；false：开启，默认值：false。
+  static muteLocalAudio({
+    @required bool mute,
+  }) {
     return _channel.invokeMethod('muteLocalAudio', {
       "mute": mute,
     });
   }
 
   /// 设置音频路由。
-  static Future<void> setAudioRoute({
-    @required int route, // 音频路由，即声音由哪里输出（扬声器、听筒），请参考
-  }) async {
+  /// [route] 音频路由，即声音由哪里输出（扬声器、听筒)
+  static setAudioRoute({@required RouteEnum route}) {
     return _channel.invokeMethod('setAudioRoute', {
-      "route": route,
+      "route": RouteTool.toInt(route),
     });
   }
+
+  /// 静音/取消静音
+  /// [userId] 用户ID
+  /// [mute] 是否静音
+  static muteRemoteAudio({
+    @required String userId,
+    @required bool mute,
+  }) {
+    return _channel.invokeMethod('muteRemoteAudio', {
+      "userId": userId,
+      "mute": mute,
+    });
+  }
+
+  /// 静音/取消静音 所有用户
+  /// [mute] 是否静音
+  static muteAllRemoteAudio({@required bool mute}) => _channel.invokeMethod('muteAllRemoteAudio', {"mute": mute});
+
+  /// 设置 SDK 采集音量。
+  /// [volume] 音量大小，取值: 0-100
+  static setAudioCaptureVolume({@required int volume}) => _channel.invokeMethod('setAudioCaptureVolume', {"volume": volume});
+
+  /// 获取 SDK 采集音量
+  static Future<int> getAudioCaptureVolume() => _channel.invokeMethod('getAudioCaptureVolume');
+
+  /// 设置 SDK 播放音量。
+  /// [volume] 音量大小，取值: 0-100
+  static setAudioPlayoutVolume({@required int volume}) => _channel.invokeMethod('setAudioPlayoutVolume', {"volume": volume});
+
+  /// 获取 SDK 播放音量
+  static Future<int> getAudioPlayoutVolume() => _channel.invokeMethod('getAudioPlayoutVolume');
 
   /// 启用音量大小提示。
-  static Future<void> enableAudioVolumeEvaluation({
-    @required int intervalMs, // 决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。
-  }) async {
-    return _channel.invokeMethod('enableAudioVolumeEvaluation', {
-      "intervalMs": intervalMs,
-    });
-  }
+  /// [intervalMs] 决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。
+  static enableAudioVolumeEvaluation({@required int intervalMs}) => _channel.invokeMethod('enableAudioVolumeEvaluation', {"intervalMs": intervalMs});
 
   /// 开始录音。
-  static Future<void> startAudioRecording({
-    @required String filePath, // 文件路径（必填），录音的文件地址，由用户自行指定，请确保 App 里指定的目录存在且可写。
-  }) async {
-    return _channel.invokeMethod('startAudioRecording', {
-      "filePath": filePath,
-    });
-  }
+  /// [filePath] 文件路径（必填），录音的文件地址，由用户自行指定，请确保 App 里指定的目录存在且可写。
+  static startAudioRecording({@required String filePath}) => _channel.invokeMethod('startAudioRecording', {"filePath": filePath});
 
   /// 停止录音。
-  static Future<void> stopAudioRecording() async {
-    return _channel.invokeMethod('stopAudioRecording');
-  }
+  static stopAudioRecording() => _channel.invokeMethod('stopAudioRecording');
 
   /// 设置通话时使用的系统音量类型。
-  static Future<void> setSystemVolumeType({
-    @required int type, // 系统音量类型，请参考 TRTCSystemVolumeType，默认值：TRTCSystemVolumeTypeAuto。
-  }) async {
-    return _channel.invokeMethod('setSystemVolumeType', {
-      "type": type,
-    });
-  }
+  /// [type] 系统音量类型
+  static setSystemVolumeType({@required SystemVolumeTypeEnum type}) => _channel.invokeMethod('setSystemVolumeType', {"type": SystemVolumeTypeTool.toInt(type)});
 
   /// 开启耳返。
-  static Future<void> enableAudioEarMonitoring({
-    @required bool enable, // true：开启；false：关闭。
-  }) async {
-    return _channel.invokeMethod('enableAudioEarMonitoring', {
-      "enable": enable,
-    });
-  }
+  /// [enable] 是否启用
+  static enableAudioEarMonitoring({@required bool enable}) => _channel.invokeMethod('enableAudioEarMonitoring', {"enable": enable});
 
   /// 切换摄像头。
   static Future<void> switchCamera() async {

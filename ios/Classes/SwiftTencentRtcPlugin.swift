@@ -91,6 +91,18 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "muteAllRemoteAudio":
             self.muteAllRemoteAudio(call: call, result: result);
             break;
+        case "setAudioCaptureVolume":
+            self.setAudioCaptureVolume(call: call, result: result);
+            break;
+        case "getAudioCaptureVolume":
+            self.getAudioCaptureVolume(call: call, result: result);
+            break;
+        case "setAudioPlayoutVolume":
+            self.setAudioPlayoutVolume(call: call, result: result);
+            break;
+        case "getAudioPlayoutVolume":
+            self.getAudioPlayoutVolume(call: call, result: result);
+            break;
         case "setRemoteViewFillMode":
             self.setRemoteViewFillMode(call: call, result: result);
             break;
@@ -141,6 +153,9 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             break;
         case "setPriorRemoteVideoStreamType":
             self.setPriorRemoteVideoStreamType(call: call, result: result);
+            break;
+        case "setAudioQuality":
+            self.setAudioQuality(call: call, result: result);
             break;
         case "muteLocalAudio":
             self.muteLocalAudio(call: call, result: result);
@@ -377,6 +392,40 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
     }
 
     /**
+     * 设置 SDK 采集音量。
+     */
+    public func setAudioCaptureVolume(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let volume = CommonUtils.getParam(call: call, result: result, param: "volume") as? Int {
+            TRTCCloud.sharedInstance()?.setAudioCaptureVolume(volume);
+            result(nil);
+        }
+    }
+
+    /**
+     * 获得 SDK 采集音量。
+     */
+    public func getAudioCaptureVolume(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        result(TRTCCloud.sharedInstance()?.getAudioCaptureVolume());
+    }
+
+    /**
+     * 设置 SDK 播放音量。
+     */
+    public func setAudioPlayoutVolume(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let volume = CommonUtils.getParam(call: call, result: result, param: "volume") as? Int {
+            TRTCCloud.sharedInstance()?.setAudioPlayoutVolume(volume);
+            result(nil);
+        }
+    }
+
+    /**
+     * 获得 SDK 播放音量。
+     */
+    public func getAudioPlayoutVolume(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        result(TRTCCloud.sharedInstance()?.getAudioPlayoutVolume());
+    }
+
+    /**
      * 设置远程显示填充模式
      */
     public func setRemoteViewFillMode(call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -567,8 +616,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             if dict["videoFps"] != nil {
                 data.videoFps = dict["videoFps"] as! Int32;
             }
-            TRTCCloud.sharedInstance()?.enableEncSmallVideoStream(enable, withQuality: data);
-            result(nil);
+            result(TRTCCloud.sharedInstance()?.enableEncSmallVideoStream(enable, withQuality: data));
         }
     }
 
@@ -589,6 +637,16 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
     public func setPriorRemoteVideoStreamType(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if let streamType = CommonUtils.getParam(call: call, result: result, param: "streamType") as? Int {
             TRTCCloud.sharedInstance()?.setPriorRemoteVideoStreamType(TRTCVideoStreamType(rawValue: streamType)!);
+            result(nil);
+        }
+    }
+
+    /**
+     * 设置音频质量
+     */
+    public func setAudioQuality(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let quality = CommonUtils.getParam(call: call, result: result, param: "quality") as? Int {
+            TRTCCloud.sharedInstance()?.setAudioQuality(TRTCAudioQuality(rawValue: quality)!);
             result(nil);
         }
     }
