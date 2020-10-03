@@ -244,6 +244,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "isCameraAutoFocusFaceModeSupported":
                 this.isCameraAutoFocusFaceModeSupported(call, result);
                 break;
+            case "setWatermark":
+                this.setWatermark(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -764,5 +767,18 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      */
     private void isCameraAutoFocusFaceModeSupported(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         result.success(trtcCloud.isCameraAutoFocusFaceModeSupported());
+    }
+
+    /**
+     * 添加水印
+     */
+    private void setWatermark(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String image = TencentRtcPluginUtil.getParam(call, result, "image");
+        int streamType = TencentRtcPluginUtil.getParam(call, result, "streamType");
+        float x = TencentRtcPluginUtil.getParam(call, result, "x");
+        float y = TencentRtcPluginUtil.getParam(call, result, "y");
+        float width = TencentRtcPluginUtil.getParam(call, result, "width");
+        trtcCloud.setWatermark(BitmapFactory.decodeFile(image), streamType, x, y, width);
+        result.success(null);
     }
 }

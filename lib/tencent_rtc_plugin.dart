@@ -456,7 +456,32 @@ class TencentRtcPlugin {
   }
 
   /// 查询是否支持自动识别人脸位置。
-  Future<bool> isCameraAutoFocusFaceModeSupported() => _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
+  static Future<bool> isCameraAutoFocusFaceModeSupported() => _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
+
+  /// 添加水印
+  /// [asset] assets 中的资源，不是本地原生资源!!!
+  /// [streamType] 流类型
+  /// [x] 归一化水印位置的 X 轴坐标，取值[0,1]
+  /// [y] 归一化水印位置的 Y 轴坐标，取值[0,1]
+  /// [width] 归一化水印宽度，取值[0,1]
+  /// [height] 归一化水印宽度，取值[0,1]，仅IOS有效
+  static setWatermark({
+    @required String asset,
+    @required StreamTypeEnum streamType,
+    @required double x,
+    @required double y,
+    @required double width,
+    double height: 0.5,
+  }) async {
+    return _channel.invokeMethod('setWatermark', {
+      "image": AssetsUtil.copyAssetToLocal(asset),
+      "streamType": StreamTypeTool.toInt(streamType),
+      "x": x,
+      "y": y,
+      "width": width,
+      "height": height,
+    });
+  }
 }
 
 /// 监听器对象

@@ -202,6 +202,9 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "isCameraAutoFocusFaceModeSupported":
             self.isCameraAutoFocusFaceModeSupported(call: call, result: result);
             break;
+        case "setWatermark":
+            self.setWatermark(call: call, result: result);
+            break;
         default:
             result(FlutterMethodNotImplemented);
         }
@@ -796,6 +799,21 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
      */
     public func isCameraAutoFocusFaceModeSupported(call: FlutterMethodCall, result: @escaping FlutterResult) {
         result(TRTCCloud.sharedInstance()?.isCameraAutoFocusFaceModeSupported());
+    }
+
+    /**
+     * 设置水印
+     */
+    public func setWatermark(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let image = CommonUtils.getParam(call: call, result: result, param: "image") as? String,
+           let streamType = CommonUtils.getParam(call: call, result: result, param: "streamType") as? Int,
+           let x = CommonUtils.getParam(call: call, result: result, param: "x") as? CGFloat,
+           let y = CommonUtils.getParam(call: call, result: result, param: "y") as? CGFloat,
+           let height = CommonUtils.getParam(call: call, result: result, param: "height") as? CGFloat,
+           let width = CommonUtils.getParam(call: call, result: result, param: "width") as? CGFloat {
+            TRTCCloud.sharedInstance().setWatermark(UIImage.init(contentsOfFile: image), streamType: TRTCVideoStreamType.init(rawValue: streamType)!, rect: CGRect(x: x, y: y, width: width, height: height))
+            result(nil);
+        }
     }
 
     /**
