@@ -553,6 +553,25 @@ class TencentRtcPlugin {
       "repeatCount": repeatCount,
     });
   }
+
+  /// 开始进行网络测速（视频通话期间请勿测试，以免影响通话质量）
+  /// [appid] appid
+  /// [userId] 用户ID
+  /// [userSig] 用户签名
+  static startSpeedTest({
+    @required int appid,
+    @required String userId,
+    @required String userSig,
+  }) {
+    return _channel.invokeMethod("startSpeedTest", {
+      "appid": appid,
+      "userId": userId,
+      "userSig": userSig,
+    });
+  }
+
+  /// 停止服务器测速
+  static stopSpeedTest() => _channel.invokeMethod("stopSpeedTest");
 }
 
 /// 监听器对象

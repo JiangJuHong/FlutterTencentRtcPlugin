@@ -271,6 +271,12 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "sendSEIMsg":
                 this.sendSEIMsg(call, result);
                 break;
+            case "startSpeedTest":
+                this.startSpeedTest(call, result);
+                break;
+            case "stopSpeedTest":
+                this.stopSpeedTest(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -878,6 +884,25 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         String data = TencentRtcPluginUtil.getParam(call, result, "data");
         int repeatCount = TencentRtcPluginUtil.getParam(call, result, "repeatCount");
         trtcCloud.sendSEIMsg(data.getBytes(), repeatCount);
+        result.success(null);
+    }
+
+    /**
+     * 开始进行网络测速（视频通话期间请勿测试，以免影响通话质量）。
+     */
+    private void startSpeedTest(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int appid = TencentRtcPluginUtil.getParam(call, result, "appid");
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        String userSig = TencentRtcPluginUtil.getParam(call, result, "userSig");
+        trtcCloud.startSpeedTest(appid, userId, userSig);
+        result.success(null);
+    }
+
+    /**
+     * 停止服务器测速
+     */
+    private void stopSpeedTest(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.stopSpeedTest();
         result.success(null);
     }
 }

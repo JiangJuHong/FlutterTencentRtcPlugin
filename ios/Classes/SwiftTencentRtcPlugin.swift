@@ -229,6 +229,12 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "sendSEIMsg":
             self.sendSEIMsg(call: call, result: result);
             break;
+        case "startSpeedTest":
+            self.startSpeedTest(call: call, result: result);
+            break;
+        case "stopSpeedTest":
+            self.stopSpeedTest(call: call, result: result);
+            break;
         default:
             result(FlutterMethodNotImplemented);
         }
@@ -924,6 +930,43 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             TRTCCloud.sharedInstance()?.sendSEIMsg(data.data(using: .utf8)!, repeatCount: repeatCount);
             result(nil);
         }
+    }
+
+    /**
+     * 将小数据量的自定义数据嵌入视频帧中
+     */
+    public func startSpeedTest(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let appid = CommonUtils.getParam(call: call, result: result, param: "appid") as? UInt32,
+           let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
+           let userSig = CommonUtils.getParam(call: call, result: result, param: "userSig") as? String {
+            TRTCCloud.sharedInstance()?.startSpeedTest(appid, userId: userId, userSig: userSig, completion: {
+                (trtcSpeedTestResult: TRTCSpeedTestResult?, i: Int, i1: Int) -> Void in
+
+                var params: [String: Any] = [
+                    "finishedCount": i,
+                    "totalCount": i1,
+                ];
+                if let result = trtcSpeedTestResult {
+                    params["currentResult"] = [
+                        "ip": result.ip,
+                        "quality": result.quality,
+                        "upLostRate": result.upLostRate,
+                        "downLostRate": result.downLostRate,
+                        "rtt": result.rtt
+                    ];
+                }
+                self.invokeListener(type: ListenerType.SpeedTest, params: params);
+            });
+            result(nil);
+        }
+    }
+
+    /**
+     * 停止服务器测速。
+     */
+    public func stopSpeedTest(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        TRTCCloud.sharedInstance()?.stopSpeedTest()
+        result(nil);
     }
 
     /**
