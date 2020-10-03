@@ -247,6 +247,24 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
             case "setWatermark":
                 this.setWatermark(call, result);
                 break;
+            case "stopScreenCapture":
+                this.stopScreenCapture(call, result);
+                break;
+            case "pauseScreenCapture":
+                this.pauseScreenCapture(call, result);
+                break;
+            case "resumeScreenCapture":
+                this.resumeScreenCapture(call, result);
+                break;
+            case "stopRemoteSubStreamView":
+                this.stopRemoteSubStreamView(call, result);
+                break;
+            case "setRemoteSubStreamViewFillMode":
+                this.setRemoteSubStreamViewFillMode(call, result);
+                break;
+            case "setRemoteSubStreamViewRotation":
+                this.setRemoteSubStreamViewRotation(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -779,6 +797,59 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         float y = TencentRtcPluginUtil.getParam(call, result, "y");
         float width = TencentRtcPluginUtil.getParam(call, result, "width");
         trtcCloud.setWatermark(BitmapFactory.decodeFile(image), streamType, x, y, width);
+        result.success(null);
+    }
+
+    /**
+     * 停止屏幕采集。IOS仅支持 IOS11及以上。
+     */
+    private void stopScreenCapture(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.stopScreenCapture();
+        result.success(null);
+    }
+
+    /**
+     * 暂停屏幕分享。IOS仅支持 IOS11及以上。
+     */
+    private void pauseScreenCapture(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.pauseScreenCapture();
+        result.success(null);
+    }
+
+    /**
+     * 恢复屏幕分享。IOS仅支持 IOS11及以上。
+     */
+    private void resumeScreenCapture(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        trtcCloud.resumeScreenCapture();
+        result.success(null);
+    }
+
+    /**
+     * 停止远端辅流显示
+     */
+    private void stopRemoteSubStreamView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        trtcCloud.stopRemoteSubStreamView(userId);
+        result.success(null);
+    }
+
+    /**
+     * 设置屏幕分享画面的显示模式。
+     */
+    private void setRemoteSubStreamViewFillMode(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        int mode = TencentRtcPluginUtil.getParam(call, result, "mode");
+        trtcCloud.setRemoteSubStreamViewFillMode(userId, mode);
+        result.success(null);
+    }
+
+    /**
+     * 设置屏幕分享画面的顺时针旋转角度。
+     */
+    private void setRemoteSubStreamViewRotation(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        int rotation = TencentRtcPluginUtil.getParam(call, result, "rotation");
+        trtcCloud.setRemoteSubStreamViewRotation(userId, rotation);
         result.success(null);
     }
 }

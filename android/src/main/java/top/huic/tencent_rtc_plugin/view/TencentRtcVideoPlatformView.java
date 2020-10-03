@@ -86,9 +86,6 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory
             case "startRemoteSubStreamView":
                 this.startRemoteSubStreamView(call, result);
                 break;
-            case "stopRemoteSubStreamView":
-                this.stopRemoteSubStreamView(call, result);
-                break;
             default:
                 result.notImplemented();
         }
@@ -119,15 +116,6 @@ public class TencentRtcVideoPlatformView extends PlatformViewFactory
     private void startRemoteSubStreamView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
         trtcCloud.startRemoteSubStreamView(userId, this.remoteView);
-        result.success(null);
-    }
-
-    /**
-     * 停止远端辅流显示
-     */
-    private void stopRemoteSubStreamView(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
-        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
-        trtcCloud.stopRemoteSubStreamView(userId);
         result.success(null);
     }
 }

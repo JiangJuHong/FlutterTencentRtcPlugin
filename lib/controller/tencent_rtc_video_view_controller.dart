@@ -16,20 +16,6 @@ class TencentRtcVideoViewController {
   startRemoteView({@required String userId}) => _channel.invokeMethod('startRemoteView', {"userId": userId});
 
   /// 开启远端辅流显示
-  Future<void> startRemoteSubStreamView({
-    @required String userId,
-  }) async {
-    return _channel.invokeMethod("startRemoteSubStreamView", {
-      "userId": userId,
-    });
-  }
-
-  /// 关闭远端辅流显示
-  Future<void> stopRemoteSubStreamView({
-    @required String userId,
-  }) async {
-    return _channel.invokeMethod("stopRemoteSubStreamView", {
-      "userId": userId,
-    });
-  }
+  /// [userId] 用户ID
+  startRemoteSubStreamView({@required String userId}) => _channel.invokeMethod("startRemoteSubStreamView", {"userId": userId});
 }

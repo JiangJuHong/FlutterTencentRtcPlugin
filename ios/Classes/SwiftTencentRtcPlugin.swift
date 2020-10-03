@@ -205,6 +205,24 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         case "setWatermark":
             self.setWatermark(call: call, result: result);
             break;
+        case "stopScreenCapture":
+            self.stopScreenCapture(call: call, result: result);
+            break;
+        case "pauseScreenCapture":
+            self.pauseScreenCapture(call: call, result: result);
+            break;
+        case "resumeScreenCapture":
+            self.resumeScreenCapture(call: call, result: result);
+            break;
+        case "stopRemoteSubStreamView":
+            self.stopRemoteSubStreamView(call: call, result: result);
+            break;
+        case "setRemoteSubStreamViewFillMode":
+            self.setRemoteSubStreamViewFillMode(call: call, result: result);
+            break;
+        case "setRemoteSubStreamViewRotation":
+            self.setRemoteSubStreamViewRotation(call: call, result: result);
+            break;
         default:
             result(FlutterMethodNotImplemented);
         }
@@ -812,6 +830,68 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
            let height = CommonUtils.getParam(call: call, result: result, param: "height") as? CGFloat,
            let width = CommonUtils.getParam(call: call, result: result, param: "width") as? CGFloat {
             TRTCCloud.sharedInstance().setWatermark(UIImage.init(contentsOfFile: image), streamType: TRTCVideoStreamType.init(rawValue: streamType)!, rect: CGRect(x: x, y: y, width: width, height: height))
+            result(nil);
+        }
+    }
+
+    /**
+     * 停止屏幕采集。
+     */
+    public func stopScreenCapture(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if #available(iOS 11.0, *) {
+            TRTCCloud.sharedInstance()?.stopScreenCapture()
+        };
+        result(nil);
+    }
+
+    /**
+     * 暂停屏幕分享。
+     */
+    public func pauseScreenCapture(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if #available(iOS 11.0, *) {
+            TRTCCloud.sharedInstance()?.pauseScreenCapture()
+        };
+        result(nil);
+    }
+
+    /**
+     * 恢复屏幕分享。
+     */
+    public func resumeScreenCapture(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if #available(iOS 11.0, *) {
+            TRTCCloud.sharedInstance()?.resumeScreenCapture()
+        };
+        result(nil);
+    }
+
+    /**
+     * 停止远端辅流显示
+     */
+    public func stopRemoteSubStreamView(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String {
+            TRTCCloud.sharedInstance()?.stopRemoteSubStreamView(userId)
+            result(nil);
+        }
+    }
+
+    /**
+     * 设置屏幕分享画面的显示模式
+     */
+    public func setRemoteSubStreamViewFillMode(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
+           let mode = CommonUtils.getParam(call: call, result: result, param: "mode") as? Int {
+            TRTCCloud.sharedInstance()?.setRemoteSubStreamViewFillMode(userId, mode: TRTCVideoFillMode.init(rawValue: mode)!);
+            result(nil);
+        }
+    }
+
+    /**
+     * 设置屏幕分享画面的顺时针旋转角度
+     */
+    public func setRemoteSubStreamViewRotation(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
+           let rotation = CommonUtils.getParam(call: call, result: result, param: "rotation") as? Int {
+            TRTCCloud.sharedInstance()?.setRemoteSubStreamViewRotation(userId, mode: TRTCVideoRotation.init(rawValue: rotation)!);
             result(nil);
         }
     }

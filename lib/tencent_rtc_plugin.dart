@@ -482,6 +482,45 @@ class TencentRtcPlugin {
       "height": height,
     });
   }
+
+  /// 停止屏幕采集。
+  static stopScreenCapture() => _channel.invokeMethod('stopScreenCapture');
+
+  /// 暂停屏幕分享。
+  static pauseScreenCapture() => _channel.invokeMethod('pauseScreenCapture');
+
+  /// 恢复屏幕分享。
+  static resumeScreenCapture() => _channel.invokeMethod('resumeScreenCapture');
+
+  /// 关闭远端辅流显示
+  /// [userId] 用户ID
+  static stopRemoteSubStreamView({@required String userId}) => _channel.invokeMethod("stopRemoteSubStreamView", {"userId": userId});
+
+  /// 设置屏幕分享画面的显示模式。
+  /// [userId] 用户ID
+  /// [mode] 显示模式
+  static setRemoteSubStreamViewFillMode({
+    @required String userId,
+    @required RenderModeEnum mode,
+  }) {
+    return _channel.invokeMethod("setRemoteSubStreamViewFillMode", {
+      "userId": userId,
+      "mode": RenderModeTool.toInt(mode),
+    });
+  }
+
+  /// 设置屏幕分享画面的顺时针旋转角度。
+  /// [userId] 用户ID
+  /// [rotation] 旋转角度
+  static setRemoteSubStreamViewRotation({
+    @required String userId,
+    @required RotationEnum rotation,
+  }) {
+    return _channel.invokeMethod("setRemoteSubStreamViewRotation", {
+      "userId": userId,
+      "rotation": RotationTool.toInt(rotation),
+    });
+  }
 }
 
 /// 监听器对象
