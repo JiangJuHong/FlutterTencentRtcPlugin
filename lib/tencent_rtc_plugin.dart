@@ -425,45 +425,27 @@ class TencentRtcPlugin {
   static enableAudioEarMonitoring({@required bool enable}) => _channel.invokeMethod('enableAudioEarMonitoring', {"enable": enable});
 
   /// 切换摄像头。
-  static Future<void> switchCamera() async {
-    return _channel.invokeMethod('switchCamera');
-  }
+  static switchCamera() => _channel.invokeMethod('switchCamera');
 
   /// 查询当前摄像头是否支持缩放
-  Future<bool> isCameraZoomSupported() async {
-    return _channel.invokeMethod('isCameraZoomSupported');
-  }
+  static Future<bool> isCameraZoomSupported() => _channel.invokeMethod('isCameraZoomSupported');
 
   /// 设置摄像头缩放因子（焦距）。
-  static Future<void> setZoom({
-    @required int distance, // 取值范围为1 - 5，数值越大，焦距越远。
-  }) async {
-    return _channel.invokeMethod('setZoom', {
-      "distance": distance,
-    });
-  }
+  /// [distance] 取值范围为1 - 5，数值越大，焦距越远。
+  static setZoom({@required int distance}) => _channel.invokeMethod('setZoom', {"distance": distance});
 
   /// 查询是否支持开关闪光灯（手电筒模式）。
-  Future<bool> isCameraTorchSupported() async {
-    return _channel.invokeMethod('isCameraTorchSupported');
-  }
+  static Future<bool> isCameraTorchSupported() => _channel.invokeMethod('isCameraTorchSupported');
 
   /// 开关闪光灯。
-  static Future<void> enableTorch({
-    @required bool enable, // true：开启；false：关闭，默认值：false。
-  }) async {
-    return _channel.invokeMethod('enableTorch', {
-      "enable": enable,
-    });
-  }
+  /// [enable] 是否开启
+  static enableTorch({@required bool enable}) => _channel.invokeMethod('enableTorch', {"enable": enable});
 
   /// 查询是否支持设置焦点。
-  Future<bool> isCameraFocusPositionInPreviewSupported() async {
-    return _channel.invokeMethod('isCameraFocusPositionInPreviewSupported');
-  }
+  static Future<bool> isCameraFocusPositionInPreviewSupported() => _channel.invokeMethod('isCameraFocusPositionInPreviewSupported');
 
   /// 设置摄像头焦点。
-  static Future<void> setFocusPosition({
+  static setFocusPosition({
     @required int x,
     @required int y,
   }) async {
@@ -474,9 +456,7 @@ class TencentRtcPlugin {
   }
 
   /// 查询是否支持自动识别人脸位置。
-  Future<bool> isCameraAutoFocusFaceModeSupported() async {
-    return _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
-  }
+  Future<bool> isCameraAutoFocusFaceModeSupported() => _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
 }
 
 /// 监听器对象
