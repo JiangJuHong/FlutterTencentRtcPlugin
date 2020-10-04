@@ -1318,38 +1318,43 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
     public func onRecvSEIMsg(_ userId: String, message: Data) {
         self.invokeListener(type: ListenerType.RecvSEIMsg, params: [
             "userId": userId,
-            "data": message
+            "data": String(data: message!, encoding: String.Encoding.utf8.rawValue)
         ]);
+    }
+
+    /**
+     * 开始向腾讯云的直播 CDN 推流的回调
+     */
+    public func onStartPublishing(_ err: Int32, errMsg: String) {
+        self.invokeListener(type: ListenerType.StartPublishing, params: ["code": errCode.rawValue, "msg": errMsg]);
+    }
+
+    /**
+     * 停止向腾讯云的直播 CDN 推流的回调
+     */
+    public func onStopPublishing(_ err: Int32, errMsg: String) {
+        self.invokeListener(type: ListenerType.StopPublishing, params: ["code": errCode.rawValue, "msg": errMsg]);
     }
 
     /**
      * 启动旁路推流到 CDN 完成的回调。
      */
     public func onStartPublishCDNStream(_ err: Int32, errMsg: String) {
-        self.invokeListener(type: ListenerType.StartPublishCDNStream, params: [
-            "err": err,
-            "errMsg": errMsg
-        ]);
+        self.invokeListener(type: ListenerType.StartPublishCDNStream, params: ["code": err, "msg": errMsg]);
     }
 
     /**
      * 停止旁路推流到 CDN 完成的回调。
      */
     public func onStopPublishCDNStream(_ err: Int32, errMsg: String) {
-        self.invokeListener(type: ListenerType.StopPublishCDNStream, params: [
-            "err": err,
-            "errMsg": errMsg
-        ]);
+        self.invokeListener(type: ListenerType.StopPublishCDNStream, params: ["code": err, "msg": errMsg]);
     }
 
     /**
      * 设置云端的混流转码参数的回调，对应于 TRTCCloud 中的 setMixTranscodingConfig() 接口。
      */
     public func onSetMixTranscodingConfig(_ err: Int32, errMsg: String) {
-        self.invokeListener(type: ListenerType.SetMixTranscodingConfig, params: [
-            "err": err,
-            "errMsg": errMsg
-        ]);
+        self.invokeListener(type: ListenerType.SetMixTranscodingConfig, params: ["code": err, "msg": errMsg]);
     }
 
     /**
@@ -1369,5 +1374,25 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
             "level": level.rawValue,
             "module": level.module,
         ]);
+    }
+
+    /// 当屏幕分享开始时，SDK 会通过此回调通知。
+    public func onScreenCaptureStarted() {
+        self.invokeListener(type: ListenerType.ScreenCaptureStarted, params: nil);
+    }
+
+    /// 当屏幕分享调用 TRTCCloud.pauseScreenCapture() 暂停时，SDK 会通过此回调通知。
+    public func onScreenCapturePaused(_ reason: Int32) {
+        self.invokeListener(type: ListenerType.ScreenCapturePaused, params: nil);
+    }
+
+    /// 当屏幕分享调用 TRTCCloud.resumeScreenCapture() 恢复时，SDK 会通过此回调通知。
+    public func onScreenCaptureResumed(_ reason: Int32) {
+        self.invokeListener(type: ListenerType.ScreenCaptureResumed, params: nil);
+    }
+
+    /// 当屏幕分享停止时，SDK 会通过此回调通知。
+    public func onScreenCaptureStoped(_ reason: Int32) {
+        self.invokeListener(type: ListenerType.ScreenCaptureStopped, params: reason);
     }
 }

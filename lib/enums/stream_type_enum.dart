@@ -14,4 +14,9 @@ class StreamTypeTool {
   /// [value] 枚举
   /// [Return] 转换结果
   static int toInt(StreamTypeEnum value) => value.index;
+
+  /// 根据Int类型值获得枚举
+  /// [index] Int常量
+  /// [Return] 枚举对象
+  static StreamTypeEnum getByInt(int index) => StreamTypeEnum.values[index];
 }

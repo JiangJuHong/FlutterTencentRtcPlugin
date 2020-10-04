@@ -3,6 +3,19 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:tencent_rtc_plugin/entity/audio_effect_finished_entity.dart';
+import 'package:tencent_rtc_plugin/entity/audio_route_changed_entity.dart';
+import 'package:tencent_rtc_plugin/entity/common_status_entity.dart';
+import 'package:tencent_rtc_plugin/entity/custom_message_entity.dart';
+import 'package:tencent_rtc_plugin/entity/log_entity.dart';
+import 'package:tencent_rtc_plugin/entity/network_quality_entity.dart';
+import 'package:tencent_rtc_plugin/entity/sei_message_entity.dart';
+import 'package:tencent_rtc_plugin/entity/speed_test_entity.dart';
+import 'package:tencent_rtc_plugin/entity/statistics_entity.dart';
+import 'package:tencent_rtc_plugin/entity/user_available_entity.dart';
+import 'package:tencent_rtc_plugin/entity/user_status_entity.dart';
+import 'package:tencent_rtc_plugin/entity/video_frame_entity.dart';
+import 'package:tencent_rtc_plugin/entity/voice_volume_entity.dart';
 import 'package:tencent_rtc_plugin/enums/debug_view_mode_enum.dart';
 import 'package:tencent_rtc_plugin/enums/gsensor_mode_enum.dart';
 import 'package:tencent_rtc_plugin/enums/log_level_enum.dart';
@@ -629,6 +642,81 @@ class TencentRtcPluginListener {
           // 没有找到类型就返回
           if (type == null) {
             throw MissingPluginException();
+          }
+
+          // 根据类型进行解析
+          switch (type) {
+            case ListenerTypeEnum.SdkError:
+            case ListenerTypeEnum.Warning:
+            case ListenerTypeEnum.SwitchRole:
+            case ListenerTypeEnum.DisConnectOtherRoom:
+            case ListenerTypeEnum.StartPublishing:
+            case ListenerTypeEnum.StopPublishing:
+            case ListenerTypeEnum.StartPublishCDNStream:
+            case ListenerTypeEnum.StopPublishCDNStream:
+            case ListenerTypeEnum.SetMixTranscodingConfig:
+              params = CommonStatusEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.ConnectOtherRoom:
+              params = UserStatusEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.RemoteUserLeaveRoom:
+              params = CommonStatusEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.UserVideoAvailable:
+            case ListenerTypeEnum.UserSubStreamAvailable:
+            case ListenerTypeEnum.UserAudioAvailable:
+              params = UserAvailableEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.FirstVideoFrame:
+              params = VideoFrameEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.EnterRoom:
+            case ListenerTypeEnum.ExitRoom:
+            case ListenerTypeEnum.RemoteUserEnterRoom:
+            case ListenerTypeEnum.FirstAudioFrame:
+            case ListenerTypeEnum.SendFirstLocalAudioFrame:
+            case ListenerTypeEnum.ConnectionLost:
+            case ListenerTypeEnum.TryToReconnect:
+            case ListenerTypeEnum.ConnectionRecovery:
+            case ListenerTypeEnum.CameraDidReady:
+            case ListenerTypeEnum.MicDidReady:
+            case ListenerTypeEnum.ScreenCaptureStarted:
+            case ListenerTypeEnum.ScreenCapturePaused:
+            case ListenerTypeEnum.ScreenCaptureResumed:
+            case ListenerTypeEnum.ScreenCaptureStopped:
+              break;
+            case ListenerTypeEnum.SendFirstLocalVideoFrame:
+              params = StreamTypeTool.getByInt(params);
+              break;
+            case ListenerTypeEnum.NetworkQuality:
+              params = NetworkQualityEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.Statistics:
+              params = StatisticsEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.SpeedTest:
+              params = SpeedTestEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.AudioRouteChanged:
+              params = AudioRouteChangedEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.UserVoiceVolume:
+              params = VoiceVolumeEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.RecvCustomCmdMsg:
+            case ListenerTypeEnum.MissCustomCmdMsg:
+              params = CustomMessageEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.RecvSEIMsg:
+              params = SeiMessageEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.AudioEffectFinished:
+              params = AudioEffectFinishedEntity.fromJson(params);
+              break;
+            case ListenerTypeEnum.Log:
+              params = LogEntity.fromJson(params);
+              break;
           }
 
           // 回调触发

@@ -123,6 +123,14 @@ public enum CallBackNoticeEnum {
      */
     RecvSEIMsg,
     /**
+     * 开始向腾讯云的直播 CDN 推流的回调
+     */
+    StartPublishing,
+    /**
+     * 停止向腾讯云的直播 CDN 推流的回调
+     */
+    StopPublishing,
+    /**
      * 启动旁路推流到 CDN 完成的回调。
      */
     StartPublishCDNStream,
@@ -138,6 +146,22 @@ public enum CallBackNoticeEnum {
      * 播放音效结束回调。
      */
     AudioEffectFinished,
+    /**
+     * 屏幕分享开始回调
+     */
+    ScreenCaptureStarted,
+    /**
+     * 屏幕分享暂停回调
+     */
+    ScreenCapturePaused,
+    /**
+     * 屏幕分享恢复回调
+     */
+    ScreenCaptureResumed,
+    /**
+     * 屏幕分享停止回调
+     */
+    ScreenCaptureStopped,
     /**
      * 日志
      */

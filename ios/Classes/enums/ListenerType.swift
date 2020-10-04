@@ -1,7 +1,6 @@
-
 //  Created by 蒋具宏 on 2020/2/22.
 //  监听器枚举
-public enum ListenerType{
+public enum ListenerType {
     /**
      * SDK加载错误
      */
@@ -119,6 +118,14 @@ public enum ListenerType{
      */
     case RecvSEIMsg
     /**
+     * 开始向腾讯云的直播 CDN 推流的回调
+     */
+    case StartPublishing
+    /**
+     * 停止向腾讯云的直播 CDN 推流的回调
+     */
+    case StopPublishing
+    /**
      * 启动旁路推流到 CDN 完成的回调。
      */
     case StartPublishCDNStream
@@ -134,6 +141,22 @@ public enum ListenerType{
      * 播放音效结束回调。
      */
     case AudioEffectFinished
+    /**
+     * 屏幕分享开始回调
+     */
+    case ScreenCaptureStarted
+    /**
+     * 屏幕分享暂停回调
+     */
+    case ScreenCapturePaused
+    /**
+     * 屏幕分享恢复回调
+     */
+    case ScreenCaptureResumed
+    /**
+     * 屏幕分享停止回调
+     */
+    case ScreenCaptureStopped
     /**
      * 日志回调。
      */

@@ -348,8 +348,32 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         super.onRecvSEIMsg(s, bytes);
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userId", s);
-        params.put("data", bytes);
+        params.put("data", new String(bytes));
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RecvSEIMsg, params);
+    }
+
+    /**
+     * 开始向腾讯云的直播 CDN 推流的回调
+     */
+    @Override
+    public void onStartPublishing(int i, String s) {
+        super.onStartPublishing(i, s);
+        Map<String, Object> params = new HashMap<>(2, 1);
+        params.put("code", i);
+        params.put("msg", s);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.StartPublishing, params);
+    }
+
+    /**
+     * 停止向腾讯云的直播 CDN 推流的回调
+     */
+    @Override
+    public void onStopPublishing(int i, String s) {
+        super.onStopPublishing(i, s);
+        Map<String, Object> params = new HashMap<>(2, 1);
+        params.put("code", i);
+        params.put("msg", s);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.StopPublishing, params);
     }
 
     /**
@@ -359,8 +383,8 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     public void onStartPublishCDNStream(int i, String s) {
         super.onStartPublishCDNStream(i, s);
         Map<String, Object> params = new HashMap<>(2, 1);
-        params.put("err", i);
-        params.put("errMsg", s);
+        params.put("code", i);
+        params.put("msg", s);
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.StartPublishCDNStream, params);
     }
 
@@ -371,8 +395,8 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     public void onStopPublishCDNStream(int i, String s) {
         super.onStopPublishCDNStream(i, s);
         Map<String, Object> params = new HashMap<>(2, 1);
-        params.put("err", i);
-        params.put("errMsg", s);
+        params.put("code", i);
+        params.put("msg", s);
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.StopPublishCDNStream, params);
     }
 
@@ -383,8 +407,8 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     public void onSetMixTranscodingConfig(int i, String s) {
         super.onSetMixTranscodingConfig(i, s);
         Map<String, Object> params = new HashMap<>(2, 1);
-        params.put("err", i);
-        params.put("errMsg", s);
+        params.put("code", i);
+        params.put("msg", s);
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SetMixTranscodingConfig, params);
     }
 
@@ -398,5 +422,41 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         params.put("effectId", i);
         params.put("code", i1);
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.AudioEffectFinished, params);
+    }
+
+    /**
+     * 当屏幕分享开始时，SDK 会通过此回调通知。
+     */
+    @Override
+    public void onScreenCaptureStarted() {
+        super.onScreenCaptureStarted();
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ScreenCaptureStarted, null);
+    }
+
+    /**
+     * 当屏幕分享调用 TRTCCloud.pauseScreenCapture() 暂停时，SDK 会通过此回调通知。
+     */
+    @Override
+    public void onScreenCapturePaused() {
+        super.onScreenCapturePaused();
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ScreenCapturePaused, null);
+    }
+
+    /**
+     * 当屏幕分享调用 TRTCCloud.resumeScreenCapture() 恢复时，SDK 会通过此回调通知。
+     */
+    @Override
+    public void onScreenCaptureResumed() {
+        super.onScreenCaptureResumed();
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ScreenCaptureResumed, null);
+    }
+
+    /**
+     * 当屏幕分享停止时，SDK 会通过此回调通知。
+     */
+    @Override
+    public void onScreenCaptureStopped(int i) {
+        super.onScreenCaptureStopped(i);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ScreenCaptureStopped, i);
     }
 }
