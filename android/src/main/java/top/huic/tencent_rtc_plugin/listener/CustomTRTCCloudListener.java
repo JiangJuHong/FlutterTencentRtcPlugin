@@ -16,18 +16,12 @@ import java.util.Map;
 import io.flutter.plugin.common.MethodChannel;
 import top.huic.tencent_rtc_plugin.enums.CallBackNoticeEnum;
 import top.huic.tencent_rtc_plugin.util.JsonUtil;
+import top.huic.tencent_rtc_plugin.util.ListenerUtil;
 
 /**
  * 腾讯云音视频通信监听器
  */
 public class CustomTRTCCloudListener extends TRTCCloudListener {
-
-    private final static String TAG = CustomTRTCCloudListener.class.getName();
-
-    /**
-     * 监听器回调的方法名
-     */
-    private final static String LISTENER_FUNC_NAME = "onListener";
 
     /**
      * 与Flutter的通信管道
@@ -39,26 +33,6 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     }
 
     /**
-     * 调用监听器
-     *
-     * @param type   类型
-     * @param params 参数
-     */
-    private void invokeListener(CallBackNoticeEnum type, Object params) {
-        Map<String, Object> resultParams = new HashMap<>(2, 1);
-        resultParams.put("type", type);
-        if (params != null) {
-            // 字符串单独解析，否则会有双引号
-            if (params instanceof String) {
-                resultParams.put("params", params);
-            } else {
-                resultParams.put("params", JsonUtil.toJSONString(params));
-            }
-        }
-        channel.invokeMethod(LISTENER_FUNC_NAME, JsonUtil.toJSONString(resultParams));
-    }
-
-    /**
      * SDK加载错误回调 错误通知是要监听的，错误通知意味着 SDK 不能继续运行了
      */
     @Override
@@ -67,7 +41,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("code", errCode);
         params.put("msg", errMsg);
-        this.invokeListener(CallBackNoticeEnum.SdkError, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SdkError, params);
     }
 
     /**
@@ -79,7 +53,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("code", i);
         params.put("msg", s);
-        this.invokeListener(CallBackNoticeEnum.Warning, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.Warning, params);
     }
 
     /**
@@ -88,7 +62,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onEnterRoom(long l) {
         super.onEnterRoom(l);
-        this.invokeListener(CallBackNoticeEnum.EnterRoom, l);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.EnterRoom, l);
     }
 
     /**
@@ -97,7 +71,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onExitRoom(int i) {
         super.onExitRoom(i);
-        this.invokeListener(CallBackNoticeEnum.ExitRoom, i);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ExitRoom, i);
     }
 
     /**
@@ -109,7 +83,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("code", i);
         params.put("msg", s);
-        this.invokeListener(CallBackNoticeEnum.SwitchRole, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SwitchRole, params);
     }
 
     /**
@@ -122,7 +96,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         params.put("userId", s);
         params.put("code", i);
         params.put("msg", s1);
-        this.invokeListener(CallBackNoticeEnum.ConnectOtherRoom, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ConnectOtherRoom, params);
     }
 
     /**
@@ -134,7 +108,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("code", i);
         params.put("msg", s);
-        this.invokeListener(CallBackNoticeEnum.DisConnectOtherRoom, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.DisConnectOtherRoom, params);
     }
 
     /**
@@ -143,7 +117,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onRemoteUserEnterRoom(String s) {
         super.onRemoteUserEnterRoom(s);
-        this.invokeListener(CallBackNoticeEnum.RemoteUserEnterRoom, s);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RemoteUserEnterRoom, s);
     }
 
     /**
@@ -155,7 +129,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userId", s);
         params.put("reason", i);
-        this.invokeListener(CallBackNoticeEnum.RemoteUserLeaveRoom, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RemoteUserLeaveRoom, params);
     }
 
     /**
@@ -167,7 +141,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userId", userId);
         params.put("available", available);
-        this.invokeListener(CallBackNoticeEnum.UserVideoAvailable, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.UserVideoAvailable, params);
     }
 
     /**
@@ -179,7 +153,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userId", userId);
         params.put("available", available);
-        this.invokeListener(CallBackNoticeEnum.UserSubStreamAvailable, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.UserSubStreamAvailable, params);
     }
 
     /**
@@ -191,7 +165,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userId", userId);
         params.put("available", available);
-        this.invokeListener(CallBackNoticeEnum.UserAudioAvailable, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.UserAudioAvailable, params);
     }
 
     /**
@@ -205,7 +179,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         params.put("streamType", i);
         params.put("width", i1);
         params.put("height", i2);
-        this.invokeListener(CallBackNoticeEnum.FirstVideoFrame, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.FirstVideoFrame, params);
     }
 
     /**
@@ -214,7 +188,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onFirstAudioFrame(String s) {
         super.onFirstAudioFrame(s);
-        this.invokeListener(CallBackNoticeEnum.FirstAudioFrame, s);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.FirstAudioFrame, s);
     }
 
     /**
@@ -223,7 +197,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onSendFirstLocalVideoFrame(int i) {
         super.onSendFirstLocalVideoFrame(i);
-        this.invokeListener(CallBackNoticeEnum.SendFirstLocalVideoFrame, i);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SendFirstLocalVideoFrame, i);
     }
 
     /**
@@ -232,7 +206,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onSendFirstLocalAudioFrame() {
         super.onSendFirstLocalAudioFrame();
-        this.invokeListener(CallBackNoticeEnum.SendFirstLocalAudioFrame, null);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SendFirstLocalAudioFrame, null);
     }
 
     /**
@@ -244,7 +218,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("localQuality", trtcQuality);
         params.put("remoteQuality", arrayList);
-        this.invokeListener(CallBackNoticeEnum.NetworkQuality, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.NetworkQuality, params);
     }
 
     /**
@@ -253,7 +227,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onStatistics(TRTCStatistics trtcStatistics) {
         super.onStatistics(trtcStatistics);
-        this.invokeListener(CallBackNoticeEnum.Statistics, trtcStatistics);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.Statistics, trtcStatistics);
     }
 
     /**
@@ -262,7 +236,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onConnectionLost() {
         super.onConnectionLost();
-        this.invokeListener(CallBackNoticeEnum.ConnectionLost, null);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ConnectionLost, null);
     }
 
     /**
@@ -271,7 +245,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onTryToReconnect() {
         super.onTryToReconnect();
-        this.invokeListener(CallBackNoticeEnum.TryToReconnect, null);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.TryToReconnect, null);
     }
 
     /**
@@ -280,7 +254,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onConnectionRecovery() {
         super.onConnectionRecovery();
-        this.invokeListener(CallBackNoticeEnum.ConnectionRecovery, null);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.ConnectionRecovery, null);
     }
 
     /**
@@ -293,7 +267,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         params.put("currentResult", trtcSpeedTestResult);
         params.put("finishedCount", i);
         params.put("totalCount", i1);
-        this.invokeListener(CallBackNoticeEnum.SpeedTest, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SpeedTest, params);
     }
 
     /**
@@ -302,7 +276,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onCameraDidReady() {
         super.onCameraDidReady();
-        this.invokeListener(CallBackNoticeEnum.CameraDidReady, null);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.CameraDidReady, null);
     }
 
     /**
@@ -311,7 +285,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onMicDidReady() {
         super.onMicDidReady();
-        this.invokeListener(CallBackNoticeEnum.MicDidReady, null);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.MicDidReady, null);
     }
 
     /**
@@ -323,7 +297,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("newRoute", i);
         params.put("oldRoute", i1);
-        this.invokeListener(CallBackNoticeEnum.AudioRouteChanged, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.AudioRouteChanged, params);
     }
 
     /**
@@ -335,7 +309,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userVolumes", arrayList);
         params.put("totalVolume", i);
-        this.invokeListener(CallBackNoticeEnum.UserVoiceVolume, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.UserVoiceVolume, params);
     }
 
     /**
@@ -349,7 +323,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         params.put("cmdID", i);
         params.put("seq", i1);
         params.put("message", bytes);
-        this.invokeListener(CallBackNoticeEnum.RecvCustomCmdMsg, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RecvCustomCmdMsg, params);
     }
 
     /**
@@ -363,7 +337,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         params.put("cmdID", i);
         params.put("errCode", i1);
         params.put("missed", i2);
-        this.invokeListener(CallBackNoticeEnum.MissCustomCmdMsg, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.MissCustomCmdMsg, params);
     }
 
     /**
@@ -375,7 +349,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("userId", s);
         params.put("data", bytes);
-        this.invokeListener(CallBackNoticeEnum.RecvSEIMsg, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RecvSEIMsg, params);
     }
 
     /**
@@ -387,7 +361,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("err", i);
         params.put("errMsg", s);
-        this.invokeListener(CallBackNoticeEnum.StartPublishCDNStream, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.StartPublishCDNStream, params);
     }
 
     /**
@@ -399,7 +373,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("err", i);
         params.put("errMsg", s);
-        this.invokeListener(CallBackNoticeEnum.StopPublishCDNStream, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.StopPublishCDNStream, params);
     }
 
     /**
@@ -411,7 +385,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("err", i);
         params.put("errMsg", s);
-        this.invokeListener(CallBackNoticeEnum.SetMixTranscodingConfig, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SetMixTranscodingConfig, params);
     }
 
     /**
@@ -423,6 +397,6 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
         Map<String, Object> params = new HashMap<>(2, 1);
         params.put("effectId", i);
         params.put("code", i1);
-        this.invokeListener(CallBackNoticeEnum.AudioEffectFinished, params);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.AudioEffectFinished, params);
     }
 }

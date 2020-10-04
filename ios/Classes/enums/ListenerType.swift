@@ -134,4 +134,8 @@ public enum ListenerType{
      * 播放音效结束回调。
      */
     case AudioEffectFinished
+    /**
+     * 日志回调。
+     */
+    case Log
 }

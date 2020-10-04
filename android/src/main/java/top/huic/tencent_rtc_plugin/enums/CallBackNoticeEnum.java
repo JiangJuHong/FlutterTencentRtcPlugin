@@ -138,4 +138,8 @@ public enum CallBackNoticeEnum {
      * 播放音效结束回调。
      */
     AudioEffectFinished,
+    /**
+     * 日志
+     */
+    Log,
 }

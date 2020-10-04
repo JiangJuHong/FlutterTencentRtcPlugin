@@ -1,7 +1,7 @@
 import Flutter
 import TXLiteAVSDK_TRTC
 
-public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
+public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, TRTCLogDelegate {
 
     private static var channel: FlutterMethodChannel?;
 
@@ -18,6 +18,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
 
         // 绑定监听器
         TRTCCloud.sharedInstance()?.delegate = instance;
+        TRTCCloud.sharedInstance()?.setLogDelegate(instance);
 
         // 视图工厂
         let viewFactory = TencentRtcVideoPlatformViewFactory(message: registrar.messenger());
@@ -234,6 +235,21 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
             break;
         case "stopSpeedTest":
             self.stopSpeedTest(call: call, result: result);
+            break;
+        case "getSDKVersion":
+            self.getSDKVersion(call: call, result: result);
+            break;
+        case "setLogLevel":
+            self.setLogLevel(call: call, result: result);
+            break;
+        case "setLogCompressEnabled":
+            self.setLogCompressEnabled(call: call, result: result);
+            break;
+        case "setLogDirPath":
+            self.setLogDirPath(call: call, result: result);
+            break;
+        case "setDebugViewMargin":
+            self.setDebugViewMargin(call: call, result: result);
             break;
         default:
             result(FlutterMethodNotImplemented);
@@ -970,6 +986,57 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
     }
 
     /**
+     * 获得SDK版本。
+     */
+    public func getSDKVersion(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        result(TRTCCloud.sharedInstance()?.getSDKVersion()!);
+    }
+
+    /**
+     * 设置日志输出级别
+     */
+    public func setLogLevel(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let level = CommonUtils.getParam(call: call, result: result, param: "level") as? Int {
+            TRTCCloud.sharedInstance()?.setLogLevel(TRTCLogLevel.init(rawValue: level)!);
+            result(nil);
+        }
+    }
+
+    /**
+     * 启用或禁用 Log 的本地压缩。
+     */
+    public func setLogCompressEnabled(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let enabled = CommonUtils.getParam(call: call, result: result, param: "enabled") as? Bool {
+            TRTCCloud.setLogCompressEnabled(enabled);
+            result(nil);
+        }
+    }
+
+    /**
+     * 修改日志保存路径。
+     */
+    public func setLogDirPath(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let path = CommonUtils.getParam(call: call, result: result, param: "path") as? String {
+            TRTCCloud.setLogDirPath(path);
+            result(nil);
+        }
+    }
+
+    /**
+     * 设置仪表盘的边距。
+     */
+    public func setDebugViewMargin(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String,
+           let left = CommonUtils.getParam(call: call, result: result, param: "left") as? CGFloat,
+           let right = CommonUtils.getParam(call: call, result: result, param: "right") as? CGFloat,
+           let top = CommonUtils.getParam(call: call, result: result, param: "top") as? CGFloat,
+           let bottom = CommonUtils.getParam(call: call, result: result, param: "bottom") as? CGFloat {
+            TRTCCloud.sharedInstance()?.setDebugViewMargin(userId, TXEdgeInsets.init(top: top, left: left, bottom: bottom, right: right));
+            result(nil);
+        }
+    }
+
+    /**
      * 调用监听器
      *
      * @param type   类型
@@ -1292,6 +1359,15 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate {
         self.invokeListener(type: ListenerType.AudioEffectFinished, params: [
             "effectId": effectId,
             "code": code
+        ]);
+    }
+
+    /// 日志回调
+    public func onLog(_ log: String?, logLevel level: TRTCLogLevel, whichModule module: String?) {
+        self.invokeListener(type: ListenerType.Log, params: [
+            "log": log!,
+            "level": level.rawValue,
+            "module": level.module,
         ]);
     }
 }

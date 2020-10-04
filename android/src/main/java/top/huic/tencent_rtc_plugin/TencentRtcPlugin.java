@@ -19,6 +19,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 import top.huic.tencent_rtc_plugin.listener.CustomTRTCCloudListener;
+import top.huic.tencent_rtc_plugin.listener.CustomTRTCLogListener;
 import top.huic.tencent_rtc_plugin.util.TencentRtcPluginUtil;
 import top.huic.tencent_rtc_plugin.view.TencentRtcVideoPlatformView;
 
@@ -35,12 +36,10 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     private TencentRtcPlugin(BinaryMessenger messenger, Context context, MethodChannel channel, PlatformViewRegistry registry) {
-        // 禁用日志打印
-        TRTCCloud.setConsoleEnabled(false);
-
         // 初始化实例
         trtcCloud = TRTCCloud.sharedInstance(context);
         trtcCloud.setListener(new CustomTRTCCloudListener(channel));
+        TRTCCloud.setLogListener(new CustomTRTCLogListener(channel));
 
         // 注册View
         registry.registerViewFactory(TencentRtcVideoPlatformView.SIGN, new TencentRtcVideoPlatformView(context, messenger));
@@ -276,6 +275,21 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "stopSpeedTest":
                 this.stopSpeedTest(call, result);
+                break;
+            case "getSDKVersion":
+                this.getSDKVersion(call, result);
+                break;
+            case "setLogLevel":
+                this.setLogLevel(call, result);
+                break;
+            case "setLogCompressEnabled":
+                this.setLogCompressEnabled(call, result);
+                break;
+            case "setLogDirPath":
+                this.setLogDirPath(call, result);
+                break;
+            case "setDebugViewMargin":
+                this.setDebugViewMargin(call, result);
                 break;
             default:
                 result.notImplemented();
@@ -903,6 +917,53 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      */
     private void stopSpeedTest(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         trtcCloud.stopSpeedTest();
+        result.success(null);
+    }
+
+    /**
+     * 获得SDK版本
+     */
+    private void getSDKVersion(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        result.success(TRTCCloud.getSDKVersion());
+    }
+
+    /**
+     * 设置日志输出级别
+     */
+    private void setLogLevel(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        int level = TencentRtcPluginUtil.getParam(call, result, "level");
+        TRTCCloud.setLogLevel(level);
+        result.success(null);
+    }
+
+    /**
+     * 启用或禁用 Log 的本地压缩。
+     */
+    private void setLogCompressEnabled(@NonNull MethodCall call, @NonNull Result result) {
+        boolean enabled = TencentRtcPluginUtil.getParam(call, result, "enabled");
+        TRTCCloud.setLogCompressEnabled(enabled);
+        result.success(null);
+    }
+
+    /**
+     * 修改日志保存路径。
+     */
+    private void setLogDirPath(@NonNull MethodCall call, @NonNull Result result) {
+        String path = TencentRtcPluginUtil.getParam(call, result, "path");
+        TRTCCloud.setLogDirPath(path);
+        result.success(null);
+    }
+
+    /**
+     * 设置仪表盘的边距。
+     */
+    private void setDebugViewMargin(@NonNull MethodCall call, @NonNull Result result) {
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        float left = TencentRtcPluginUtil.getParam(call, result, "left");
+        float right = TencentRtcPluginUtil.getParam(call, result, "right");
+        float top = TencentRtcPluginUtil.getParam(call, result, "top");
+        float bottom = TencentRtcPluginUtil.getParam(call, result, "bottom");
+        trtcCloud.setDebugViewMargin(userId, new TRTCCloud.TRTCViewMargin(left, right, top, bottom));
         result.success(null);
     }
 }

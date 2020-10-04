@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:tencent_rtc_plugin/enums/debug_view_mode_enum.dart';
 import 'package:tencent_rtc_plugin/enums/gsensor_mode_enum.dart';
+import 'package:tencent_rtc_plugin/enums/log_level_enum.dart';
 import 'package:tencent_rtc_plugin/enums/mirror_type_enum.dart';
 import 'package:tencent_rtc_plugin/enums/qos_control_enum.dart';
 import 'package:tencent_rtc_plugin/enums/qos_preference_enum.dart';
@@ -43,22 +45,7 @@ class TencentRtcPlugin {
   }
 
   /// 设置Debug视图
-  static Future<void> showDebugView({
-    @required int mode, // 模式
-  }) async {
-    return await _channel.invokeMethod('showDebugView', {
-      "mode": mode,
-    });
-  }
-
-  /// 设置启用控制台打印
-  static Future<void> setConsoleEnabled({
-    @required bool enabled, // 是否启用
-  }) async {
-    return await _channel.invokeMethod('setConsoleEnabled', {
-      "enabled": enabled,
-    });
-  }
+  static showDebugView({@required DebugViewModeEnum mode}) => _channel.invokeMethod('showDebugView', {"mode": DebugViewModeTool.toInt(mode)});
 
   /// 加入房间(默认开启音频接收)
   /// [appid] appid
@@ -572,6 +559,43 @@ class TencentRtcPlugin {
 
   /// 停止服务器测速
   static stopSpeedTest() => _channel.invokeMethod("stopSpeedTest");
+
+  /// 获得SDK版本
+  static Future<String> getSDKVersion() => _channel.invokeMethod("getSDKVersion");
+
+  /// 设置日志输出级别
+  /// [level] 日志级别
+  static setLogLevel({@required LogLevelEnum level}) => _channel.invokeMethod("setLogLevel", {"level": LogLevelTool.toInt(level)});
+
+  /// 设置启用控制台打印
+  /// [enabled] 是否启用
+  static setConsoleEnabled({@required bool enabled}) => _channel.invokeMethod('setConsoleEnabled', {"enabled": enabled});
+
+  /// 启用或禁用 Log 的本地压缩。
+  /// [enabled] 是否启用
+  static setLogCompressEnabled({@required bool enabled}) => _channel.invokeMethod('setLogCompressEnabled', {"enabled": enabled});
+
+  /// 修改日志保存路径。
+  /// [path] 保存路径
+  static setLogDirPath({@required String path}) => _channel.invokeMethod('setLogDirPath', {"path": path});
+
+  /// 设置仪表盘的边距。
+  /// [userId] 用户ID
+  static setDebugViewMargin({
+    @required String userId,
+    @required double left,
+    @required double right,
+    @required double top,
+    @required double bottom,
+  }) {
+    return _channel.invokeMethod('setDebugViewMargin', {
+      "userId": userId,
+      "left": left,
+      "right": right,
+      "top": top,
+      "bottom": bottom,
+    });
+  }
 }
 
 /// 监听器对象
