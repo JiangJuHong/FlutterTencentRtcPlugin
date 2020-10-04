@@ -17,8 +17,8 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
         registrar.addMethodCallDelegate(instance, channel: channel)
 
         // 绑定监听器
+        TRTCCloud.setLogDelegate(instance);
         TRTCCloud.sharedInstance()?.delegate = instance;
-        TRTCCloud.sharedInstance()?.setLogDelegate(instance);
 
         // 视图工厂
         let viewFactory = TencentRtcVideoPlatformViewFactory(message: registrar.messenger());
@@ -989,7 +989,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      * 获得SDK版本。
      */
     public func getSDKVersion(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        result(TRTCCloud.sharedInstance()?.getSDKVersion()!);
+        result(TRTCCloud.getSDKVersion()!);
     }
 
     /**
@@ -997,7 +997,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      */
     public func setLogLevel(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if let level = CommonUtils.getParam(call: call, result: result, param: "level") as? Int {
-            TRTCCloud.sharedInstance()?.setLogLevel(TRTCLogLevel.init(rawValue: level)!);
+            TRTCCloud.setLogLevel(TRTCLogLevel.init(rawValue: level)!);
             result(nil);
         }
     }
@@ -1031,7 +1031,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
            let right = CommonUtils.getParam(call: call, result: result, param: "right") as? CGFloat,
            let top = CommonUtils.getParam(call: call, result: result, param: "top") as? CGFloat,
            let bottom = CommonUtils.getParam(call: call, result: result, param: "bottom") as? CGFloat {
-            TRTCCloud.sharedInstance()?.setDebugViewMargin(userId, TXEdgeInsets.init(top: top, left: left, bottom: bottom, right: right));
+            TRTCCloud.sharedInstance()?.setDebugViewMargin(userId, margin: TXEdgeInsets.init(top: top, left: left, bottom: bottom, right: right));
             result(nil);
         }
     }
@@ -1318,7 +1318,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
     public func onRecvSEIMsg(_ userId: String, message: Data) {
         self.invokeListener(type: ListenerType.RecvSEIMsg, params: [
             "userId": userId,
-            "data": String(data: message!, encoding: String.Encoding.utf8.rawValue)
+            "data": String(data: message, encoding: String.Encoding.utf8)
         ]);
     }
 
@@ -1326,14 +1326,15 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      * 开始向腾讯云的直播 CDN 推流的回调
      */
     public func onStartPublishing(_ err: Int32, errMsg: String) {
-        self.invokeListener(type: ListenerType.StartPublishing, params: ["code": errCode.rawValue, "msg": errMsg]);
+        self.invokeListener(type: ListenerType.StartPublishing, params: ["code": err, "msg": errMsg]);
     }
 
     /**
      * 停止向腾讯云的直播 CDN 推流的回调
      */
+
     public func onStopPublishing(_ err: Int32, errMsg: String) {
-        self.invokeListener(type: ListenerType.StopPublishing, params: ["code": errCode.rawValue, "msg": errMsg]);
+        self.invokeListener(type: ListenerType.StopPublishing, params: ["code": err, "msg": errMsg]);
     }
 
     /**
@@ -1372,7 +1373,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
         self.invokeListener(type: ListenerType.Log, params: [
             "log": log!,
             "level": level.rawValue,
-            "module": level.module,
+            "module": module!,
         ]);
     }
 

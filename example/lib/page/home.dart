@@ -1,17 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tencent_rtc_plugin/tencent_rtc_plugin.dart';
-import 'package:tencent_rtc_plugin/enums/listener_type_enum.dart';
-import 'package:tencent_rtc_plugin_example/page/video.dart';
 
 class HomePage extends StatefulWidget {
-  //for testing perpose
-  //read from env variable
-  //defined by flutter run --dart-define=APP_ID=12345
-  static const int APP_ID = int.fromEnvironment("APP_ID");
-  static const String USER_ID = String.fromEnvironment("USER_ID");
-  static const String USER_SIG = String.fromEnvironment("USER_SIG");
-
   HomePage({Key key}) : super(key: key);
 
   @override
@@ -19,56 +11,76 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  TextEditingController controller = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  @override
-  void initState() {
-    super.initState();
-    TencentRtcPlugin.addListener((type, param) {
-      if (type == ListenerTypeEnum.EnterRoom) {
-        print(param);
-        Navigator.push(
-          context,
-          new MaterialPageRoute(builder: (context) => new VideoPage()),
-        );
-      }
-    });
-  }
-
-  // 进入房间(加入或创建)
-  onEnterRoom() {
-    TencentRtcPlugin.enterRoom(
-      appid: HomePage.APP_ID,
-      userId: HomePage.USER_ID,
-      userSig: HomePage.USER_SIG,
-      roomId: int.parse(controller.text),
-      scene: 0,
-    );
-    controller.clear();
+  /// Github开源地址点击
+  _onGithubAddressClick() {
+    Clipboard.setData(ClipboardData(text: 'https://github.com/JiangJuHong/FlutterTencentRtcPlugin'));
+    _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('地址复制成功!')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: const Text('首页'),
+        title: const Text('腾讯云TRTC Flutter插件Demo演示'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: 100,
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(hintText: "房间ID"),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            children: [
+              Wrap(
+                runSpacing: 20,
+                spacing: 20,
+                children: [
+                  {"name": "多人视频会议"},
+                  {"name": "语音聊天室"},
+                  {"name": "视频互动直播"},
+                  {"name": "语音通话"},
+                  {"name": "视频通话"}
+                ]
+                    .map(
+                      (e) => Container(
+                        height: 100,
+                        width: (MediaQuery.of(context).size.width / 2) - 60,
+                        color: Colors.lightBlueAccent,
+                        child: Center(child: Text(e["name"], style: TextStyle(color: Colors.white))),
+                      ),
+                    )
+                    .toList(),
               ),
-            ),
-            RaisedButton(
-              onPressed: onEnterRoom,
-              child: Text("加入房间"),
-            ),
-          ],
+              Expanded(child: Container()),
+              GestureDetector(
+                onTap: _onGithubAddressClick,
+                child: Text(
+                  "Link: https://github.com/JiangJuHong/FlutterTencentRtcPlugin",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+              Container(height: 10),
+              Text("本APP用于展示 TRTC for Flutter 的各类功能", style: TextStyle(color: Colors.grey)),
+              Container(height: 10),
+              FutureBuilder<String>(
+                future: TencentRtcPlugin.getSDKVersion(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  // 请求已结束
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Text("SDK 版本加载失败");
+                    } else {
+                      return Text("TRTC SDK Version: ${snapshot.data}", style: TextStyle(color: Colors.grey));
+                    }
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+              Container(height: MediaQuery.of(context).padding.bottom),
+            ],
+          ),
         ),
       ),
     );
