@@ -35,18 +35,21 @@ class HomePageState extends State<HomePage> {
                 runSpacing: 20,
                 spacing: 20,
                 children: [
-                  {"name": "多人视频会议"},
+                  {"name": "多人视频会议", "path": "/multi-video"},
                   {"name": "语音聊天室"},
                   {"name": "视频互动直播"},
                   {"name": "语音通话"},
                   {"name": "视频通话"}
                 ]
                     .map(
-                      (e) => Container(
-                        height: 100,
-                        width: (MediaQuery.of(context).size.width / 2) - 60,
-                        color: Colors.lightBlueAccent,
-                        child: Center(child: Text(e["name"], style: TextStyle(color: Colors.white))),
+                      (e) => GestureDetector(
+                        onTap: () => e["path"] == null ? null : Navigator.pushNamed(context, e["path"]),
+                        child: Container(
+                          height: 100,
+                          width: (MediaQuery.of(context).size.width / 2) - 60,
+                          color: e["path"] == null ? Colors.grey : Colors.lightBlueAccent,
+                          child: Center(child: Text(e["name"], style: TextStyle(color: Colors.white))),
+                        ),
                       ),
                     )
                     .toList(),

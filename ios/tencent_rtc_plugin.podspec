@@ -21,6 +21,9 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64' }
   s.swift_version = '5.0'
 
+  # 引入OC文件
+  s.public_header_files = 'Classes/**/*.h'
+
   # 启用静态库
   s.static_framework = true
 

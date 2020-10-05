@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tencent_rtc_plugin_example/page/home.dart';
+import 'package:tencent_rtc_plugin_example/page/multi-video.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      routes: {
+        "/": (context) => HomePage(),
+        "/multi-video": (context) => MultiVideo(),
+      },
     );
   }
 }

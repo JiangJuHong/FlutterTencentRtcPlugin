@@ -251,6 +251,9 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
         case "setDebugViewMargin":
             self.setDebugViewMargin(call: call, result: result);
             break;
+        case "genUserSig":
+            self.genUserSig(call: call, result: result);
+            break;
         default:
             result(FlutterMethodNotImplemented);
         }
@@ -1033,6 +1036,17 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
            let bottom = CommonUtils.getParam(call: call, result: result, param: "bottom") as? CGFloat {
             TRTCCloud.sharedInstance()?.setDebugViewMargin(userId, margin: TXEdgeInsets.init(top: top, left: left, bottom: bottom, right: right));
             result(nil);
+        }
+    }
+
+    /**
+     * 获得用户签名。
+     */
+    public func genUserSig(call: FlutterMethodCall, result: @escaping FlutterResult) {
+        if let appid = CommonUtils.getParam(call: call, result: result, param: "appid") as? Int32,
+           let secretkey = CommonUtils.getParam(call: call, result: result, param: "secretKey") as? String,
+           let userId = CommonUtils.getParam(call: call, result: result, param: "userId") as? String {
+            result(GenerateTestUserSig.genTestUserSig(userId, appid, secretkey));
         }
     }
 

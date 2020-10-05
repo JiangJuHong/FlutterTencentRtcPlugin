@@ -14,6 +14,10 @@ dependencies:
   cupertino_icons: 0.1.2
   # 权限请求(https://github.com/BaseflowIT/flutter-permission-handler)
   permission_handler: 5.0.1+1
+  # 加密工具(https://pub.dev/packages/crypto)
+  crypto: 2.1.5
+  # 加解密工具类(https://pub.dev/packages/archive)
+  archive: 2.0.13
 
 dev_dependencies:
   flutter_test:

@@ -20,6 +20,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformViewRegistry;
 import top.huic.tencent_rtc_plugin.listener.CustomTRTCCloudListener;
 import top.huic.tencent_rtc_plugin.listener.CustomTRTCLogListener;
+import top.huic.tencent_rtc_plugin.util.GenerateTestUserSig;
 import top.huic.tencent_rtc_plugin.util.TencentRtcPluginUtil;
 import top.huic.tencent_rtc_plugin.view.TencentRtcVideoPlatformView;
 
@@ -290,6 +291,9 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "setDebugViewMargin":
                 this.setDebugViewMargin(call, result);
+                break;
+            case "genUserSig":
+                this.genUserSig(call, result);
                 break;
             default:
                 result.notImplemented();
@@ -965,5 +969,15 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         float bottom = TencentRtcPluginUtil.getParam(call, result, "bottom");
         trtcCloud.setDebugViewMargin(userId, new TRTCCloud.TRTCViewMargin(left, right, top, bottom));
         result.success(null);
+    }
+
+    /**
+     * 生成用户签名。
+     */
+    private void genUserSig(@NonNull MethodCall call, @NonNull Result result) {
+        long appid = TencentRtcPluginUtil.getParam(call, result, "appid");
+        String secretkey = TencentRtcPluginUtil.getParam(call, result, "secretKey");
+        String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
+        result.success(GenerateTestUserSig.genTestUserSig(appid, secretkey, userId));
     }
 }

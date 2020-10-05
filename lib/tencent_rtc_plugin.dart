@@ -83,7 +83,7 @@ class TencentRtcPlugin {
       "userSig": userSig,
       "roomId": roomId,
       "scene": SceneTool.toInt(scene),
-      "role": RoleTool.toInt(role),
+      "role": role == null ? null : RoleTool.toInt(role),
       "privateMapKey": privateMapKey,
     });
   }
@@ -607,6 +607,25 @@ class TencentRtcPlugin {
       "right": right,
       "top": top,
       "bottom": bottom,
+    });
+  }
+
+  /// 生成用户签名。
+  /// **********
+  /// TODO【警告，该接口仅供调试，生产环境下请通过服务器生成签名】
+  /// **********
+  /// [appid] appid
+  /// [secretKey] 密钥
+  /// [userId] 自定义用户ID
+  static Future<String> genUserSig({
+    @required int appid,
+    @required String secretKey,
+    @required String userId,
+  }) {
+    return _channel.invokeMethod('genUserSig', {
+      "appid": appid,
+      "secretKey": secretKey,
+      "userId": userId,
     });
   }
 }
