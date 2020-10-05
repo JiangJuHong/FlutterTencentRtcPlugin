@@ -32,17 +32,30 @@ class _MultiVideoState extends State<MultiVideo> {
   QualityEnum _quality = QualityEnum.Speech;
 
   @override
-  initState() {
+  void initState() {
     super.initState();
-    TencentRtcPlugin.addListener((type, params) {
-      if (type == ListenerTypeEnum.SdkError) {
-        print("${params.code} -- ${params.msg}");
+    TencentRtcPlugin.addListener(_rtcListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    TencentRtcPlugin.removeListener(_rtcListener);
+  }
+
+  /// 腾讯云RTC监听器
+  _rtcListener(type, params) {
+    if (type == ListenerTypeEnum.EnterRoom) {
+      if (params < 0) {
+        _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('进房失败!')));
+        return;
       }
 
-      if (type == ListenerTypeEnum.EnterRoom) {
-        print(params);
-      }
-    });
+      Navigator.pushNamed(context, "/room", arguments: {
+        "room": _room,
+        "name": _user,
+      });
+    }
   }
 
   /// 进入房间按钮点击事件

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tencent_rtc_plugin/enums/resolution_enum.dart';
 import 'package:tencent_rtc_plugin/enums/resolution_mode_enum.dart';
 import 'package:tencent_rtc_plugin/enums/stream_type_enum.dart';
@@ -31,7 +33,8 @@ class StatisticsEntity {
   /// 远端成员的音视频统计信息，可能有主画面、小画面以及辅路画面等多路的情况，因此是一个数组
   List<RemoteStatisticsEntity> remoteArray;
 
-  StatisticsEntity.fromJson(Map<String, dynamic> json) {
+  StatisticsEntity.fromJson(data) {
+    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
     appCpu = json['appCpu'];
     systemCpu = json['systemCpu'];
     rtt = json['rtt'];
