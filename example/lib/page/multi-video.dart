@@ -54,6 +54,8 @@ class _MultiVideoState extends State<MultiVideo> {
       Navigator.pushNamed(context, "/room", arguments: {
         "room": _room,
         "name": _user,
+        "enabledCamera": _enabledCamera,
+        "enabledMicrophone": _enabledMicrophone,
       });
     }
   }
