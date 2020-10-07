@@ -39,3 +39,10 @@
 
 ## 0.1.12
 * 固定腾讯云RTC版本号
+
+## 1.0.0-rc
+* Android TRTC SDK -> 7.8.9518
+* IOS TRTC SDK -> 7.8.9519
+* Plugin Version -> 1.0.0-rc
+* 全新Demo，测试更加方便
+* 文档迁移到文档托管网站
