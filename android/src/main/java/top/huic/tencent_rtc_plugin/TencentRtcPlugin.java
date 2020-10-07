@@ -975,7 +975,7 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      * 生成用户签名。
      */
     private void genUserSig(@NonNull MethodCall call, @NonNull Result result) {
-        long appid = TencentRtcPluginUtil.getParam(call, result, "appid");
+        int appid = TencentRtcPluginUtil.getParam(call, result, "appid");
         String secretkey = TencentRtcPluginUtil.getParam(call, result, "secretKey");
         String userId = TencentRtcPluginUtil.getParam(call, result, "userId");
         result.success(GenerateTestUserSig.genTestUserSig(appid, secretkey, userId));
