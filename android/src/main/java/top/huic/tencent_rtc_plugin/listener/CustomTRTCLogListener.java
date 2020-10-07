@@ -1,5 +1,8 @@
 package top.huic.tencent_rtc_plugin.listener;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.tencent.trtc.TRTCCloudListener;
 
 import java.util.HashMap;
@@ -17,6 +20,11 @@ import top.huic.tencent_rtc_plugin.util.ListenerUtil;
 public class CustomTRTCLogListener extends TRTCCloudListener.TRTCLogListener {
 
     /**
+     * 主线程处理器
+     */
+    private final static Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
+
+    /**
      * 与Flutter的通信管道
      */
     private MethodChannel channel;
@@ -28,10 +36,15 @@ public class CustomTRTCLogListener extends TRTCCloudListener.TRTCLogListener {
 
     @Override
     public void onLog(String log, int level, String module) {
-        Map<String, Object> params = new HashMap<>(3, 1);
+        final Map<String, Object> params = new HashMap<>(3, 1);
         params.put("log", log);
         params.put("level", level);
         params.put("module", module);
-        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.Log, params);
+        MAIN_HANDLER.post(new Runnable() {
+            @Override
+            public void run() {
+                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.Log, params);
+            }
+        });
     }
 }
