@@ -5,6 +5,8 @@ import 'package:tencent_rtc_plugin/tencent_rtc_plugin.dart';
 import 'package:tencent_rtc_plugin/enums/route_enum.dart';
 import 'package:tencent_rtc_plugin/tencent_rtc_video_view.dart';
 import 'package:tencent_rtc_plugin/controller/tencent_rtc_video_view_controller.dart';
+import 'package:tencent_rtc_plugin/enums/listener_type_enum.dart';
+import 'package:tencent_rtc_plugin/entity/user_available_entity.dart';
 
 /// 房间
 class Room extends StatefulWidget {
@@ -60,7 +62,24 @@ class _RoomState extends State<Room> {
   }
 
   /// 腾讯云RTC监听器
-  _rtcListener(type, params) {}
+  _rtcListener(type, params) {
+    if (type == ListenerTypeEnum.Log) {
+      return;
+    }
+
+    if (type == ListenerTypeEnum.UserVideoAvailable) {
+      UserAvailableEntity data = params;
+      if (data.available && !_users.containsKey(data.userId)) {
+        _users[data.userId] = null;
+      }
+
+      if (!data.available) {
+        _users.remove(data.userId);
+      }
+
+      this.setState(() {});
+    }
+  }
 
   /// 退出按钮点击事件
   _onExitClick() {
@@ -130,6 +149,27 @@ class _RoomState extends State<Room> {
     this.setState(() => _enabledMicrophone = !_enabledMicrophone);
   }
 
+  /// 用户列表点击事件
+  _onUserListClick() {
+    showModalBottomSheet(
+      builder: (BuildContext context) {
+        return ListView(
+          children: ListTile.divideTiles(
+            context: context,
+            tiles: _users.keys
+                .map(
+                  (e) => ListTile(
+                    title: Text(e),
+                  ),
+                )
+                .toList(),
+          ).toList(),
+        );
+      },
+      context: context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,6 +193,8 @@ class _RoomState extends State<Room> {
                         if (key == _name) {
                           if (_enabledCamera) controller.startLocalPreview(frontCamera: _frontCamera);
                           if (_enabledMicrophone) TencentRtcPlugin.startLocalAudio();
+                        } else {
+                          controller.startRemoteView(userId: key);
                         }
                       },
                     ),
@@ -233,7 +275,7 @@ class _RoomState extends State<Room> {
                       children: [
                         {"icon": _enabledMicrophone != null && _enabledMicrophone ? Icons.mic : Icons.mic_off, "onTap": _onMicrophoneClick},
                         {"icon": _enabledCamera != null && _enabledCamera ? Icons.videocam : Icons.videocam_off, "onTap": _onCameraClick},
-                        {"icon": Icons.people},
+                        {"icon": Icons.people, "onTap": _onUserListClick},
                         {"icon": Icons.more_horiz},
                       ]
                           .map(

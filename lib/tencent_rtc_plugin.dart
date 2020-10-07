@@ -691,6 +691,8 @@ class TencentRtcPluginListener {
               params = VideoFrameEntity.fromJson(params);
               break;
             case ListenerTypeEnum.EnterRoom:
+              params = params is int ? params : int.parse(params);
+              break;
             case ListenerTypeEnum.ExitRoom:
             case ListenerTypeEnum.RemoteUserEnterRoom:
             case ListenerTypeEnum.FirstAudioFrame:

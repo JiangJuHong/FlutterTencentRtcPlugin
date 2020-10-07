@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tencent_rtc_plugin/enums/quality_enum.dart';
 import 'package:tencent_rtc_plugin/enums/scene_enum.dart';
 import 'package:tencent_rtc_plugin/enums/listener_type_enum.dart';
@@ -44,19 +45,21 @@ class _MultiVideoState extends State<MultiVideo> {
   }
 
   /// 腾讯云RTC监听器
-  _rtcListener(type, params) {
+  _rtcListener(type, params) async {
     if (type == ListenerTypeEnum.EnterRoom) {
       if (params < 0) {
         _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('进房失败!')));
         return;
       }
 
-      Navigator.pushNamed(context, "/room", arguments: {
-        "room": _room,
-        "name": _user,
-        "enabledCamera": _enabledCamera,
-        "enabledMicrophone": _enabledMicrophone,
-      });
+      if (await Permission.camera.request().isGranted && await Permission.microphone.request().isGranted) {
+        Navigator.pushNamed(context, "/room", arguments: {
+          "room": _room,
+          "name": _user,
+          "enabledCamera": _enabledCamera,
+          "enabledMicrophone": _enabledMicrophone,
+        });
+      }
     }
   }
 
@@ -87,7 +90,8 @@ class _MultiVideoState extends State<MultiVideo> {
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: Column(
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Container(
               padding: EdgeInsets.all(20),
