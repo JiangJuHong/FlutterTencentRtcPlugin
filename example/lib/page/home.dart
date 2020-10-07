@@ -15,7 +15,8 @@ class HomePageState extends State<HomePage> {
 
   /// Github开源地址点击
   _onGithubAddressClick() {
-    Clipboard.setData(ClipboardData(text: 'https://github.com/JiangJuHong/FlutterTencentRtcPlugin'));
+    Clipboard.setData(ClipboardData(
+        text: 'https://github.com/JiangJuHong/FlutterTencentRtcPlugin'));
     _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('地址复制成功!')));
   }
 
@@ -43,12 +44,18 @@ class HomePageState extends State<HomePage> {
                 ]
                     .map(
                       (e) => GestureDetector(
-                        onTap: () => e["path"] == null ? null : Navigator.pushNamed(context, e["path"]),
+                        onTap: () => e["path"] == null
+                            ? null
+                            : Navigator.pushNamed(context, e["path"]),
                         child: Container(
                           height: 100,
                           width: (MediaQuery.of(context).size.width / 2) - 60,
-                          color: e["path"] == null ? Colors.grey : Colors.lightBlueAccent,
-                          child: Center(child: Text(e["name"], style: TextStyle(color: Colors.white))),
+                          color: e["path"] == null
+                              ? Colors.grey
+                              : Colors.lightBlueAccent,
+                          child: Center(
+                              child: Text(e["name"],
+                                  style: TextStyle(color: Colors.white))),
                         ),
                       ),
                     )
@@ -64,7 +71,8 @@ class HomePageState extends State<HomePage> {
                 ),
               ),
               Container(height: 10),
-              Text("本APP用于展示 TRTC for Flutter 的各类功能", style: TextStyle(color: Colors.grey)),
+              Text("本APP用于展示 TRTC for Flutter 的各类功能",
+                  style: TextStyle(color: Colors.grey)),
               Container(height: 10),
               FutureBuilder<String>(
                 future: TencentRtcPlugin.getSDKVersion(),
@@ -74,7 +82,8 @@ class HomePageState extends State<HomePage> {
                     if (snapshot.hasError) {
                       return Text("SDK 版本加载失败");
                     } else {
-                      return Text("TRTC SDK Version: ${snapshot.data}", style: TextStyle(color: Colors.grey));
+                      return Text("TRTC SDK Version: ${snapshot.data}",
+                          style: TextStyle(color: Colors.grey));
                     }
                   } else {
                     return CircularProgressIndicator();

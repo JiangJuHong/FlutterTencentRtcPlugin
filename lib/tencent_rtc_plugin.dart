@@ -36,7 +36,8 @@ import 'entity/video_enc_param_entity.dart';
 import 'enums/listener_type_enum.dart';
 
 class TencentRtcPlugin {
-  static const MethodChannel _channel = const MethodChannel('tencent_rtc_plugin');
+  static const MethodChannel _channel =
+      const MethodChannel('tencent_rtc_plugin');
 
   /// 监听器对象
   static TencentRtcPluginListener listener;
@@ -58,7 +59,8 @@ class TencentRtcPlugin {
   }
 
   /// 设置Debug视图
-  static showDebugView({@required DebugViewModeEnum mode}) => _channel.invokeMethod('showDebugView', {"mode": DebugViewModeTool.toInt(mode)});
+  static showDebugView({@required DebugViewModeEnum mode}) => _channel
+      .invokeMethod('showDebugView', {"mode": DebugViewModeTool.toInt(mode)});
 
   /// 加入房间(默认开启音频接收)
   /// [appid] appid
@@ -93,11 +95,13 @@ class TencentRtcPlugin {
 
   /// 切换角色，仅适用于直播场景（TRTC_APP_SCENE_LIVE 和 TRTC_APP_SCENE_VOICE_CHATROOM）。
   /// [role] 目标角色
-  static switchRole({@required RoleEnum role}) => _channel.invokeMethod('switchRole', {"role": RoleTool.toInt(role)});
+  static switchRole({@required RoleEnum role}) =>
+      _channel.invokeMethod('switchRole', {"role": RoleTool.toInt(role)});
 
   /// 请求跨房通话（主播 PK）
   /// [param] JSON 字符串连麦参数，roomId 代表目标房间号，userId 代表目标用户 ID。
-  static connectOtherRoom({@required String param}) => _channel.invokeMethod('connectOtherRoom', {'param': param});
+  static connectOtherRoom({@required String param}) =>
+      _channel.invokeMethod('connectOtherRoom', {'param': param});
 
   /// 退出跨房通话
   static disconnectOtherRoom() => _channel.invokeMethod('disconnectOtherRoom');
@@ -148,14 +152,16 @@ class TencentRtcPlugin {
   }
 
   /// 停止向非腾讯云地址转推
-  static stopPublishCDNStream() => _channel.invokeMethod('stopPublishCDNStream');
+  static stopPublishCDNStream() =>
+      _channel.invokeMethod('stopPublishCDNStream');
 
   /// 停止本地视频采集
   static stopLocalPreview() => _channel.invokeMethod('stopLocalPreview');
 
   /// 关闭远程显示
   /// [userId] 用户ID
-  static stopRemoteView({@required String userId}) => _channel.invokeMethod('stopRemoteView', {"userId": userId});
+  static stopRemoteView({@required String userId}) =>
+      _channel.invokeMethod('stopRemoteView', {"userId": userId});
 
   /// 关闭本地的视频。
   /// [mute] 是否关闭
@@ -196,7 +202,8 @@ class TencentRtcPlugin {
 
   /// 停止接收所有远端视频流
   /// [mute] 是否停止接收
-  static muteAllRemoteVideoStreams({@required bool mute}) => _channel.invokeMethod('muteAllRemoteVideoStreams', {"mute": mute});
+  static muteAllRemoteVideoStreams({@required bool mute}) =>
+      _channel.invokeMethod('muteAllRemoteVideoStreams', {"mute": mute});
 
   /// 设置视频编码相关
   /// [param] 视频编码参数
@@ -222,7 +229,9 @@ class TencentRtcPlugin {
   }
 
   /// 设置本地图像的渲染模式
-  static setLocalViewFillMode({@required RenderModeEnum mode}) => _channel.invokeMethod('setLocalViewFillMode', {"mode": RenderModeTool.toInt(mode)});
+  static setLocalViewFillMode({@required RenderModeEnum mode}) =>
+      _channel.invokeMethod(
+          'setLocalViewFillMode', {"mode": RenderModeTool.toInt(mode)});
 
   /// 设置远程视频填充模式
   /// [userId] 用户ID
@@ -389,60 +398,75 @@ class TencentRtcPlugin {
 
   /// 静音/取消静音 所有用户
   /// [mute] 是否静音
-  static muteAllRemoteAudio({@required bool mute}) => _channel.invokeMethod('muteAllRemoteAudio', {"mute": mute});
+  static muteAllRemoteAudio({@required bool mute}) =>
+      _channel.invokeMethod('muteAllRemoteAudio', {"mute": mute});
 
   /// 设置 SDK 采集音量。
   /// [volume] 音量大小，取值: 0-100
-  static setAudioCaptureVolume({@required int volume}) => _channel.invokeMethod('setAudioCaptureVolume', {"volume": volume});
+  static setAudioCaptureVolume({@required int volume}) =>
+      _channel.invokeMethod('setAudioCaptureVolume', {"volume": volume});
 
   /// 获取 SDK 采集音量
-  static Future<int> getAudioCaptureVolume() => _channel.invokeMethod('getAudioCaptureVolume');
+  static Future<int> getAudioCaptureVolume() =>
+      _channel.invokeMethod('getAudioCaptureVolume');
 
   /// 设置 SDK 播放音量。
   /// [volume] 音量大小，取值: 0-100
-  static setAudioPlayoutVolume({@required int volume}) => _channel.invokeMethod('setAudioPlayoutVolume', {"volume": volume});
+  static setAudioPlayoutVolume({@required int volume}) =>
+      _channel.invokeMethod('setAudioPlayoutVolume', {"volume": volume});
 
   /// 获取 SDK 播放音量
-  static Future<int> getAudioPlayoutVolume() => _channel.invokeMethod('getAudioPlayoutVolume');
+  static Future<int> getAudioPlayoutVolume() =>
+      _channel.invokeMethod('getAudioPlayoutVolume');
 
   /// 启用音量大小提示。
   /// [intervalMs] 决定了 onUserVoiceVolume 回调的触发间隔，单位为ms，最小间隔为100ms，如果小于等于0则会关闭回调，建议设置为300ms；详细的回调规则请参考 onUserVoiceVolume 的注释说明。
-  static enableAudioVolumeEvaluation({@required int intervalMs}) => _channel.invokeMethod('enableAudioVolumeEvaluation', {"intervalMs": intervalMs});
+  static enableAudioVolumeEvaluation({@required int intervalMs}) => _channel
+      .invokeMethod('enableAudioVolumeEvaluation', {"intervalMs": intervalMs});
 
   /// 开始录音。
   /// [filePath] 文件路径（必填），录音的文件地址，由用户自行指定，请确保 App 里指定的目录存在且可写。
-  static startAudioRecording({@required String filePath}) => _channel.invokeMethod('startAudioRecording', {"filePath": filePath});
+  static startAudioRecording({@required String filePath}) =>
+      _channel.invokeMethod('startAudioRecording', {"filePath": filePath});
 
   /// 停止录音。
   static stopAudioRecording() => _channel.invokeMethod('stopAudioRecording');
 
   /// 设置通话时使用的系统音量类型。
   /// [type] 系统音量类型
-  static setSystemVolumeType({@required SystemVolumeTypeEnum type}) => _channel.invokeMethod('setSystemVolumeType', {"type": SystemVolumeTypeTool.toInt(type)});
+  static setSystemVolumeType({@required SystemVolumeTypeEnum type}) =>
+      _channel.invokeMethod(
+          'setSystemVolumeType', {"type": SystemVolumeTypeTool.toInt(type)});
 
   /// 开启耳返。
   /// [enable] 是否启用
-  static enableAudioEarMonitoring({@required bool enable}) => _channel.invokeMethod('enableAudioEarMonitoring', {"enable": enable});
+  static enableAudioEarMonitoring({@required bool enable}) =>
+      _channel.invokeMethod('enableAudioEarMonitoring', {"enable": enable});
 
   /// 切换摄像头。
   static switchCamera() => _channel.invokeMethod('switchCamera');
 
   /// 查询当前摄像头是否支持缩放
-  static Future<bool> isCameraZoomSupported() => _channel.invokeMethod('isCameraZoomSupported');
+  static Future<bool> isCameraZoomSupported() =>
+      _channel.invokeMethod('isCameraZoomSupported');
 
   /// 设置摄像头缩放因子（焦距）。
   /// [distance] 取值范围为1 - 5，数值越大，焦距越远。
-  static setZoom({@required int distance}) => _channel.invokeMethod('setZoom', {"distance": distance});
+  static setZoom({@required int distance}) =>
+      _channel.invokeMethod('setZoom', {"distance": distance});
 
   /// 查询是否支持开关闪光灯（手电筒模式）。
-  static Future<bool> isCameraTorchSupported() => _channel.invokeMethod('isCameraTorchSupported');
+  static Future<bool> isCameraTorchSupported() =>
+      _channel.invokeMethod('isCameraTorchSupported');
 
   /// 开关闪光灯。
   /// [enable] 是否开启
-  static enableTorch({@required bool enable}) => _channel.invokeMethod('enableTorch', {"enable": enable});
+  static enableTorch({@required bool enable}) =>
+      _channel.invokeMethod('enableTorch', {"enable": enable});
 
   /// 查询是否支持设置焦点。
-  static Future<bool> isCameraFocusPositionInPreviewSupported() => _channel.invokeMethod('isCameraFocusPositionInPreviewSupported');
+  static Future<bool> isCameraFocusPositionInPreviewSupported() =>
+      _channel.invokeMethod('isCameraFocusPositionInPreviewSupported');
 
   /// 设置摄像头焦点。
   static setFocusPosition({
@@ -456,7 +480,8 @@ class TencentRtcPlugin {
   }
 
   /// 查询是否支持自动识别人脸位置。
-  static Future<bool> isCameraAutoFocusFaceModeSupported() => _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
+  static Future<bool> isCameraAutoFocusFaceModeSupported() =>
+      _channel.invokeMethod('isCameraAutoFocusFaceModeSupported');
 
   /// 添加水印
   /// [asset] assets 中的资源，不是本地原生资源!!!
@@ -494,7 +519,8 @@ class TencentRtcPlugin {
 
   /// 关闭远端辅流显示
   /// [userId] 用户ID
-  static stopRemoteSubStreamView({@required String userId}) => _channel.invokeMethod("stopRemoteSubStreamView", {"userId": userId});
+  static stopRemoteSubStreamView({@required String userId}) =>
+      _channel.invokeMethod("stopRemoteSubStreamView", {"userId": userId});
 
   /// 设置屏幕分享画面的显示模式。
   /// [userId] 用户ID
@@ -574,23 +600,28 @@ class TencentRtcPlugin {
   static stopSpeedTest() => _channel.invokeMethod("stopSpeedTest");
 
   /// 获得SDK版本
-  static Future<String> getSDKVersion() => _channel.invokeMethod("getSDKVersion");
+  static Future<String> getSDKVersion() =>
+      _channel.invokeMethod("getSDKVersion");
 
   /// 设置日志输出级别
   /// [level] 日志级别
-  static setLogLevel({@required LogLevelEnum level}) => _channel.invokeMethod("setLogLevel", {"level": LogLevelTool.toInt(level)});
+  static setLogLevel({@required LogLevelEnum level}) => _channel
+      .invokeMethod("setLogLevel", {"level": LogLevelTool.toInt(level)});
 
   /// 设置启用控制台打印
   /// [enabled] 是否启用
-  static setConsoleEnabled({@required bool enabled}) => _channel.invokeMethod('setConsoleEnabled', {"enabled": enabled});
+  static setConsoleEnabled({@required bool enabled}) =>
+      _channel.invokeMethod('setConsoleEnabled', {"enabled": enabled});
 
   /// 启用或禁用 Log 的本地压缩。
   /// [enabled] 是否启用
-  static setLogCompressEnabled({@required bool enabled}) => _channel.invokeMethod('setLogCompressEnabled', {"enabled": enabled});
+  static setLogCompressEnabled({@required bool enabled}) =>
+      _channel.invokeMethod('setLogCompressEnabled', {"enabled": enabled});
 
   /// 修改日志保存路径。
   /// [path] 保存路径
-  static setLogDirPath({@required String path}) => _channel.invokeMethod('setLogDirPath', {"path": path});
+  static setLogDirPath({@required String path}) =>
+      _channel.invokeMethod('setLogDirPath', {"path": path});
 
   /// 设置仪表盘的边距。
   /// [userId] 用户ID
@@ -652,7 +683,8 @@ class TencentRtcPluginListener {
 
           // 初始化类型
           for (var item in ListenerTypeEnum.values) {
-            if (item.toString().replaceFirst("ListenerTypeEnum.", "") == typeStr) {
+            if (item.toString().replaceFirst("ListenerTypeEnum.", "") ==
+                typeStr) {
               type = item;
               break;
             }

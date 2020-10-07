@@ -48,11 +48,13 @@ class _MultiVideoState extends State<MultiVideo> {
   _rtcListener(type, params) async {
     if (type == ListenerTypeEnum.EnterRoom) {
       if (params < 0) {
-        _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('进房失败!')));
+        _scaffoldKey.currentState
+          ..showSnackBar(SnackBar(content: Text('进房失败!')));
         return;
       }
 
-      if (await Permission.camera.request().isGranted && await Permission.microphone.request().isGranted) {
+      if (await Permission.camera.request().isGranted &&
+          await Permission.microphone.request().isGranted) {
         Navigator.pushNamed(context, "/room", arguments: {
           "room": _room,
           "name": _user,
@@ -66,17 +68,25 @@ class _MultiVideoState extends State<MultiVideo> {
   /// 进入房间按钮点击事件
   _onEnterRoom() async {
     if (_room == null) {
-      _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('会议号不能为空!')));
+      _scaffoldKey.currentState
+        ..showSnackBar(SnackBar(content: Text('会议号不能为空!')));
       return;
     }
 
     if (_user == null) {
-      _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('用户名不能为空!')));
+      _scaffoldKey.currentState
+        ..showSnackBar(SnackBar(content: Text('用户名不能为空!')));
       return;
     }
 
-    String sign = await TencentRtcPlugin.genUserSig(appid: Global.appid, userId: _user, secretKey: Global.secretKey);
-    TencentRtcPlugin.enterRoom(appid: Global.appid, userId: _user, userSig: sign, roomId: _room, scene: SceneEnum.VideoCall);
+    String sign = await TencentRtcPlugin.genUserSig(
+        appid: Global.appid, userId: _user, secretKey: Global.secretKey);
+    TencentRtcPlugin.enterRoom(
+        appid: Global.appid,
+        userId: _user,
+        userSig: sign,
+        roomId: _room,
+        scene: SceneEnum.VideoCall);
   }
 
   @override
@@ -108,7 +118,9 @@ class _MultiVideoState extends State<MultiVideo> {
                       Expanded(
                         child: TextField(
                           keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             border: InputBorder.none,
@@ -153,7 +165,8 @@ class _MultiVideoState extends State<MultiVideo> {
                     title: Text("开启摄像头"),
                     trailing: Switch(
                       value: _enabledCamera,
-                      onChanged: (value) => this.setState(() => _enabledCamera = value),
+                      onChanged: (value) =>
+                          this.setState(() => _enabledCamera = value),
                     ),
                   ),
                   ListTile(
@@ -161,7 +174,8 @@ class _MultiVideoState extends State<MultiVideo> {
                     title: Text("开启麦克风"),
                     trailing: Switch(
                       value: _enabledMicrophone,
-                      onChanged: (value) => this.setState(() => _enabledMicrophone = value),
+                      onChanged: (value) =>
+                          this.setState(() => _enabledMicrophone = value),
                     ),
                   ),
                   ListTile(
@@ -180,7 +194,8 @@ class _MultiVideoState extends State<MultiVideo> {
                                   Radio(
                                     value: e["value"],
                                     groupValue: this._quality,
-                                    onChanged: (value) => this.setState(() => this._quality = value),
+                                    onChanged: (value) => this
+                                        .setState(() => this._quality = value),
                                   ),
                                   Text(e["text"]),
                                 ],

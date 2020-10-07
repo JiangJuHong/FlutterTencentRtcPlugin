@@ -25,5 +25,6 @@ class NetworkQualityTool {
   /// 根据Int类型值获得枚举
   /// [index] Int常量
   /// [Return] 枚举对象
-  static NetworkQualityEnum getByInt(int index) => NetworkQualityEnum.values[index];
+  static NetworkQualityEnum getByInt(int index) =>
+      NetworkQualityEnum.values[index];
 }

@@ -44,7 +44,8 @@ class _RoomState extends State<Room> {
     TencentRtcPlugin.addListener(_rtcListener);
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      Map arguments = ModalRoute.of(_scaffoldKey.currentContext).settings.arguments;
+      Map arguments =
+          ModalRoute.of(_scaffoldKey.currentContext).settings.arguments;
       _room = arguments["room"];
       _name = arguments["name"];
       _enabledCamera = arguments["enabledCamera"];
@@ -94,7 +95,8 @@ class _RoomState extends State<Room> {
 
   /// 切换扬声器按钮点击事件
   _onChangeSpeakerClick() {
-    TencentRtcPlugin.setAudioRoute(route: _speaker ? RouteEnum.Earpiece : RouteEnum.Speaker);
+    TencentRtcPlugin.setAudioRoute(
+        route: _speaker ? RouteEnum.Earpiece : RouteEnum.Speaker);
     this.setState(() => _speaker = !_speaker);
   }
 
@@ -134,7 +136,9 @@ class _RoomState extends State<Room> {
     if (_enabledCamera) {
       await TencentRtcPlugin.stopLocalPreview();
     } else {
-      await this._getUserController(_name).startLocalPreview(frontCamera: _frontCamera);
+      await this
+          ._getUserController(_name)
+          .startLocalPreview(frontCamera: _frontCamera);
     }
     this.setState(() => _enabledCamera = !_enabledCamera);
   }
@@ -181,7 +185,8 @@ class _RoomState extends State<Room> {
             child: Wrap(
               children: List.generate(
                 _users.keys.length,
-                (index) => LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+                (index) => LayoutBuilder(builder:
+                    (BuildContext context, BoxConstraints constraints) {
                   Size size = this._getViewSize(index, _users.length);
                   return Container(
                     height: size.height,
@@ -191,8 +196,11 @@ class _RoomState extends State<Room> {
                         String key = _users.keys.toList()[index];
                         _users[key] = controller;
                         if (key == _name) {
-                          if (_enabledCamera) controller.startLocalPreview(frontCamera: _frontCamera);
-                          if (_enabledMicrophone) TencentRtcPlugin.startLocalAudio();
+                          if (_enabledCamera)
+                            controller.startLocalPreview(
+                                frontCamera: _frontCamera);
+                          if (_enabledMicrophone)
+                            TencentRtcPlugin.startLocalAudio();
                         } else {
                           controller.startRemoteView(userId: key);
                         }
@@ -205,7 +213,11 @@ class _RoomState extends State<Room> {
           ),
           Positioned.fill(
             child: Padding(
-              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top, left: 20, right: 20, bottom: MediaQuery.of(context).padding.bottom),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top,
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(context).padding.bottom),
               child: Column(
                 children: [
                   Container(
@@ -247,7 +259,8 @@ class _RoomState extends State<Room> {
                               RaisedButton(
                                 onPressed: _onExitClick,
                                 color: Colors.redAccent,
-                                child: Text("退出会议", style: TextStyle(color: Colors.white)),
+                                child: Text("退出会议",
+                                    style: TextStyle(color: Colors.white)),
                               ),
                             ],
                           ),
@@ -273,8 +286,19 @@ class _RoomState extends State<Room> {
                     padding: EdgeInsets.only(top: 10),
                     child: Row(
                       children: [
-                        {"icon": _enabledMicrophone != null && _enabledMicrophone ? Icons.mic : Icons.mic_off, "onTap": _onMicrophoneClick},
-                        {"icon": _enabledCamera != null && _enabledCamera ? Icons.videocam : Icons.videocam_off, "onTap": _onCameraClick},
+                        {
+                          "icon":
+                              _enabledMicrophone != null && _enabledMicrophone
+                                  ? Icons.mic
+                                  : Icons.mic_off,
+                          "onTap": _onMicrophoneClick
+                        },
+                        {
+                          "icon": _enabledCamera != null && _enabledCamera
+                              ? Icons.videocam
+                              : Icons.videocam_off,
+                          "onTap": _onCameraClick
+                        },
                         {"icon": Icons.people, "onTap": _onUserListClick},
                         {"icon": Icons.more_horiz},
                       ]
