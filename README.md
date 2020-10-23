@@ -18,7 +18,7 @@ FlutterTencentRTC是基于[腾讯云TRTC](https://cloud.tencent.com/product/trtc
 
 # Customization
 
-如果您有定制化需求，可通过QQ(690717394) 或 邮箱(690717394@qq.com) 联系我，该项服务为有偿服务，具体价格根据需求量进行决定。
+如果您的项目有定制化需求，可通过QQ(690717394) 或 邮箱(690717394@qq.com) 联系我，该项服务为有偿服务，具体价格根据需求量进行决定。
 
 # Other Plugins
 
