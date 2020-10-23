@@ -16,22 +16,9 @@ FlutterTencentRTC是基于[腾讯云TRTC](https://cloud.tencent.com/product/trtc
 * [Chat](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)
 * [Sponsor](https://www.yuque.com/jiangjuhong/krioix/kw8zq2)
 
-# About the author
+# Customization
 
-### 介绍
-
-个人以及公司承接外包(**定制开发或二次开发**)，坐标：四川成都，包括但不限于：
-* 网站
-* 移动APP
-* PC客户端应用
-* 微信小程序
-* 插件开发
-* 等
-
-### 联系方式
-
-邮箱：690717394@qq.com  
-扣扣：690717394
+如果您有定制化需求，可通过QQ(690717394) 或 邮箱(690717394@qq.com) 联系我，该项服务为有偿服务，具体价格根据需求量进行决定。
 
 # Other Plugins
 
