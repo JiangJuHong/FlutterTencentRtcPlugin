@@ -80,15 +80,6 @@ class _MultiVideoState extends State<MultiVideo> {
 
     String sign = await TencentRtcPlugin.genUserSig(appid: Global.appid, userId: _user, secretKey: Global.secretKey);
     TencentRtcPlugin.enterRoom(appid: Global.appid, userId: _user, userSig: sign, roomId: _room, scene: SceneEnum.VideoCall);
-
-    TencentRtcPlugin.setVideoEncoderParam(
-      param: VideoEncParamEntity(
-        videoBitrate: 1800,
-        videoResolution: ResolutionEnum.r640x480,
-        videoResolutionMode: ResolutionModeEnum.Portrait,
-        videoFps: 30,
-      ),
-    );
   }
 
   @override
