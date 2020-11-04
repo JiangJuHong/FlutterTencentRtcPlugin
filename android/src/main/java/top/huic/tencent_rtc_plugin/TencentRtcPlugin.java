@@ -887,7 +887,7 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      * 发送自定义消息给房间内所有用户。
      */
     private void sendCustomCmdMsg(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
-        int cmdId = TencentRtcPluginUtil.getParam(call, result, "cmdId");
+        int cmdId = TencentRtcPluginUtil.getParam(call, result, "cmdID");
         String data = TencentRtcPluginUtil.getParam(call, result, "data");
         boolean reliable = TencentRtcPluginUtil.getParam(call, result, "reliable");
         boolean ordered = TencentRtcPluginUtil.getParam(call, result, "ordered");
