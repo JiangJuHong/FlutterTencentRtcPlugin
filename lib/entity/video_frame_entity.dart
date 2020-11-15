@@ -17,7 +17,8 @@ class VideoFrameEntity {
   int height;
 
   VideoFrameEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     streamType = StreamTypeTool.getByInt(json['streamType']);
     width = json['width'];

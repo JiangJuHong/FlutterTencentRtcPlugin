@@ -26,7 +26,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     /**
      * 与Flutter的通信管道
      */
-    private MethodChannel channel;
+    private final MethodChannel channel;
 
     public CustomTRTCCloudListener(MethodChannel channel) {
         this.channel = channel;

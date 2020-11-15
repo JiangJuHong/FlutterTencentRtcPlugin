@@ -9,7 +9,8 @@ class CommonStatusEntity {
   String msg;
 
   CommonStatusEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     code = json['code'];
     msg = json['msg'];
   }

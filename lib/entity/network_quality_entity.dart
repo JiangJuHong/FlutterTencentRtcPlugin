@@ -11,7 +11,8 @@ class NetworkQualityEntity {
   List<UserQualityEntity> remoteQuality;
 
   NetworkQualityEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     localQuality = UserQualityEntity.fromJson(json['localQuality']);
     if (json['remoteQuality'] != null && json['remoteQuality'].length > 0) {
       List<UserQualityEntity> tempQuality = [];
@@ -32,7 +33,8 @@ class UserQualityEntity {
   NetworkQualityEnum quality;
 
   UserQualityEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     quality = NetworkQualityTool.getByInt(json['quality']);
   }

@@ -26,16 +26,29 @@ public class ListenerUtil {
      * @param params  参数
      */
     public static void invokeListener(MethodChannel channel, CallBackNoticeEnum type, Object params) {
+        invokeListener(channel, type, params, true);
+    }
+
+    /**
+     * 调用监听器
+     *
+     * @param channel 方法调用器
+     * @param type    类型
+     * @param params  参数
+     * @param cover   是否对json进行转换
+     */
+    public static void invokeListener(MethodChannel channel, CallBackNoticeEnum type, Object params, boolean cover) {
         Map<String, Object> resultParams = new HashMap<>(2, 1);
-        resultParams.put("type", type);
+        resultParams.put("type", type.toString());
         if (params != null) {
-            // 字符串单独解析，否则会有双引号
-            if (params instanceof String) {
+            // 1. 字符串不进行json解析，否则会有双引号
+            // 2. cover 为false时不进行json转换
+            if (params instanceof String || !cover) {
                 resultParams.put("params", params);
             } else {
                 resultParams.put("params", JsonUtil.toJSONString(params));
             }
         }
-        channel.invokeMethod(LISTENER_FUNC_NAME, JsonUtil.toJSONString(resultParams));
+        channel.invokeMethod(LISTENER_FUNC_NAME, cover ? JsonUtil.toJSONString(resultParams) : resultParams);
     }
 }

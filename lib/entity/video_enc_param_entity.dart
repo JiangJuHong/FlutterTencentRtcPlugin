@@ -42,8 +42,12 @@ class VideoEncParamEntity {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['videoBitrate'] = this.videoBitrate;
-    data['videoResolution'] = this.videoResolution == null ? null : ResolutionTool.toInt(this.videoResolution);
-    data['videoResolutionMode'] = this.videoResolutionMode == null ? null : ResolutionModeTool.toInt(this.videoResolutionMode);
+    data['videoResolution'] = this.videoResolution == null
+        ? null
+        : ResolutionTool.toInt(this.videoResolution);
+    data['videoResolutionMode'] = this.videoResolutionMode == null
+        ? null
+        : ResolutionModeTool.toInt(this.videoResolutionMode);
     data['videoFps'] = this.videoFps;
     data['minVideoBitrate'] = this.minVideoBitrate;
     data['enableAdjustRes'] = this.enableAdjustRes;

@@ -9,7 +9,8 @@ class AudioEffectFinishedEntity {
   int code;
 
   AudioEffectFinishedEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     effectId = json['effectId'];
     code = json['code'];
   }

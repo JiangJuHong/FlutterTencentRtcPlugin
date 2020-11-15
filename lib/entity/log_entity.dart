@@ -14,7 +14,8 @@ class LogEntity {
   String module;
 
   LogEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     log = json['log'];
     level = LogLevelTool.getByInt(json['level']);
     module = json['module'];

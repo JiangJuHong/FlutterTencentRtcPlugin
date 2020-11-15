@@ -1,7 +1,7 @@
 import Flutter
 import TXLiteAVSDK_TRTC
 
-public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, TRTCLogDelegate {
+public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, TRTCLogDelegate, TRTCAudioFrameDelegate {
 
     private static var channel: FlutterMethodChannel?;
 
@@ -18,6 +18,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
 
         // 绑定监听器
         TRTCCloud.setLogDelegate(instance);
+        TRTCCloud.sharedInstance()?.setAudioFrameDelegate(instance);
         TRTCCloud.sharedInstance()?.delegate = instance;
 
         // 视图工厂
@@ -1056,13 +1057,13 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      * @param type   类型
      * @param params 参数
      */
-    private func invokeListener(type: ListenerType, params: Any?) {
+    private func invokeListener(type: ListenerType, params: Any?, cover: Bool = true) {
         var resultParams: [String: Any] = [:];
-        resultParams["type"] = type;
+        resultParams["type"] = "\(type)";
         if let p = params {
-            resultParams["params"] = JsonUtil.toJson(p);
+            resultParams["params"] = cover ? JsonUtil.toJson(p) : p;
         }
-        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: JsonUtil.toJson(resultParams));
+        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: cover ? JsonUtil.toJson(resultParams) : resultParams);
     }
 
     /**
@@ -1409,5 +1410,46 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
     /// 当屏幕分享停止时，SDK 会通过此回调通知。
     public func onScreenCaptureStoped(_ reason: Int32) {
         self.invokeListener(type: ListenerType.ScreenCaptureStopped, params: reason);
+    }
+
+    /// 本地麦克风采集到的音频数据回调
+    public func onCapturedRawAudioFrame(_ frame: TRTCAudioFrame) {
+        self.invokeListener(type: ListenerType.CapturedRawAudioFrame, params: [
+            "data": FlutterStandardTypedData.init(bytes: frame.data),
+            "sampleRate": frame.sampleRate.rawValue,
+            "channel": frame.channels,
+            "timestamp": frame.timestamp,
+        ], cover: false);
+    }
+
+    /// 本地采集并经过音频模块前处理后的音频数据回调
+    public func onLocalProcessedAudioFrame(_ frame: TRTCAudioFrame) {
+        self.invokeListener(type: ListenerType.LocalProcessedAudioFrame, params: [
+            "data": FlutterStandardTypedData.init(bytes: frame.data),
+            "sampleRate": frame.sampleRate.rawValue,
+            "channel": frame.channels,
+            "timestamp": frame.timestamp,
+        ], cover: false);
+    }
+
+    /// 混音前的每一路远程用户的音频数据，即混音前的各路原始数据。例如，对某一路音频进行文字转换时，您必须使用该路音频的原始数据
+    public func onRemoteUserAudioFrame(_ frame: TRTCAudioFrame, userId: String) {
+        self.invokeListener(type: ListenerType.RemoteUserAudioFrame, params: [
+            "userId": userId,
+            "data": FlutterStandardTypedData.init(bytes: frame.data),
+            "sampleRate": frame.sampleRate.rawValue,
+            "channel": frame.channels,
+            "timestamp": frame.timestamp,
+        ], cover: false);
+    }
+
+    /// 各路音频数据混合后送入喇叭播放的音频数据
+    public func onMixedPlay(_ frame: TRTCAudioFrame) {
+        self.invokeListener(type: ListenerType.MixedPlayAudioFrame, params: [
+            "data": FlutterStandardTypedData.init(bytes: frame.data),
+            "sampleRate": frame.sampleRate.rawValue,
+            "channel": frame.channels,
+            "timestamp": frame.timestamp,
+        ], cover: false);
     }
 }

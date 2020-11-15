@@ -8,7 +8,8 @@ class UserStatusEntity extends CommonStatusEntity {
   String userId;
 
   UserStatusEntity.fromJson(data) : super.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
   }
 }

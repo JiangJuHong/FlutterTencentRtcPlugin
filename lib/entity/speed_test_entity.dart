@@ -15,7 +15,8 @@ class SpeedTestEntity {
   int totalCount;
 
   SpeedTestEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     currentResult = SpeedTestResultEntity.fromJson(json['currentResult']);
     finishedCount = json['finishedCount'];
     totalCount = json['totalCount'];
@@ -40,7 +41,8 @@ class SpeedTestResultEntity {
   int rtt;
 
   SpeedTestResultEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     ip = json['ip'];
     quality = NetworkQualityTool.getByInt(json['quality']);
     upLostRate = json['upLostRate'];

@@ -117,6 +117,18 @@ enum ListenerTypeEnum {
   /// 屏幕分享停止回调
   ScreenCaptureStopped,
 
+  /// 本地麦克风采集到的音频数据回调
+  CapturedRawAudioFrame,
+
+  /// 本地采集并经过音频模块前处理后的音频数据回调
+  LocalProcessedAudioFrame,
+
+  /// 混音前的每一路远程用户的音频数据，即混音前的各路原始数据。例如，对某一路音频进行文字转换时，您必须使用该路音频的原始数据
+  RemoteUserAudioFrame,
+
+  /// 各路音频数据混合后送入喇叭播放的音频数据
+  MixedPlayAudioFrame,
+
   /// 日志
   Log,
 }

@@ -15,7 +15,8 @@ class CustomMessageEntity {
   int missed;
 
   CustomMessageEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     cmdID = json['cmdID'];
     errCode = json['errCode'];

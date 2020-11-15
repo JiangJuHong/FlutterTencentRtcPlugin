@@ -9,7 +9,8 @@ class SeiMessageEntity {
   String data;
 
   SeiMessageEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     data = json['data'];
   }

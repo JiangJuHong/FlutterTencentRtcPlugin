@@ -34,7 +34,8 @@ class StatisticsEntity {
   List<RemoteStatisticsEntity> remoteArray;
 
   StatisticsEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     appCpu = json['appCpu'];
     systemCpu = json['systemCpu'];
     rtt = json['rtt'];

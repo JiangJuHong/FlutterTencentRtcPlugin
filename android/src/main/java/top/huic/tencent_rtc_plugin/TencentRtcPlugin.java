@@ -18,6 +18,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.platform.PlatformViewRegistry;
+import top.huic.tencent_rtc_plugin.listener.CustomTRTCAudioFrameListener;
 import top.huic.tencent_rtc_plugin.listener.CustomTRTCCloudListener;
 import top.huic.tencent_rtc_plugin.listener.CustomTRTCLogListener;
 import top.huic.tencent_rtc_plugin.util.GenerateTestUserSig;
@@ -40,6 +41,7 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
         // 初始化实例
         trtcCloud = TRTCCloud.sharedInstance(context);
         trtcCloud.setListener(new CustomTRTCCloudListener(channel));
+        trtcCloud.setAudioFrameListener(new CustomTRTCAudioFrameListener(channel));
         TRTCCloud.setLogListener(new CustomTRTCLogListener(channel));
 
         // 注册View

@@ -11,7 +11,8 @@ class AudioRouteChangedEntity {
   RouteEnum oldRoute;
 
   AudioRouteChangedEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     newRoute = RouteTool.getByInt(json['newRoute']);
     oldRoute = RouteTool.getByInt(json['oldRoute']);
   }
