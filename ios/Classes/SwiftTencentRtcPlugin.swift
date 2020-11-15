@@ -931,7 +931,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      * 发送自定义消息给房间内所有用户
      */
     public func sendCustomCmdMsg(call: FlutterMethodCall, result: @escaping FlutterResult) {
-        if let cmdId = CommonUtils.getParam(call: call, result: result, param: "cmdId") as? Int,
+        if let cmdId = CommonUtils.getParam(call: call, result: result, param: "cmdID") as? Int,
            let data = CommonUtils.getParam(call: call, result: result, param: "data") as? String,
            let reliable = CommonUtils.getParam(call: call, result: result, param: "reliable") as? Bool,
            let ordered = CommonUtils.getParam(call: call, result: result, param: "ordered") as? Bool {

@@ -55,3 +55,6 @@
 
 ## 1.0.2
 * 修复 IOS 设备上调用 setVideoEncoderParam 接口会导致崩溃的问题
+
+## 1.0.3
+* 解决cmdID传了还是报错的问题
