@@ -8,6 +8,7 @@ import 'package:tencent_rtc_plugin/entity/audio_frame_entity.dart';
 import 'package:tencent_rtc_plugin/entity/audio_route_changed_entity.dart';
 import 'package:tencent_rtc_plugin/entity/common_status_entity.dart';
 import 'package:tencent_rtc_plugin/entity/custom_message_entity.dart';
+import 'package:tencent_rtc_plugin/entity/custom_message_receive_entity.dart';
 import 'package:tencent_rtc_plugin/entity/log_entity.dart';
 import 'package:tencent_rtc_plugin/entity/network_quality_entity.dart';
 import 'package:tencent_rtc_plugin/entity/sei_message_entity.dart';
@@ -761,6 +762,8 @@ class TencentRtcPluginListener {
               params = VoiceVolumeEntity.fromJson(params);
               break;
             case ListenerTypeEnum.RecvCustomCmdMsg:
+              params = CustomMessageReceiveEntity.fromJson(params);
+              break;
             case ListenerTypeEnum.MissCustomCmdMsg:
               params = CustomMessageEntity.fromJson(params);
               break;
