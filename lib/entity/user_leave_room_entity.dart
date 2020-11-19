@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 /// 用户离开实体
-class CommonStatusEntity {
+class UserLeaveRoomEntity {
   /// 用户ID
   String userId;
 
   /// 离开原因
   int reason;
 
-  CommonStatusEntity.fromJson(data) {
+  UserLeaveRoomEntity.fromJson(data) {
     Map<String, dynamic> json =
         data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];

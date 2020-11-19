@@ -15,6 +15,7 @@ import 'package:tencent_rtc_plugin/entity/sei_message_entity.dart';
 import 'package:tencent_rtc_plugin/entity/speed_test_entity.dart';
 import 'package:tencent_rtc_plugin/entity/statistics_entity.dart';
 import 'package:tencent_rtc_plugin/entity/user_available_entity.dart';
+import 'package:tencent_rtc_plugin/entity/user_leave_room_entity.dart';
 import 'package:tencent_rtc_plugin/entity/user_status_entity.dart';
 import 'package:tencent_rtc_plugin/entity/video_frame_entity.dart';
 import 'package:tencent_rtc_plugin/entity/voice_volume_entity.dart';
@@ -716,7 +717,7 @@ class TencentRtcPluginListener {
               params = UserStatusEntity.fromJson(params);
               break;
             case ListenerTypeEnum.RemoteUserLeaveRoom:
-              params = CommonStatusEntity.fromJson(params);
+              params = UserLeaveRoomEntity.fromJson(params);
               break;
             case ListenerTypeEnum.UserVideoAvailable:
             case ListenerTypeEnum.UserSubStreamAvailable:

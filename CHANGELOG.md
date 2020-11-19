@@ -64,3 +64,6 @@
 
 ## 1.0.5
 * 修复 RecvCustomCmdMsg 回调异常的问题
+
+## 1.0.6
+* 修复 UserLeaveRoomEntity 实体无效的问题
