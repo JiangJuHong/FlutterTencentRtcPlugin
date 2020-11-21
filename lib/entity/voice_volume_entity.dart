@@ -9,8 +9,7 @@ class VoiceVolumeEntity {
   List<UserVoiceVolumeEntity> userVolumes;
 
   VoiceVolumeEntity.fromJson(data) {
-    Map<String, dynamic> json =
-        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
+    Map<String, dynamic> json = data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     totalVolume = json['totalVolume'];
     if (json['userVolumes'] != null && json['userVolumes'].length > 0) {
       List<UserVoiceVolumeEntity> tempData = [];
@@ -31,8 +30,7 @@ class UserVoiceVolumeEntity {
   int volume;
 
   UserVoiceVolumeEntity.fromJson(data) {
-    Map<String, dynamic> json =
-        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
+    Map<String, dynamic> json = data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     volume = json['volume'];
   }

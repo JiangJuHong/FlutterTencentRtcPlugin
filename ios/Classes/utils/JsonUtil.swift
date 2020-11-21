@@ -72,7 +72,7 @@ public class JsonUtil {
             return "\(object)";
         }
 
-        if object is Int32 || object is Int || object is UInt32 || object is UInt64 || object is Bool || object is Double || object is time_t || object is Date || object is Data || object is Dictionary<AnyHashable, Any> {
+        if object is Int32 || object is Int || object is UInt || object is UInt32 || object is UInt64 || object is Bool || object is Double || object is time_t || object is Date || object is Data || object is Dictionary<AnyHashable, Any> {
             return vHandler(object);
         }
 
@@ -142,7 +142,7 @@ public class JsonUtil {
         // 如果是Data，将会解析为字符串并且进行转移
         if v is String {
             return "\"\(stringReplace(source: "\(v)"))\"";
-        } else if v is Int32 || v is Int || v is UInt32 || v is UInt64 || v is Bool || v is Double || v is time_t {
+        } else if v is Int32 || v is Int || v is UInt || v is UInt32 || v is UInt64 || v is Bool || v is Double || v is time_t {
             return v;
         } else if v is Date {
             return Int((v as! Date).timeIntervalSince1970);
