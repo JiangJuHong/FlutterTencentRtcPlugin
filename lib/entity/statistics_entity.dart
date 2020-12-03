@@ -83,7 +83,8 @@ class LocalStatisticsEntity {
   /// 流类型（大画面 | 小画面 | 辅路画面）
   StreamTypeEnum streamType;
 
-  LocalStatisticsEntity.fromJson(Map<String, dynamic> json) {
+  LocalStatisticsEntity.fromJson(data) {
+    Map<String, dynamic> json = data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     width = json['width'];
     height = json['height'];
     frameRate = json['frameRate'];
@@ -126,7 +127,8 @@ class RemoteStatisticsEntity {
   /// 流类型（大画面 | 小画面 | 辅路画面）
   StreamTypeEnum streamType;
 
-  RemoteStatisticsEntity.fromJson(Map<String, dynamic> json) {
+  RemoteStatisticsEntity.fromJson(data) {
+    Map<String, dynamic> json = data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     finalLoss = json['finalLoss'];
     width = json['width'];

@@ -45,7 +45,7 @@ public class CustomTRTCAudioFrameListener implements TRTCCloudListener.TRTCAudio
         MAIN_HANDLER.post(new Runnable() {
             @Override
             public void run() {
-                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.CapturedRawAudioFrame, params, false);
+                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.CapturedRawAudioFrame, params);
             }
         });
     }
@@ -63,7 +63,7 @@ public class CustomTRTCAudioFrameListener implements TRTCCloudListener.TRTCAudio
         MAIN_HANDLER.post(new Runnable() {
             @Override
             public void run() {
-                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.LocalProcessedAudioFrame, params, false);
+                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.LocalProcessedAudioFrame, params);
             }
         });
     }
@@ -82,7 +82,7 @@ public class CustomTRTCAudioFrameListener implements TRTCCloudListener.TRTCAudio
         MAIN_HANDLER.post(new Runnable() {
             @Override
             public void run() {
-                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RemoteUserAudioFrame, params, false);
+                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.RemoteUserAudioFrame, params);
             }
         });
     }
@@ -100,7 +100,7 @@ public class CustomTRTCAudioFrameListener implements TRTCCloudListener.TRTCAudio
         MAIN_HANDLER.post(new Runnable() {
             @Override
             public void run() {
-                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.MixedPlayAudioFrame, params, false);
+                ListenerUtil.invokeListener(channel, CallBackNoticeEnum.MixedPlayAudioFrame, params);
             }
         });
     }

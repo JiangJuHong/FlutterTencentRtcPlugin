@@ -3,6 +3,9 @@ package top.huic.tencent_rtc_plugin.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.ValueFilter;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * JSON工具类
  *
@@ -23,12 +26,22 @@ public class JsonUtil {
     };
 
     /**
-     * 将对象序列化为JSON
+     * 将对象转换为Map
      *
      * @param data 对象
      * @return 解析结果
      */
-    public static String toJSONString(Object data) {
-        return JSON.toJSONString(data, filter);
+    public static Map<String,Object> toMap(Object data) {
+        return JSON.parseObject(JSON.toJSONString(data),Map.class);
+    }
+
+    /**
+     * 将对象转换为Map数组
+     *
+     * @param data 对象
+     * @return 解析结果
+     */
+    public static List<Map> toMapArray(Object data) {
+        return JSON.parseArray(JSON.toJSONString(data),Map.class);
     }
 }

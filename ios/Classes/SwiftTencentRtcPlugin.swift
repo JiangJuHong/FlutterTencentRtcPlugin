@@ -1057,13 +1057,11 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      * @param type   类型
      * @param params 参数
      */
-    private func invokeListener(type: ListenerType, params: Any?, cover: Bool = true) {
-        var resultParams: [String: Any] = [:];
-        resultParams["type"] = "\(type)";
-        if let p = params {
-            resultParams["params"] = cover ? JsonUtil.toJson(p) : p;
-        }
-        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: cover ? JsonUtil.toJson(resultParams) : resultParams);
+    private func invokeListener(type: ListenerType, params: Any?) {
+        SwiftTencentRtcPlugin.channel!.invokeMethod(SwiftTencentRtcPlugin.LISTENER_FUNC_NAME, arguments: [
+            "type": "\(type)",
+            "params": params,
+        ]);
     }
 
     /**
@@ -1419,7 +1417,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
             "sampleRate": frame.sampleRate.rawValue,
             "channel": frame.channels,
             "timestamp": frame.timestamp,
-        ], cover: false);
+        ]);
     }
 
     /// 本地采集并经过音频模块前处理后的音频数据回调
@@ -1429,7 +1427,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
             "sampleRate": frame.sampleRate.rawValue,
             "channel": frame.channels,
             "timestamp": frame.timestamp,
-        ], cover: false);
+        ]);
     }
 
     /// 混音前的每一路远程用户的音频数据，即混音前的各路原始数据。例如，对某一路音频进行文字转换时，您必须使用该路音频的原始数据
@@ -1440,7 +1438,7 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
             "sampleRate": frame.sampleRate.rawValue,
             "channel": frame.channels,
             "timestamp": frame.timestamp,
-        ], cover: false);
+        ]);
     }
 
     /// 各路音频数据混合后送入喇叭播放的音频数据
@@ -1450,6 +1448,6 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
             "sampleRate": frame.sampleRate.rawValue,
             "channel": frame.channels,
             "timestamp": frame.timestamp,
-        ], cover: false);
+        ]);
     }
 }

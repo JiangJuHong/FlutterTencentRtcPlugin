@@ -39,6 +39,7 @@ class _MultiVideoState extends State<MultiVideo> {
   void initState() {
     super.initState();
     TencentRtcPlugin.addListener(_rtcListener);
+    TencentRtcPlugin.enableAudioVolumeEvaluation(intervalMs: 100);
   }
 
   @override

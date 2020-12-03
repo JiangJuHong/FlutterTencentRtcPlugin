@@ -11,6 +11,7 @@ import com.tencent.trtc.TRTCStatistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodChannel;
@@ -213,11 +214,11 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
      * 网络质量：该回调每2秒触发一次，统计当前网络的上行和下行质量。
      */
     @Override
-    public void onNetworkQuality(TRTCCloudDef.TRTCQuality trtcQuality, ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
+    public void onNetworkQuality(final TRTCCloudDef.TRTCQuality trtcQuality, ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
         super.onNetworkQuality(trtcQuality, arrayList);
         Map<String, Object> params = new HashMap<>(2, 1);
-        params.put("localQuality", trtcQuality);
-        params.put("remoteQuality", arrayList);
+        params.put("localQuality", JsonUtil.toMap(trtcQuality));
+        params.put("remoteQuality", JsonUtil.toMapArray(arrayList));
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.NetworkQuality, params);
     }
 
@@ -227,7 +228,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     @Override
     public void onStatistics(TRTCStatistics trtcStatistics) {
         super.onStatistics(trtcStatistics);
-        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.Statistics, trtcStatistics);
+        ListenerUtil.invokeListener(channel, CallBackNoticeEnum.Statistics, JsonUtil.toMap(trtcStatistics));
     }
 
     /**
@@ -264,7 +265,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     public void onSpeedTest(TRTCCloudDef.TRTCSpeedTestResult trtcSpeedTestResult, int i, int i1) {
         super.onSpeedTest(trtcSpeedTestResult, i, i1);
         Map<String, Object> params = new HashMap<>(3, 1);
-        params.put("currentResult", trtcSpeedTestResult);
+        params.put("currentResult", JsonUtil.toMap(trtcSpeedTestResult));
         params.put("finishedCount", i);
         params.put("totalCount", i1);
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.SpeedTest, params);
@@ -307,7 +308,7 @@ public class CustomTRTCCloudListener extends TRTCCloudListener {
     public void onUserVoiceVolume(ArrayList<TRTCCloudDef.TRTCVolumeInfo> arrayList, int i) {
         super.onUserVoiceVolume(arrayList, i);
         Map<String, Object> params = new HashMap<>(2, 1);
-        params.put("userVolumes", arrayList);
+        params.put("userVolumes", JsonUtil.toMapArray(arrayList));
         params.put("totalVolume", i);
         ListenerUtil.invokeListener(channel, CallBackNoticeEnum.UserVoiceVolume, params);
     }
