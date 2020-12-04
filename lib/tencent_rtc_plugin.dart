@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -532,7 +533,7 @@ class TencentRtcPlugin {
   /// [ordered] 	是否要求有序，即是否要求接收端接收的数据顺序和发送端发送的顺序一致，这会带来一定的接收延时，因为在接收端需要暂存并排序这些消息。
   static sendCustomCmdMsg({
     @required int cmdID,
-    @required String data,
+    @required Uint8List data,
     @required bool reliable,
     @required bool ordered,
   }) {

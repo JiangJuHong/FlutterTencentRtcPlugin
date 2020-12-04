@@ -73,3 +73,6 @@
 
 ## 1.1.1
 * 修复 CustomMessageReceiveEntity 监听器数据解析异常问题
+
+## 1.1.2
+* 修改 sendCustomCmdMsg 接口，将data从String类型更改为Uint8List

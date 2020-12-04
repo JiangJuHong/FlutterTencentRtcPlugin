@@ -933,10 +933,10 @@ public class SwiftTencentRtcPlugin: NSObject, FlutterPlugin, TRTCCloudDelegate, 
      */
     public func sendCustomCmdMsg(call: FlutterMethodCall, result: @escaping FlutterResult) {
         if let cmdId = CommonUtils.getParam(call: call, result: result, param: "cmdID") as? Int,
-           let data = CommonUtils.getParam(call: call, result: result, param: "data") as? String,
+           let data = CommonUtils.getParam(call: call, result: result, param: "data") as? Data,
            let reliable = CommonUtils.getParam(call: call, result: result, param: "reliable") as? Bool,
            let ordered = CommonUtils.getParam(call: call, result: result, param: "ordered") as? Bool {
-            TRTCCloud.sharedInstance()?.sendCustomCmdMsg(cmdId, data: data.data(using: .utf8)!, reliable: reliable, ordered: ordered);
+            TRTCCloud.sharedInstance()?.sendCustomCmdMsg(cmdId, data: data, reliable: reliable, ordered: ordered);
             result(nil);
         }
     }

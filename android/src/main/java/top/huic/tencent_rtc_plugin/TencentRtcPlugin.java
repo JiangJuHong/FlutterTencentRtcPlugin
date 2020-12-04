@@ -890,10 +890,10 @@ public class TencentRtcPlugin implements FlutterPlugin, MethodCallHandler {
      */
     private void sendCustomCmdMsg(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         int cmdId = TencentRtcPluginUtil.getParam(call, result, "cmdID");
-        String data = TencentRtcPluginUtil.getParam(call, result, "data");
+        byte[] data = TencentRtcPluginUtil.getParam(call, result, "data");
         boolean reliable = TencentRtcPluginUtil.getParam(call, result, "reliable");
         boolean ordered = TencentRtcPluginUtil.getParam(call, result, "ordered");
-        trtcCloud.sendCustomCmdMsg(cmdId, data.getBytes(), reliable, ordered);
+        trtcCloud.sendCustomCmdMsg(cmdId, data, reliable, ordered);
         result.success(null);
     }
 
