@@ -76,3 +76,6 @@
 
 ## 1.1.2
 * 修改 sendCustomCmdMsg 接口，将data从String类型更改为Uint8List
+
+## 1.1.3
+* 升级依赖包版本

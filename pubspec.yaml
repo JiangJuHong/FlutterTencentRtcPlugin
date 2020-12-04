@@ -1,6 +1,6 @@
 name: tencent_rtc_plugin
 description: Tencent cloud real-time audio and video plug-in, integrated with Tencent RTC, supports Android and IOS dual terminals
-version: 1.1.2
+version: 1.1.3
 homepage: https://github.com/JiangJuHong/FlutterTencentRtcPlugin
 
 environment:
@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   # 路径管理(https://pub.dev/packages/path_provider)
-  path_provider: 1.6.18
+  path_provider: 1.6.24
 
 dev_dependencies:
   flutter_test:
