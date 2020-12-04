@@ -70,3 +70,6 @@
 
 ## 1.1.0
 * 更改监听器串流方式，有json改为原始流
+
+## 1.1.1
+* 修复 CustomMessageReceiveEntity 监听器数据解析异常问题

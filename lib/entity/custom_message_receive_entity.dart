@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:typed_data';
+
 /// 自定义消息接收实体
 class CustomMessageReceiveEntity {
   /// 用户ID
@@ -9,7 +11,7 @@ class CustomMessageReceiveEntity {
   int cmdID;
 
   ///消息体
-  String message;
+  Uint8List message;
 
   int seq;
 
