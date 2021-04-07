@@ -1,14 +1,21 @@
-<p align="center">
-    <a href="https://pub.dartlang.org/packages/tencent_rtc_plugin"><img src="https://img.shields.io/pub/v/tencent_rtc_plugin.svg"/></a>
-    &nbsp;
-    <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/github/license/JiangJuHong/FlutterTencentRtcPlugin"/></a>
-    &nbsp;
-    <a href="https://jq.qq.com/?_wv=1027&k=QxCWMlUf"><img src="https://img.shields.io/badge/qq群-850923396-1"/></a>
+<div align="center">
+
+[![](https://img.shields.io/badge/flutter2.0-NullSafety-1)](#)
+[![](https://img.shields.io/pub/v/tencent_rtc_plugin.svg)](https://pub.dartlang.org/packages/tencent_rtc_plugin)
+[![](https://img.shields.io/badge/Version-社区版-1)](#)
+[![](https://img.shields.io/github/license/JiangJuHong/FlutterTencentRtcPlugin)](https://www.apache.org/licenses/LICENSE-2.0)
+[![](https://img.shields.io/badge/qq群-850923396-1)](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)
+
 </p>
 
 # What is FlutterTencentRTC ？
 
 FlutterTencentRTC是基于[腾讯云TRTC](https://cloud.tencent.com/product/trtc)服务进行的Flutter封装，为Flutter提供实时音视频服务.
+
+# 官方版和社区版的区别
+* 两者的区别：本质上官方版和社区版都是基于IM的SDK进行封装，官方版的更偏向三端写法类似(Android、IOS、Flutter)，社区版则提供更便捷的使用方式(1分钟上手即用)(例: FlutterTencentRTC.enterRoom)。
+* 该如何选择：根据个人编码习惯选择即可。
+* 维护的周期：社区版和官方版均在持续迭代，发现异常将会在第一时间进行修复。
 
 # Links
 
