@@ -3,13 +3,14 @@ import 'dart:convert';
 /// 用户音量实体
 class VoiceVolumeEntity {
   /// 状态码
-  int totalVolume;
+  int? totalVolume;
 
   /// 状态描述
-  List<UserVoiceVolumeEntity> userVolumes;
+  List<UserVoiceVolumeEntity>? userVolumes;
 
   VoiceVolumeEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     totalVolume = json['totalVolume'];
     if (json['userVolumes'] != null && json['userVolumes'].length > 0) {
       List<UserVoiceVolumeEntity> tempData = [];
@@ -24,13 +25,14 @@ class VoiceVolumeEntity {
 /// 用户语音音量实体
 class UserVoiceVolumeEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 音量
-  int volume;
+  int? volume;
 
   UserVoiceVolumeEntity.fromJson(data) {
-    Map<String, dynamic> json = data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
+    Map<String, dynamic> json =
+        data is Map ? data.cast<String, dynamic>() : jsonDecode(data);
     userId = json['userId'];
     volume = json['volume'];
   }

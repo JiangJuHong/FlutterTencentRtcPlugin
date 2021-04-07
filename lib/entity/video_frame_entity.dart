@@ -5,16 +5,16 @@ import 'package:tencent_rtc_plugin/enums/stream_type_enum.dart';
 /// 视频渲染实体
 class VideoFrameEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 流类型
-  StreamTypeEnum streamType;
+  StreamTypeEnum? streamType;
 
   /// 宽度
-  int width;
+  int? width;
 
   /// 高度
-  int height;
+  int? height;
 
   VideoFrameEntity.fromJson(data) {
     Map<String, dynamic> json =

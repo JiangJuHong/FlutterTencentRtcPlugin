@@ -3,9 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tencent_rtc_plugin/enums/quality_enum.dart';
-import 'package:tencent_rtc_plugin/enums/resolution_enum.dart';
-import 'package:tencent_rtc_plugin/enums/resolution_mode_enum.dart';
-import 'package:tencent_rtc_plugin/entity/video_enc_param_entity.dart';
 import 'package:tencent_rtc_plugin/enums/scene_enum.dart';
 import 'package:tencent_rtc_plugin/enums/listener_type_enum.dart';
 import 'package:tencent_rtc_plugin/tencent_rtc_plugin.dart';
@@ -21,10 +18,10 @@ class _MultiVideoState extends State<MultiVideo> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   /// 房间号
-  int _room;
+  int? _room;
 
   /// 用户名
-  String _user;
+  String? _user;
 
   /// 是否开启摄像头
   bool _enabledCamera = true;
@@ -33,7 +30,7 @@ class _MultiVideoState extends State<MultiVideo> {
   bool _enabledMicrophone = true;
 
   /// 音质
-  QualityEnum _quality = QualityEnum.Speech;
+  QualityEnum? _quality = QualityEnum.Speech;
 
   @override
   void initState() {
@@ -52,7 +49,7 @@ class _MultiVideoState extends State<MultiVideo> {
   _rtcListener(type, params) async {
     if (type == ListenerTypeEnum.EnterRoom) {
       if (params < 0) {
-        _scaffoldKey.currentState
+        _scaffoldKey.currentState!
           ..showSnackBar(SnackBar(content: Text('进房失败!')));
         return;
       }
@@ -72,24 +69,24 @@ class _MultiVideoState extends State<MultiVideo> {
   /// 进入房间按钮点击事件
   _onEnterRoom() async {
     if (_room == null) {
-      _scaffoldKey.currentState
+      _scaffoldKey.currentState!
         ..showSnackBar(SnackBar(content: Text('会议号不能为空!')));
       return;
     }
 
     if (_user == null) {
-      _scaffoldKey.currentState
+      _scaffoldKey.currentState!
         ..showSnackBar(SnackBar(content: Text('用户名不能为空!')));
       return;
     }
 
     String sign = await TencentRtcPlugin.genUserSig(
-        appid: Global.appid, userId: _user, secretKey: Global.secretKey);
+        appid: Global.appid, userId: _user!, secretKey: Global.secretKey);
     TencentRtcPlugin.enterRoom(
         appid: Global.appid,
-        userId: _user,
+        userId: _user!,
         userSig: sign,
-        roomId: _room,
+        roomId: _room!,
         scene: SceneEnum.VideoCall);
   }
 
@@ -198,10 +195,10 @@ class _MultiVideoState extends State<MultiVideo> {
                                   Radio(
                                     value: e["value"],
                                     groupValue: this._quality,
-                                    onChanged: (value) => this
+                                    onChanged: (dynamic value) => this
                                         .setState(() => this._quality = value),
                                   ),
-                                  Text(e["text"]),
+                                  Text(e["text"] as String),
                                 ],
                               ),
                             ),
@@ -214,8 +211,7 @@ class _MultiVideoState extends State<MultiVideo> {
                       Expanded(
                         child: Container(
                           height: 50,
-                          child: RaisedButton(
-                            color: Colors.blue,
+                          child: OutlinedButton(
                             onPressed: _onEnterRoom,
                             child: Text(
                               "进入会议",

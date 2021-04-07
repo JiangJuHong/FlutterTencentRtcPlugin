@@ -3,10 +3,10 @@ import 'dart:convert';
 /// 通用状态实体
 class CommonStatusEntity {
   /// 状态码
-  int code;
+  int? code;
 
   /// 状态描述
-  String msg;
+  String? msg;
 
   CommonStatusEntity.fromJson(data) {
     Map<String, dynamic> json =

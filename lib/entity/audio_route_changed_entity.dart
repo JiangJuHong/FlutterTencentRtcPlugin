@@ -5,10 +5,10 @@ import 'package:tencent_rtc_plugin/enums/route_enum.dart';
 /// 音频路由改变实体
 class AudioRouteChangedEntity {
   /// 新路由
-  RouteEnum newRoute;
+  RouteEnum? newRoute;
 
   /// 旧路由
-  RouteEnum oldRoute;
+  RouteEnum? oldRoute;
 
   AudioRouteChangedEntity.fromJson(data) {
     Map<String, dynamic> json =

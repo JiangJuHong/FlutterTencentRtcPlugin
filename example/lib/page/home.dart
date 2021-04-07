@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:tencent_rtc_plugin/tencent_rtc_plugin.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => HomePageState();
@@ -17,7 +17,7 @@ class HomePageState extends State<HomePage> {
   _onGithubAddressClick() {
     Clipboard.setData(ClipboardData(
         text: 'https://github.com/JiangJuHong/FlutterTencentRtcPlugin'));
-    _scaffoldKey.currentState..showSnackBar(SnackBar(content: Text('地址复制成功!')));
+    _scaffoldKey.currentState!..showSnackBar(SnackBar(content: Text('地址复制成功!')));
   }
 
   @override
@@ -46,7 +46,7 @@ class HomePageState extends State<HomePage> {
                       (e) => GestureDetector(
                         onTap: () => e["path"] == null
                             ? null
-                            : Navigator.pushNamed(context, e["path"]),
+                            : Navigator.pushNamed(context, e["path"]!),
                         child: Container(
                           height: 100,
                           width: (MediaQuery.of(context).size.width / 2) - 60,
@@ -54,7 +54,7 @@ class HomePageState extends State<HomePage> {
                               ? Colors.grey
                               : Colors.lightBlueAccent,
                           child: Center(
-                              child: Text(e["name"],
+                              child: Text(e["name"]!,
                                   style: TextStyle(color: Colors.white))),
                         ),
                       ),

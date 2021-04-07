@@ -18,16 +18,16 @@ class _RoomState extends State<Room> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   /// 房间号
-  int _room;
+  int? _room;
 
   /// 当前登录用户名
-  String _name;
+  String? _name;
 
   /// 是否启用摄像头
-  bool _enabledCamera;
+  bool? _enabledCamera;
 
   /// 是否启用麦克风
-  bool _enabledMicrophone;
+  bool? _enabledMicrophone;
 
   /// 当前是否是前置摄像头
   bool _frontCamera = false;
@@ -36,16 +36,17 @@ class _RoomState extends State<Room> {
   bool _speaker = true;
 
   /// 用户ID列表
-  Map<String, TencentRtcVideoViewController> _users = {};
+  Map<String?, TencentRtcVideoViewController?> _users = {};
 
   @override
   void initState() {
     super.initState();
     TencentRtcPlugin.addListener(_rtcListener);
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Map arguments =
-          ModalRoute.of(_scaffoldKey.currentContext).settings.arguments;
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      Map arguments = ModalRoute.of(_scaffoldKey.currentContext!)!
+          .settings
+          .arguments as Map<dynamic, dynamic>;
       _room = arguments["room"];
       _name = arguments["name"];
       _enabledCamera = arguments["enabledCamera"];
@@ -70,11 +71,11 @@ class _RoomState extends State<Room> {
 
     if (type == ListenerTypeEnum.UserVideoAvailable) {
       UserAvailableEntity data = params;
-      if (data.available && !_users.containsKey(data.userId)) {
+      if (data.available! && !_users.containsKey(data.userId)) {
         _users[data.userId] = null;
       }
 
-      if (!data.available) {
+      if (!data.available!) {
         _users.remove(data.userId);
       }
 
@@ -124,7 +125,7 @@ class _RoomState extends State<Room> {
   }
 
   /// 根据用户ID获得控制器
-  TencentRtcVideoViewController _getUserController(String userId) {
+  TencentRtcVideoViewController? _getUserController(String? userId) {
     for (var u in this._users.keys.toList()) {
       if (userId == u) return this._users[u];
     }
@@ -133,24 +134,24 @@ class _RoomState extends State<Room> {
 
   /// 相机按钮点击
   _onCameraClick() async {
-    if (_enabledCamera) {
+    if (_enabledCamera!) {
       await TencentRtcPlugin.stopLocalPreview();
     } else {
       await this
-          ._getUserController(_name)
+          ._getUserController(_name)!
           .startLocalPreview(frontCamera: _frontCamera);
     }
-    this.setState(() => _enabledCamera = !_enabledCamera);
+    this.setState(() => _enabledCamera = !_enabledCamera!);
   }
 
   /// 麦克风按钮点击
   _onMicrophoneClick() async {
-    if (_enabledMicrophone) {
+    if (_enabledMicrophone!) {
       await TencentRtcPlugin.stopLocalAudio();
     } else {
       await TencentRtcPlugin.startLocalAudio();
     }
-    this.setState(() => _enabledMicrophone = !_enabledMicrophone);
+    this.setState(() => _enabledMicrophone = !_enabledMicrophone!);
   }
 
   /// 用户列表点击事件
@@ -163,7 +164,7 @@ class _RoomState extends State<Room> {
             tiles: _users.keys
                 .map(
                   (e) => ListTile(
-                    title: Text(e),
+                    title: Text(e!),
                   ),
                 )
                 .toList(),
@@ -193,16 +194,16 @@ class _RoomState extends State<Room> {
                     width: size.width,
                     child: TencentRtcVideoView(
                       onViewCreated: (controller) {
-                        String key = _users.keys.toList()[index];
+                        String? key = _users.keys.toList()[index];
                         _users[key] = controller;
                         if (key == _name) {
-                          if (_enabledCamera)
+                          if (_enabledCamera!)
                             controller.startLocalPreview(
                                 frontCamera: _frontCamera);
-                          if (_enabledMicrophone)
+                          if (_enabledMicrophone!)
                             TencentRtcPlugin.startLocalAudio();
                         } else {
-                          controller.startRemoteView(userId: key);
+                          controller.startRemoteView(userId: key!);
                         }
                       },
                     ),
@@ -256,9 +257,8 @@ class _RoomState extends State<Room> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              RaisedButton(
+                              OutlinedButton(
                                 onPressed: _onExitClick,
-                                color: Colors.redAccent,
                                 child: Text("退出会议",
                                     style: TextStyle(color: Colors.white)),
                               ),
@@ -288,13 +288,13 @@ class _RoomState extends State<Room> {
                       children: [
                         {
                           "icon":
-                              _enabledMicrophone != null && _enabledMicrophone
+                              _enabledMicrophone != null && _enabledMicrophone!
                                   ? Icons.mic
                                   : Icons.mic_off,
                           "onTap": _onMicrophoneClick
                         },
                         {
-                          "icon": _enabledCamera != null && _enabledCamera
+                          "icon": _enabledCamera != null && _enabledCamera!
                               ? Icons.videocam
                               : Icons.videocam_off,
                           "onTap": _onCameraClick
@@ -306,10 +306,10 @@ class _RoomState extends State<Room> {
                             (e) => Expanded(
                               child: IconButton(
                                 icon: Icon(
-                                  e["icon"],
+                                  e["icon"] as IconData?,
                                   color: Colors.white,
                                 ),
-                                onPressed: e["onTap"],
+                                onPressed: e["onTap"] as void Function()?,
                               ),
                             ),
                           )

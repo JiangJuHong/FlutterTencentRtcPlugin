@@ -17,6 +17,5 @@ class QosPreferenceTool {
       case QosPreferenceEnum.Clear:
         return 2;
     }
-    throw ArgumentError("参数异常");
   }
 }

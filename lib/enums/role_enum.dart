@@ -18,6 +18,5 @@ class RoleTool {
       case RoleEnum.Audience:
         return 21;
     }
-    throw ArgumentError("参数异常");
   }
 }

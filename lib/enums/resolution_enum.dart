@@ -70,6 +70,5 @@ class ResolutionTool {
       case ResolutionEnum.r1920x1080:
         return 114;
     }
-    throw ArgumentError("参数异常");
   }
 }

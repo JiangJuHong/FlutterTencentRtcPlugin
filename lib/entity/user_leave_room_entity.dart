@@ -3,10 +3,10 @@ import 'dart:convert';
 /// 用户离开实体
 class UserLeaveRoomEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 离开原因
-  int reason;
+  int? reason;
 
   UserLeaveRoomEntity.fromJson(data) {
     Map<String, dynamic> json =

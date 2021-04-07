@@ -21,6 +21,5 @@ class QualityTool {
       case QualityEnum.Music:
         return 3;
     }
-    throw ArgumentError("参数异常");
   }
 }

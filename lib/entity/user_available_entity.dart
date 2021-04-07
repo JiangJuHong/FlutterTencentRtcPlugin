@@ -3,10 +3,10 @@ import 'dart:convert';
 /// 用户状态实体
 class UserAvailableEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 状态
-  bool available;
+  bool? available;
 
   UserAvailableEntity.fromJson(data) {
     Map<String, dynamic> json =

@@ -3,16 +3,16 @@ import 'dart:convert';
 /// 自定义消息实体
 class CustomMessageEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 数据流ID
-  int cmdID;
+  int? cmdID;
 
   /// 错误码，当前版本为-1
-  int errCode;
+  int? errCode;
 
   /// 丢失的消息数量
-  int missed;
+  int? missed;
 
   CustomMessageEntity.fromJson(data) {
     Map<String, dynamic> json =

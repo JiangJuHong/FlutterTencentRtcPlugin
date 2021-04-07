@@ -5,10 +5,10 @@ import 'package:tencent_rtc_plugin/enums/network_quality_enum.dart';
 /// 网络质量实体
 class NetworkQualityEntity {
   /// 本地网络质量
-  UserQualityEntity localQuality;
+  UserQualityEntity? localQuality;
 
   /// 远程网络质量
-  List<UserQualityEntity> remoteQuality;
+  List<UserQualityEntity>? remoteQuality;
 
   NetworkQualityEntity.fromJson(data) {
     Map<String, dynamic> json =
@@ -27,10 +27,10 @@ class NetworkQualityEntity {
 /// 用户质量实体
 class UserQualityEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 质量
-  NetworkQualityEnum quality;
+  NetworkQualityEnum? quality;
 
   UserQualityEntity.fromJson(data) {
     Map<String, dynamic> json =

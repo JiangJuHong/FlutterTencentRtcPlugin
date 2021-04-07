@@ -6,19 +6,19 @@ import 'package:tencent_rtc_plugin/enums/audio_sample_rate_enum.dart';
 /// 音频数据实体
 class AudioFrameEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 数据流
-  Uint8List data;
+  Uint8List? data;
 
   /// 通道
-  int channel;
+  int? channel;
 
   /// 采样率
-  AudioSampleRateEnum sampleRate;
+  AudioSampleRateEnum? sampleRate;
 
   /// 时间
-  int timestamp;
+  int? timestamp;
 
   AudioFrameEntity.fromJson(data) {
     Map<String, dynamic> json =

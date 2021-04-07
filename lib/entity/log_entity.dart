@@ -5,13 +5,13 @@ import 'package:tencent_rtc_plugin/enums/log_level_enum.dart';
 /// 日志实体
 class LogEntity {
   /// 日志
-  String log;
+  String? log;
 
   /// 级别
-  LogLevelEnum level;
+  LogLevelEnum? level;
 
   /// 模块
-  String module;
+  String? module;
 
   LogEntity.fromJson(data) {
     Map<String, dynamic> json =

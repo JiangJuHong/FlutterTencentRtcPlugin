@@ -3,10 +3,10 @@ import 'dart:convert';
 /// Sei消息实体
 class SeiMessageEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 数据内容
-  String data;
+  String? data;
 
   SeiMessageEntity.fromJson(data) {
     Map<String, dynamic> json =

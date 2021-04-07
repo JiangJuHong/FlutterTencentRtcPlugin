@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tencent_rtc_plugin_example/page/home.dart';
-import 'package:tencent_rtc_plugin_example/page/multi-video.dart';
-import 'package:tencent_rtc_plugin_example/page/room.dart';
+
+import 'page/home.dart';
+import 'page/multi-video.dart';
+import 'page/room.dart';
 
 void main() => runApp(MyApp());
 

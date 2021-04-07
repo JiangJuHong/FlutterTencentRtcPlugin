@@ -5,15 +5,15 @@ import 'dart:typed_data';
 /// 自定义消息接收实体
 class CustomMessageReceiveEntity {
   /// 用户ID
-  String userId;
+  String? userId;
 
   /// 数据流ID
-  int cmdID;
+  int? cmdID;
 
   ///消息体
-  Uint8List message;
+  Uint8List? message;
 
-  int seq;
+  int? seq;
 
   CustomMessageReceiveEntity.fromJson(data) {
     Map<String, dynamic> json =
