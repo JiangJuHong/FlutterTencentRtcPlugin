@@ -6,7 +6,7 @@
 [![](https://img.shields.io/github/license/JiangJuHong/FlutterTencentRtcPlugin)](https://www.apache.org/licenses/LICENSE-2.0)
 [![](https://img.shields.io/badge/qq群-850923396-1)](https://jq.qq.com/?_wv=1027&k=QxCWMlUf)
 
-</p>
+</div>
 
 # What is FlutterTencentRTC ？
 
