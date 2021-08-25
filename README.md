@@ -15,15 +15,14 @@ FlutterTencentRTC是基于[腾讯云TRTC](https://cloud.tencent.com/product/trtc
 # 终章
 ## 致所有FlutterTencentRtcPlugin贡献者及用户
 ````
-    即日起，FlutterTencentRtcPlugin停止维护，永久保留仓库代码。
-    感谢所有贡献者的帮助，同时感谢所有用户长期以来的支持。
-    如果您的项目中还需要集成FlutterTRTC服务，请移至: https://pub.dev/packages/tencent_trtc_cloud。
-    关闭说明:
-        1. 腾讯终于推出了官方SDK，维护更稳定，推荐使用
-        2. 官方SDK使用方式和此插件一致，通过此插件升级到官方SDK不存在兼容性问题，语法变更不大
-    
-    一个项目的征途结束了，开源的步伐永远不滞。
-    欢迎加入Flutter讨论群，QQ群号: 850923396
+即日起，FlutterTencentRtcPlugin停止维护，永久保留仓库代码。感谢所有贡献者的帮助，同时感谢所有用户长期以来的支持。
+如果您的项目中还需要集成FlutterTRTC服务，请移至: https://pub.dev/packages/tencent_trtc_cloud。
+关闭说明:
+    1. 腾讯终于推出了官方SDK，维护更稳定，推荐使用
+    2. 官方SDK使用方式和此插件一致，通过此插件升级到官方SDK不存在兼容性问题，语法变更不大
+
+一个项目的征途结束了，开源的步伐永远不滞。
+欢迎加入Flutter讨论群，QQ群号: 850923396
 ````
 
 # 官方版和社区版的区别
